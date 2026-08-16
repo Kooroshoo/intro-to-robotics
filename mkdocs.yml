@@ -33,6 +33,8 @@ extra_javascript:
 
 nav:
   - Introduction: index.md
-  - Foundations of Robotic Control: 01-foundations-of-robotic-control.md
+  - Introduction to Robotic Systems: 01-introduction-to-robotic-systems.md
   - Spatial Representation: 02-spatial-representation.md
   - Kinematics and Trajectory Control: 03-kinematics-and-trajectory-control.md
+  - Mapping and Navigation: 04-mapping-and-navigation.md
+  - Task Planning and Execution: 05-task-planning-and-execution.md
