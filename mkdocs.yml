@@ -4,11 +4,33 @@ site_description: A mathematical guide to robot kinematics and control.
 theme:
   name: material
   features:
-    - navigation.sections # Groups chapters beautifully in the sidebar
-    - navigation.top      # Adds a "back to top" button
+    - navigation.sections
+    - navigation.top
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
 
-# This builds your Table of Contents in the sidebar
+# This turns on the math engine for your transformation matrices
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
 nav:
   - Introduction: index.md
   - Spatial Representation: 02-spatial-representation.md
-  - 3D Transformations: 03-3d-transformations.md
+  - Differential Kinematics: 03-differential-kinematics.md
