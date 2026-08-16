@@ -1,5 +1,8 @@
 # Part III: Kinematics and Trajectory Control
 
+Once we know where the robot is, we use control algorithms to move it to a goal. This is treated as an optimization problem: we want to minimize the distance error.
+
+
 Given a robot's joint angles, where does it end up? And once we know where it is, how do we drive it to a goal? This chapter covers both: **forward kinematics** computes a robot's pose from its joints, and **differential kinematics** (Jacobians) drives control toward a target, treated as an optimization problem where we minimize the distance error.
 
 ## Forward Kinematics
