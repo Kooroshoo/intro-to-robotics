@@ -26,9 +26,6 @@ As shown below, the matrix math collapses into two simple linear equations for t
 
 ![Algebraic simplification of the Jacobian inverse](https://placehold.co/800x400?text=Gradient+Descent+Graph)
 
-!!! abstract "Theorem: The Jacobian Inverse"
-    For a planar differential drive robot, the Jacobian matrix can be inverted algebraically because the system is non-holonomic but simplified into a 2D constraint space.
-    
 ### Python Code Example
 Instead of calculating complex matrices in our `while` loop, our simplified Python code looks like this:
 

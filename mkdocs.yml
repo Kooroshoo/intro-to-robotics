@@ -3,38 +3,27 @@ site_description: A mathematical guide to robot kinematics and control.
 
 theme:
   name: material
-  # 1. Custom Typography: A book-like Serif for reading, clear code font
-  font:
-    text: Merriweather 
-    code: Fira Code
-  # 2. Premium Features
   features:
     - navigation.sections
     - navigation.top
-    - navigation.tabs # Moves top-level folders to a sleek top menu
-    - content.code.copy # Adds a nice "copy" button to your Python code
-  # 3. Branding (We will use placeholders for now)
-  logo: assets/logo.png 
-  favicon: assets/logo.png
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: custom # We will define this in CSS
-      accent: indigo
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: custom
-      accent: indigo
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
 
-# 4. Pointing to our new custom design file
-extra_css:
-  - stylesheets/extra.css
-
-# 5. Math and Callout Boxes
+# This turns on the math engine for your transformation matrices
 markdown_extensions:
-  - admonition
-  - pymdownx.details
-  - pymdownx.superfences
   - pymdownx.arithmatex:
       generic: true
 
