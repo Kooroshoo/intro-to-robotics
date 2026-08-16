@@ -1,4 +1,4 @@
-# Part II: Kinematics and Spatial Representation
+# Part II: Spatial Representation
 
 ## Cartesian Space
 
@@ -177,13 +177,3 @@ alpha = alpha + deltaOmegaZ
 ```
 
 This is the rotation-only case from before ($Q_{world} = R \cdot Q_{robot}$), applied to a small step instead of a fixed point. The running estimate $(x_w, y_w)$ plays the role of the accumulated translation $P$: every step rotates the local motion into world coordinates and adds it to that running total, while $\alpha$ keeps track of the robot's current heading.
-
-### Arm Robot: Chaining Joint Transforms
-
-A robot arm is a chain of rigid links connected by joints, and each joint contributes its own small transformation: a rotation by the joint's current angle, followed by a fixed translation along the link to the next joint. Finding the end-effector's position in the world frame is exactly the chaining problem from above, applied once per joint:
-
-$$
-T^W_{ee} = T^W_1 \cdot T^1_2 \cdot T^2_3 \cdots T^{n-1}_{ee}
-$$
-
-Each $T^{i-1}_i$ only changes as its joint rotates; the rest of the chain stays fixed. Multiplying them all together converts a point measured at the end-effector directly into the world frame — this is what's known as **forward kinematics**.

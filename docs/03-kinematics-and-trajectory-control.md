@@ -1,6 +1,16 @@
-# Part III: Differential Kinematics and Trajectory Control
+# Part III: Kinematics and Trajectory Control
 
-Once we know where the robot is, we use control algorithms to move it to a goal. This is treated as an optimization problem: we want to minimize the distance error.
+Given a robot's joint angles, where does it end up? And once we know where it is, how do we drive it to a goal? This chapter covers both: **forward kinematics** computes a robot's pose from its joints, and **differential kinematics** (Jacobians) drives control toward a target, treated as an optimization problem where we minimize the distance error.
+
+## Forward Kinematics
+
+A robot arm is a chain of rigid links connected by joints, and each joint contributes its own small transformation: a rotation by the joint's current angle, followed by a fixed translation along the link to the next joint. Finding the end-effector's position in the world frame is exactly the frame-chaining problem from spatial representation, applied once per joint:
+
+$$
+T^W_{ee} = T^W_1 \cdot T^1_2 \cdot T^2_3 \cdots T^{n-1}_{ee}
+$$
+
+Each $T^{i-1}_i$ only changes as its joint rotates; the rest of the chain stays fixed. Multiplying them all together converts a point measured at the end-effector directly into the world frame — this is what's known as **forward kinematics**.
 
 ## Gradient Descent
 Gradient descent is an algorithm used to find the minimum of a function. By continuously moving in the direction opposite to the mathematical slope, the robot "descends" the error curve until the error reaches zero.

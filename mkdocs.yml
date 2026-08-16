@@ -34,5 +34,5 @@ extra_javascript:
 nav:
   - Introduction: index.md
   - Foundations of Robotic Control: 01-foundations-of-robotic-control.md
-  - Kinematics and Spatial Representation: 02-kinematics-and-spatial-representation.md
-  - Differential Kinematics and Trajectory Control: 03-differential-kinematics-and-trajectory-control.md
+  - Spatial Representation: 02-spatial-representation.md
+  - Kinematics and Trajectory Control: 03-kinematics-and-trajectory-control.md
