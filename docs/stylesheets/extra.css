@@ -1,0 +1,25 @@
+/* 1. Make body text feel like a high-end printed book */
+.md-typeset {
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+/* 2. Make headers stand out with a clean sans-serif look */
+.md-typeset h1, 
+.md-typeset h2, 
+.md-typeset h3 {
+    font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+    color: #2c3e50; 
+    font-weight: 600;
+}
+
+/* 3. Deep Premium Navy for the top bar (overrides default primary) */
+:root {
+    --md-primary-fg-color: #1a1a2e;
+}
+
+/* 4. Soften images with a slight shadow */
+.md-typeset img {
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
