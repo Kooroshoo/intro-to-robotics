@@ -76,7 +76,7 @@
   <line x1="430" y1="172" x2="526" y2="260" stroke="#0d9488" stroke-width="1.8" stroke-dasharray="4,4" marker-end="url(#chainArrowTeal)"/>
   <text x="455" y="227" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0d9488">Q_C</text>
 
-  <g transform="translate(526, 267)">
+  <g transform="translate(535, 268)">
     <circle cx="0" cy="0" r="6" fill="#0d9488"/>
     <text x="12" y="4" font-family="sans-serif" font-size="13" font-weight="bold" fill="#0d9488">Target Point</text>
   </g>
