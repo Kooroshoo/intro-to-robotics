@@ -5,7 +5,7 @@ Once we know where the robot is, we use control algorithms to move it to a goal.
 ## Gradient Descent
 Gradient descent is an algorithm used to find the minimum of a function. By continuously moving in the direction opposite to the mathematical slope, the robot "descends" the error curve until the error reaches zero.
 
-![Gradient descent applied to an error function](assets/image_bc5e7c.png)
+![Gradient descent applied to an error function](https://placehold.co/800x400?text=Gradient+Descent+Graph)
 
 ## The Jacobian Matrix
 In multi-degree-of-freedom systems, the simple 1D derivative is replaced by the **Jacobian Matrix** ($J$), which contains all the partial derivatives of the robot's kinematics. 
@@ -24,7 +24,7 @@ For a 2D differential drive robot, the Jacobian is a simple, static matrix. Beca
 
 As shown below, the matrix math collapses into two simple linear equations for the left and right wheels, creating a basic Proportional (P) Controller:
 
-![Algebraic simplification of the Jacobian inverse](assets/image_bc5e41.png)
+![Algebraic simplification of the Jacobian inverse](https://placehold.co/800x400?text=Gradient+Descent+Graph)
 
 ### Python Code Example
 Instead of calculating complex matrices in our `while` loop, our simplified Python code looks like this:
