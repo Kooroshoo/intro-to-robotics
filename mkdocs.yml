@@ -1,0 +1,14 @@
+site_name: Robotics Control Theory
+site_description: A mathematical guide to robot kinematics and control.
+
+theme:
+  name: material
+  features:
+    - navigation.sections # Groups chapters beautifully in the sidebar
+    - navigation.top      # Adds a "back to top" button
+
+# This builds your Table of Contents in the sidebar
+nav:
+  - Introduction: index.md
+  - Spatial Representation: 02-spatial-representation.md
+  - 3D Transformations: 03-3d-transformations.md
