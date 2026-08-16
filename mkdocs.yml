@@ -24,6 +24,7 @@ theme:
 
 # This turns on the math engine for your transformation matrices
 markdown_extensions:
+  - md_in_html
   - pymdownx.arithmatex:
       generic: true
 

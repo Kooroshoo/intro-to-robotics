@@ -4,7 +4,9 @@
 
 To describe a robot's position in space, we must account for both its **position** (translation) and its **orientation** (rotation). This position and rotation are always defined relative to a world coordinate frame. This representation is known as **Cartesian space**.
 
+<p markdown="1" style="text-align:center;">
 ![Frame Transformation](assets/images/frame_transform.svg)
+</p>
 
 ## Describing a Position
 
@@ -32,7 +34,9 @@ Here, $R$ represents the robot's rotation. When the robot's orientation matches 
 
 $R$ can also be built directly from the two frames' axes, without knowing the rotation angle beforehand. Each entry is the dot product between an axis of the robot frame and an axis of the world frame:
 
+<p markdown="1" style="text-align:center;">
 ![Rotation matrix from axis dot products](assets/images/rotation_dot_product.svg)
+</p>
 
 $$
 \begin{pmatrix}x\\y\\z\end{pmatrix}_{world} = \begin{pmatrix}\vec x_R\cdot\vec x_W & \vec y_R\cdot\vec x_W & \vec z_R\cdot\vec x_W \\ \vec x_R\cdot\vec y_W & \vec y_R\cdot\vec y_W & \vec z_R\cdot\vec y_W \\ \vec x_R\cdot\vec z_W & \vec y_R\cdot\vec z_W & \vec z_R\cdot\vec z_W\end{pmatrix} \cdot \begin{pmatrix}x\\y\\z\end{pmatrix}_{robot}
@@ -60,7 +64,9 @@ $$
 
 A point is often measured with respect to the robot's frame, but we need its position in the world frame instead.
 
+<p markdown="1" style="text-align:center;">
 ![Frame Transformation with a Target Point](assets/images/frame_transform_target.svg)
+</p>
 
 $$
 Q_{world} = R \cdot Q_{robot} + P
@@ -91,11 +97,13 @@ $$
 \begin{bmatrix}q_x\\q_y\\1\end{bmatrix}_{world} = \begin{bmatrix}\cos\alpha & -\sin\alpha & p_x \\ \sin\alpha & \cos\alpha & p_y \\ 0 & 0 & 1\end{bmatrix}\begin{bmatrix}q_x\\q_y\\1\end{bmatrix}_{robot}
 $$
 
-### 3D Transformation Matrix
+### 3D Case
 
 Robots that also move or rotate vertically (drones, arms, legged robots) need a third axis, $Z$. The same idea scales up to a $4 \times 4$ matrix:
 
+<p markdown="1" style="text-align:center;">
 ![Frame Transformation in 3D](assets/images/frame_transform_3d.svg)
+</p>
 
 $$
 T^W_R =
@@ -111,8 +119,6 @@ r_{31} & r_{32} & r_{33} & p_z \\
 0 & 0 & 0 & 1
 \end{bmatrix}
 $$
-
-Each column of $R$ is one of the robot frame's basis vectors expressed in world coordinates, and $P$ is the translation between the two origins. The same rule as before applies: append a $1$ to a point and multiply by $T$ to move it between frames.
 
 For a robot that only yaws (rotates around $Z$), the abstract $r_{ij}$ entries fill in with the same $\cos\alpha / \sin\alpha$ terms as the 2D case, leaving $Z$ untouched:
 
@@ -144,7 +150,9 @@ $$
 T^A_C = T^A_B \cdot T^B_C
 $$
 
+<p markdown="1" style="text-align:center;">
 ![Chaining transformations across three frames](assets/images/frame_chain.svg)
+</p>
 
 Once combined, the result behaves exactly like any other transformation matrix — a point measured in frame $\{C\}$ is converted all the way into frame $\{A\}$ in one multiplication:
 
