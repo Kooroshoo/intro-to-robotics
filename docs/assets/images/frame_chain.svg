@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 380" width="480" height="294">
+  <defs>
+    <marker id="chainArrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#333"/>
+    </marker>
+    <marker id="chainArrowGray" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748b"/>
+    </marker>
+    <marker id="chainArrowRed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626"/>
+    </marker>
+    <marker id="chainArrowBlue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <!-- A to B -->
+  <line x1="100" y1="270" x2="330" y2="170" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#chainArrow)"/>
+  <text x="185" y="207" font-family="sans-serif" font-size="13" font-weight="bold" fill="#64748b">T_AB</text>
+
+  <!-- B to C -->
+  <line x1="330" y1="170" x2="540" y2="140" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#chainArrow)"/>
+  <text x="405" y="142" font-family="sans-serif" font-size="13" font-weight="bold" fill="#64748b">T_BC</text>
+
+  <!-- Frame A (World) -->
+  <g transform="translate(100, 270)">
+    <line x1="0" y1="0" x2="0" y2="-114" stroke="#333" stroke-width="2" marker-end="url(#chainArrow)"/>
+    <text x="-8" y="-122" font-family="sans-serif" font-size="13" font-weight="bold" fill="#333" text-anchor="middle">Z_A</text>
+
+    <line x1="0" y1="0" x2="98" y2="45" stroke="#dc2626" stroke-width="2" marker-end="url(#chainArrowRed)"/>
+    <text x="108" y="56" font-family="sans-serif" font-size="13" font-weight="bold" fill="#dc2626">X_A</text>
+
+    <line x1="0" y1="0" x2="-98" y2="45" stroke="#2563eb" stroke-width="2" marker-end="url(#chainArrowBlue)"/>
+    <text x="-108" y="56" font-family="sans-serif" font-size="13" font-weight="bold" fill="#2563eb" text-anchor="end">Y_A</text>
+
+    <circle cx="0" cy="0" r="4" fill="#333"/>
+    <text x="-20" y="34" font-family="sans-serif" font-size="12" fill="#64748b">{A} World</text>
+  </g>
+
+  <!-- Frame B (Robot) -->
+  <g transform="translate(330, 170) rotate(-20)">
+    <line x1="0" y1="0" x2="0" y2="-82" stroke="#333" stroke-width="2" marker-end="url(#chainArrow)"/>
+    <text x="-8" y="-90" font-family="sans-serif" font-size="13" font-weight="bold" fill="#333" text-anchor="middle">Z_B</text>
+
+    <line x1="0" y1="0" x2="70" y2="33" stroke="#dc2626" stroke-width="2" marker-end="url(#chainArrowRed)"/>
+    <text x="80" y="43" font-family="sans-serif" font-size="13" font-weight="bold" fill="#dc2626">X_B</text>
+
+    <line x1="0" y1="0" x2="-70" y2="33" stroke="#2563eb" stroke-width="2" marker-end="url(#chainArrowBlue)"/>
+    <text x="-80" y="43" font-family="sans-serif" font-size="13" font-weight="bold" fill="#2563eb" text-anchor="end">Y_B</text>
+
+    <circle cx="0" cy="0" r="4" fill="#333"/>
+  </g>
+  <text x="345" y="155" font-family="sans-serif" font-size="12" font-weight="bold" fill="#334155">{B} Robot</text>
+
+  <!-- Frame C (Sensor) -->
+  <g transform="translate(540, 140) rotate(-15)">
+    <line x1="0" y1="0" x2="0" y2="-66" stroke="#333" stroke-width="2" marker-end="url(#chainArrow)"/>
+    <text x="-8" y="-73" font-family="sans-serif" font-size="13" font-weight="bold" fill="#333" text-anchor="middle">Z_C</text>
+
+    <line x1="0" y1="0" x2="56" y2="26" stroke="#dc2626" stroke-width="2" marker-end="url(#chainArrowRed)"/>
+    <text x="64" y="34" font-family="sans-serif" font-size="13" font-weight="bold" fill="#dc2626">X_C</text>
+
+    <line x1="0" y1="0" x2="-56" y2="26" stroke="#2563eb" stroke-width="2" marker-end="url(#chainArrowBlue)"/>
+    <text x="-64" y="34" font-family="sans-serif" font-size="13" font-weight="bold" fill="#2563eb" text-anchor="end">Y_C</text>
+
+    <circle cx="0" cy="0" r="4" fill="#333"/>
+  </g>
+  <text x="545" y="102" font-family="sans-serif" font-size="12" font-weight="bold" fill="#334155">{C} Sensor</text>
+
+  <!-- Composed transform, straight from A to C -->
+  <path d="M 100 282 Q 320 360 540 155" fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="6,5" marker-end="url(#chainArrowGray)"/>
+</svg>

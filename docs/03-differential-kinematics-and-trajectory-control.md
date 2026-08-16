@@ -1,4 +1,4 @@
-# Differential Kinematics and Control
+# Part III: Differential Kinematics and Trajectory Control
 
 Once we know where the robot is, we use control algorithms to move it to a goal. This is treated as an optimization problem: we want to minimize the distance error.
 
