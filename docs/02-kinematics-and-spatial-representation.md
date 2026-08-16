@@ -1,6 +1,6 @@
 # Part II: Kinematics and Spatial Representation
 
-## How Do We Know Where a Robot Is in a Scene?
+## Cartesian Space
 
 To describe a robot's position in space, we must account for both its **position** (translation) and its **orientation** (rotation). This position and rotation are always defined relative to a world coordinate frame. This representation is known as **Cartesian space**.
 
@@ -8,7 +8,7 @@ To describe a robot's position in space, we must account for both its **position
 ![Frame Transformation](assets/images/frame_transform.svg)
 </p>
 
-## Describing a Position
+## Describing Position and Rotation
 
 A robot's location can be described with three values, one along each of the $X$, $Y$, and $Z$ axes, measured relative to the world frame:
 
@@ -97,7 +97,7 @@ $$
 \begin{bmatrix}q_x\\q_y\\1\end{bmatrix}_{world} = \begin{bmatrix}\cos\alpha & -\sin\alpha & p_x \\ \sin\alpha & \cos\alpha & p_y \\ 0 & 0 & 1\end{bmatrix}\begin{bmatrix}q_x\\q_y\\1\end{bmatrix}_{robot}
 $$
 
-### 3D Case
+### Extending to 3D
 
 Robots that also move or rotate vertically (drones, arms, legged robots) need a third axis, $Z$. The same idea scales up to a $4 \times 4$ matrix:
 
@@ -113,14 +113,14 @@ R_{3 \times 3} & P_{3 \times 1} \\
 \end{bmatrix}
 =
 \begin{bmatrix}
-r_{11} & r_{12} & r_{13} & p_x \\
-r_{21} & r_{22} & r_{23} & p_y \\
-r_{31} & r_{32} & r_{33} & p_z \\
+\vec x_R\cdot\vec x_W & \vec y_R\cdot\vec x_W & \vec z_R\cdot\vec x_W & p_x \\
+\vec x_R\cdot\vec y_W & \vec y_R\cdot\vec y_W & \vec z_R\cdot\vec y_W & p_y \\
+\vec x_R\cdot\vec z_W & \vec y_R\cdot\vec z_W & \vec z_R\cdot\vec z_W & p_z \\
 0 & 0 & 0 & 1
 \end{bmatrix}
 $$
 
-For a robot that only yaws (rotates around $Z$), the abstract $r_{ij}$ entries fill in with the same $\cos\alpha / \sin\alpha$ terms as the 2D case, leaving $Z$ untouched:
+For a robot that only yaws (rotates around $Z$), those dot products fill in with the same $\cos\alpha / \sin\alpha$ terms as the 2D case, leaving $Z$ untouched:
 
 $$
 T^W_R =

@@ -34,10 +34,10 @@
       <text x="-8" y="-160" font-family="sans-serif" font-size="14" font-weight="bold" fill="#2563eb" text-anchor="middle">Y_R</text>
 
       <!-- Example point and its projections onto the robot's axes -->
-      <circle cx="65" cy="-105" r="5" fill="#d97706"/>
-      <text x="75" y="-108" font-family="sans-serif" font-size="12" font-weight="bold" fill="#d97706">P</text>
-      <line x1="65" y1="-105" x2="65" y2="0" stroke="#d97706" stroke-width="1" stroke-dasharray="3,3"/>
-      <line x1="65" y1="-105" x2="0" y2="-105" stroke="#d97706" stroke-width="1" stroke-dasharray="3,3"/>
+      <circle cx="90" cy="-105" r="5" fill="#d97706"/>
+      <text x="100" y="-108" font-family="sans-serif" font-size="12" font-weight="bold" fill="#d97706">P</text>
+      <line x1="90" y1="-105" x2="90" y2="0" stroke="#d97706" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="90" y1="-105" x2="0" y2="-105" stroke="#d97706" stroke-width="1" stroke-dasharray="3,3"/>
     </g>
 
     <!-- Z axis, pointing out of the page, shared by both frames -->
