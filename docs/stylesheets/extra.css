@@ -5,65 +5,21 @@
 }
 
 /* 2. Make headers stand out with a clean sans-serif look */
-.md-typeset h1,
-.md-typeset h2,
+.md-typeset h1, 
+.md-typeset h2, 
 .md-typeset h3 {
     font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+    color: #2c3e50; 
     font-weight: 600;
 }
 
-.md-typeset h1 {
-    letter-spacing: -0.01em;
-}
-
-/* 3. Deep Premium Navy/Indigo custom color, wired into Material's palette hooks */
-[data-md-color-primary="custom"] {
+/* 3. Deep Premium Navy for the top bar (overrides default primary) */
+:root {
     --md-primary-fg-color: #1a1a2e;
-    --md-primary-fg-color--light: #2c2c54;
-    --md-primary-fg-color--dark: #10101c;
-    --md-primary-bg-color: #ffffff;
 }
 
-[data-md-color-scheme="default"] {
-    --md-typeset-a-color: #1a1a2e;
-}
-
-[data-md-color-scheme="default"] .md-typeset h1,
-[data-md-color-scheme="default"] .md-typeset h2,
-[data-md-color-scheme="default"] .md-typeset h3 {
-    color: #2c3e50;
-}
-
-[data-md-color-scheme="slate"] .md-typeset h1,
-[data-md-color-scheme="slate"] .md-typeset h2,
-[data-md-color-scheme="slate"] .md-typeset h3 {
-    color: #dce1e8;
-}
-
-/* 4. Soften images with a slight shadow and consistent framing */
+/* 4. Soften images with a slight shadow */
 .md-typeset img {
-    display: block;
-    margin: 1.5rem auto;
-    max-width: 100%;
     border-radius: 6px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* 5. Tighter, book-like tables */
-.md-typeset table:not([class]) {
-    font-size: 0.9rem;
-    border-radius: 6px;
-    overflow: hidden;
-}
-
-/* 6. Give admonitions/callouts a touch more polish */
-.md-typeset .admonition,
-.md-typeset details {
-    border-radius: 6px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-}
-
-/* 7. Slightly wider reading measure for long-form chapters */
-.md-grid {
-    max-width: 62rem;
 }

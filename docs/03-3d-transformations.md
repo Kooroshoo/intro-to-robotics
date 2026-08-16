@@ -24,7 +24,7 @@ For a 2D differential drive robot, the Jacobian is a simple, static matrix. Beca
 
 As shown below, the matrix math collapses into two simple linear equations for the left and right wheels, creating a basic Proportional (P) Controller:
 
-![Algebraic simplification of the Jacobian inverse](https://placehold.co/800x400?text=Jacobian+Inverse)
+![Algebraic simplification of the Jacobian inverse](https://placehold.co/800x400?text=Gradient+Descent+Graph)
 
 !!! abstract "Theorem: The Jacobian Inverse"
     For a planar differential drive robot, the Jacobian matrix can be inverted algebraically because the system is non-holonomic but simplified into a 2D constraint space.
@@ -44,4 +44,3 @@ phir = min(alpha * p1 + rho * p2, 6.28)
 # Set motor velocities
 motor_left.setVelocity(phil)
 motor_right.setVelocity(phir)
-```

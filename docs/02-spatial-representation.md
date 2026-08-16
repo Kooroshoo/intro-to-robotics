@@ -14,7 +14,7 @@ $$^A_B T =  \begin{bmatrix} ^A_B R & ^A P \\ 0 \quad 0 \quad 0 & 1 \end{bmatrix}
 
 A point $^B Q$ in the robot's local frame is transformed to the world frame $^A Q$ by appending a $1$ to make it a $4 \times 1$ vector:
 
-![Combining rotation and translation into a homogeneous transform](https://placehold.co/800x400?text=Homogeneous+Transform)
+![Combining Rotation and Translation](https://placehold.co/800x400?text=Gradient+Descent+Graph)
 
 ---
 
@@ -23,8 +23,8 @@ For a wheeled robot moving on a flat surface, the $Z$ translation is constantly 
 
 $$^W_R T =  \begin{bmatrix} \cos\alpha & -\sin\alpha & \Delta x \\ \sin\alpha & \cos\alpha & \Delta y \\ 0 & 0 & 1 \end{bmatrix}$$
 
-![Simplification of the homogeneous transform for planar robots](https://placehold.co/800x400?text=2D+Transform+Matrix)
+![Simplification of transformation](https://placehold.co/800x400?text=Gradient+Descent+Graph)
 
 When using sensors like LiDAR on these planar robots, we often convert from Polar coordinates $(r, \phi)$ to Cartesian coordinates $(x, y)$ before applying the transformation matrix:
 
-![Converting LiDAR polar readings to Cartesian coordinates](https://placehold.co/800x400?text=Polar+to+Cartesian)
+![Polar to Cartesian coordinates](https://placehold.co/800x400?text=Gradient+Descent+Graph)
