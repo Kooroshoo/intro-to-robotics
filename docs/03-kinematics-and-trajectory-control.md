@@ -126,34 +126,7 @@ $$
 \dot\phi_l = \frac{2\dot x - \dot\omega_z d}{2r} \qquad \dot\phi_r = \frac{2\dot x + \dot\omega_z d}{2r}
 $$
 
-## Gradient Descent
-Gradient descent is an algorithm used to find the minimum of a function. By continuously moving in the direction opposite to the mathematical slope, the robot "descends" the error curve until the error reaches zero.
 
-![Gradient descent applied to an error function](https://placehold.co/800x400?text=Gradient+Descent+Graph)
+## Minimizing the Error Function of the Robot 
 
-## The Jacobian Matrix
-In multi-degree-of-freedom systems, the simple 1D derivative is replaced by the **Jacobian Matrix** ($J$), which contains all the partial derivatives of the robot's kinematics. 
-
-The control law for inverse kinematics to reduce an error $e$ becomes:
-
-$$\Delta q = -J^+ e$$
-
-*(Where $J^+$ is the pseudo-inverse of the Jacobian).*
-
-
-
-### Python Code Example
-Instead of calculating complex matrices in our `while` loop, our simplified Python code looks like this:
-
-```python
-# Calculate Errors
-rho = np.sqrt((xw - target_x)**2 + (yw - target_y)**2)
-alpha = np.arctan2(target_y - yw, target_x - xw) - theta
-
-# Algebraic simplification of the Jacobian Inverse
-phil = min(-alpha * p1 + rho * p2, 6.28)
-phir = min(alpha * p1 + rho * p2, 6.28)
-
-# Set motor velocities
-motor_left.setVelocity(phil)
-motor_right.setVelocity(phir)
+## Examples in Practice
