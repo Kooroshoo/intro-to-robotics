@@ -30,7 +30,7 @@
 
   <!-- Translation Vector P from {W} to {R} -->
   <line x1="90" y1="310" x2="320" y2="190" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#lidarArrow)"/>
-  <text x="170" y="235" font-family="sans-serif" font-size="13" font-weight="bold" fill="#64748b">P</text>
+  <text x="190" y="235" font-family="sans-serif" font-size="13" font-weight="bold" fill="#64748b">P</text>
 
   <g transform="translate(320, 190)">
     <!-- Differential Drive Robot / LiDAR, top-down view -->
@@ -38,7 +38,6 @@
     <rect x="-22" y="20" width="44" height="8" rx="3" fill="#334155"/>
     <circle cx="0" cy="0" r="24" fill="#f8fafc" stroke="#334155" stroke-width="2.5"/>
     <circle cx="0" cy="0" r="3" fill="#64748b"/>
-    <text x="-10" y="45" font-family="sans-serif" font-size="12" fill="#64748b">{R} Robot / LiDAR</text>
 
     <!-- Angle phi between X_R and the beam -->
     <path d="M 35 0 A 35 35 0 0 0 22.5 -26.8" fill="none" stroke="#334155" stroke-width="1.5"/>
