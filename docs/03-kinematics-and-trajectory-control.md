@@ -1,19 +1,36 @@
 # Part III: Kinematics and Trajectory Control
 
-Once we know where the robot is, we use control algorithms to move it to a goal. This is treated as an optimization problem: we want to minimize the distance error.
+Once we know where the robot is, we use control algorithms to move it to a goal. This is treated as an optimization problem: we want to minimize a error.
 
 
-Given a robot's joint angles, where does it end up? And once we know where it is, how do we drive it to a goal? This chapter covers both: **forward kinematics** computes a robot's pose from its joints, and **differential kinematics** (Jacobians) drives control toward a target, treated as an optimization problem where we minimize the distance error.
 
-## Forward Kinematics
+## Defining the Error
 
-A robot arm is a chain of rigid links connected by joints, and each joint contributes its own small transformation: a rotation by the joint's current angle, followed by a fixed translation along the link to the next joint. Finding the end-effector's position in the world frame is exactly the frame-chaining problem from spatial representation, applied once per joint:
+Before a robot can move toward a goal, it needs to know exactly how "wrong" its current pose is. The error between a robot's current pose $(x_r, y_r, \theta_r)$ and a goal pose $(x_g, y_g, \theta_g)$ is three-fold: a distance to cover, a direction to face to get there, and a final heading to end up at.
+
+<p markdown="1" style="text-align:center;">
+![The three components of a robot's pose error: distance, direction, and heading](assets/images/goal_error.svg)
+</p>
+
+**Distance** ($\rho$) is just the straight-line distance to the goal:
 
 $$
-T^W_{ee} = T^W_1 \cdot T^1_2 \cdot T^2_3 \cdots T^{n-1}_{ee}
+\rho = \sqrt{(x_g - x_r)^2 + (y_g - y_r)^2}
 $$
 
-Each $T^{i-1}_i$ only changes as its joint rotates; the rest of the chain stays fixed. Multiplying them all together converts a point measured at the end-effector directly into the world frame — this is what's known as **forward kinematics**.
+**Direction** ($\alpha$) is the angle the robot needs to turn to face the goal, measured relative to its current heading:
+
+$$
+\alpha = \text{atan2}(y_g - y_r,\ x_g - x_r) - \theta_r
+$$
+
+**Heading error** ($\theta_e$) is simply how far off the robot's final orientation is from the goal's:
+
+$$
+\theta_e = \theta_g - \theta_r
+$$
+
+These three values — $\rho$, $\alpha$, $\theta_e$ — are exactly what gradient descent below tries to drive to zero.
 
 ## Gradient Descent
 Gradient descent is an algorithm used to find the minimum of a function. By continuously moving in the direction opposite to the mathematical slope, the robot "descends" the error curve until the error reaches zero.
