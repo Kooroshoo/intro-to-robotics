@@ -52,10 +52,10 @@
     <text x="93" y="-45" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0d9488">r sin&#966;</text>
 
     <line x1="0" y1="0" x2="83.6" y2="0" stroke="#0d9488" stroke-width="1" stroke-dasharray="3,3"/>
-    <text x="41.8" y="17" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0d9488" text-anchor="middle">r cos&#966;</text>
+    <text x="56.8" y="17" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0d9488" text-anchor="middle">r cos&#966;</text>
 
     <!-- The wall hit by the beam -->
-    <rect x="83.6" y="-141.6" width="26" height="84" fill="#e2e8f0" stroke="#334155" stroke-width="2"/>
-    <text x="96.6" y="-155" font-family="sans-serif" font-size="13" font-weight="bold" fill="#334155" text-anchor="middle">Wall</text>
+    <rect x="88.6" y="-156.6" width="26" height="84" fill="#e2e8f0" stroke="#334155" stroke-width="2"/>
+    <text x="101.6" y="-170" font-family="sans-serif" font-size="13" font-weight="bold" fill="#334155" text-anchor="middle">Wall</text>
   </g>
 </svg>
