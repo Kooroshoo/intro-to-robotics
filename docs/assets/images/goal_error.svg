@@ -71,6 +71,6 @@
     <text x="42" y="10" font-family="sans-serif" font-size="14" font-weight="bold" fill="#334155" text-anchor="middle">&#952;_r</text>
 
     <path d="M -39.6 -39.6 A 56 56 0 0 1 52.6 19.2" fill="none" stroke="#333" stroke-width="1.5" stroke-dasharray="3,3"/>
-    <text x="38" y="-52" font-family="sans-serif" font-size="14" font-weight="bold" fill="#333">&#951;</text>
+    <text x="38" y="-52" font-family="sans-serif" font-size="14" font-weight="bold" fill="#333">&#951; = &#952;_g + &#952;_r</text>
   </g>
 </svg>
