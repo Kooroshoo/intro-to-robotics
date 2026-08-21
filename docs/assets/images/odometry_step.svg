@@ -41,12 +41,12 @@
   <!-- Delta omega_z: rotation about the robot's own center -->
   <g transform="translate(350, 110)">
     <path d="M -26.3 -9.6 A 28 28 0 0 1 26.3 -9.6" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
-    <text x="0" y="-40" font-family="sans-serif" font-size="13" font-weight="bold" fill="#2563eb" text-anchor="middle">&#916;&#969;_z = (r&#981;_r - r&#981;_l)/d</text>
+    <text x="0" y="-40" font-family="sans-serif" font-size="13" font-weight="bold" fill="#2563eb" text-anchor="middle">&#916;&#969;_z = (r&#916;&#981;_r - r&#916;&#981;_l)/d</text>
   </g>
 
   <!-- The step Delta-x, taken along X_R only (drawn in the robot's translated but unrotated group) -->
   <g transform="translate(350, 130)">
     <line x1="0" y1="0" x2="81.6" y2="-38" stroke="#d97706" stroke-width="2.5" marker-end="url(#arrow-orange)"/>
-    <text x="95" y="-38" font-family="sans-serif" font-size="13" font-weight="bold" fill="#d97706">&#916;x = (r&#981;_l + r&#981;_r)/2</text>
+    <text x="95" y="-38" font-family="sans-serif" font-size="13" font-weight="bold" fill="#d97706">&#916;x = (r&#916;&#981;_l + r&#916;&#981;_r)/2</text>
   </g>
 </svg>

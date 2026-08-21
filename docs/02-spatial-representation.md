@@ -170,28 +170,31 @@ Odometry is the process of estimating a robot's position from its own movement. 
 ![A differential-drive robot's forward step and rotation](assets/images/odometry_step.svg)
 </p>
 
-If we know the wheel radius $r$ and how much each wheel turned, $\phi_l$ and $\phi_r$, we can compute how far the robot moved. Each wheel travels its own distance, $r\phi_l$ and $r\phi_r$, and the robot's center (midway between them) moves by their average:
+If we know the wheel radius $r$ and how much each wheel turned this step, $\Delta\phi_l$ and $\Delta\phi_r$, we can compute how far the robot moved. Each wheel travels its own distance, $r\Delta\phi_l$ and $r\Delta\phi_r$, and the robot's center (midway between them) moves by their average:
 
 $$
-\Delta x = \frac{r\phi_l + r\phi_r}{2}
+\Delta x = \frac{r\Delta\phi_l + r\Delta\phi_r}{2}
 $$
+
 
 The same goes for the rotation: if we also know how far apart the wheels are, $d$, then:
 
 $$
-\Delta\omega_z = \frac{r\phi_r - r\phi_l}{d}
+\Delta\omega_z = \frac{r\Delta\phi_r - r\Delta\phi_l}{d}
 $$
+
+*(These equations only hold for a small $\Delta$ — they're a linear approximation of the robot's motion over one short timestep.)*
 
 The step only happens along $X_R$, so it's just the point $(\Delta x, 0)$ in the robot frame. Plugging it into the transformation matrix we already derived — using the robot's *current* position $(x_w, y_w)$ as the translation — directly gives its new position in the world frame:
 
 $$
-\begin{bmatrix}x_w'\\y_w'\\1\end{bmatrix} = \begin{bmatrix}\cos\alpha & -\sin\alpha & x_w\\ \sin\alpha & \cos\alpha & y_w\\ 0 & 0 & 1\end{bmatrix}\begin{bmatrix}\Delta x\\0\\1\end{bmatrix}
+\begin{bmatrix}x_w\\y_w\\1\end{bmatrix} = \begin{bmatrix}\cos\alpha & -\sin\alpha & x_w\\ \sin\alpha & \cos\alpha & y_w\\ 0 & 0 & 1\end{bmatrix}\begin{bmatrix}\Delta x\\0\\1\end{bmatrix}
 $$
 
 Multiplying that out gives the update rule directly:
 
 $$
-x_w' = x_w + \Delta x\cos\alpha \qquad y_w' = y_w + \Delta x\sin\alpha
+x_w = x_w + \Delta x\cos\alpha \qquad y_w = y_w + \Delta x\sin\alpha \qquad \alpha = \alpha + \Delta\omega_z
 $$
 
 Code:
