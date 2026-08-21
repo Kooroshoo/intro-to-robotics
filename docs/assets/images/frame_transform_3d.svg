@@ -18,7 +18,7 @@
 
   <!-- Translation Vector P from {W} to {R} -->
   <line x1="120" y1="248" x2="368" y2="124" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow3d)"/>
-  <text x="212" y="178" font-family="sans-serif" font-size="13" font-weight="bold" fill="#64748b">P (Translation)</text>
+  <text x="212" y="178" font-family="sans-serif" font-size="13" font-weight="bold" fill="#64748b">P</text>
 
   <!-- World Frame {W} -->
   <g transform="translate(120, 248)">

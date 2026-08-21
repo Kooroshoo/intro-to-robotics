@@ -162,13 +162,39 @@ $$
 
 ## Examples in Practice
 
-### Mobile Robot: Odometry
+### Odometry
 
-In practice, a robot rarely knows one large offset $P$ up front — it accumulates many small motions instead. At each timestep, it moves a small step $\Delta x$ forward along its own $X_R$ axis, then updates its heading by a small yaw rate:
+Odometry is the process of estimating a robot's position from its own movement. Picture a differential-drive robot like the one below: it has two degrees of freedom in actuator space — it can move forward or backward by $\Delta x$, and turn left or right by $\Delta\omega_z$.
+
+<p markdown="1" style="text-align:center;">
+![A differential-drive robot's forward step and rotation](assets/images/odometry_step.svg)
+</p>
+
+If we know the wheel radius $r$ and how much each wheel turned, $\phi_l$ and $\phi_r$, we can compute how far the robot moved. Each wheel travels its own distance, $r\phi_l$ and $r\phi_r$, and the robot's center (midway between them) moves by their average:
 
 $$
-\begin{pmatrix}\Delta x\\ \Delta y\end{pmatrix}_{world} = \begin{pmatrix}\cos\alpha & -\sin\alpha\\ \sin\alpha & \cos\alpha\end{pmatrix}\begin{pmatrix}\Delta x\\ 0\end{pmatrix}_{robot}
+\Delta x = \frac{r\phi_l + r\phi_r}{2}
 $$
+
+The same goes for the rotation: if we also know how far apart the wheels are, $d$, then:
+
+$$
+\Delta\omega_z = \frac{r\phi_r - r\phi_l}{d}
+$$
+
+The step only happens along $X_R$, so it's just the point $(\Delta x, 0)$ in the robot frame. Plugging it into the transformation matrix we already derived — using the robot's *current* position $(x_w, y_w)$ as the translation — directly gives its new position in the world frame:
+
+$$
+\begin{bmatrix}x_w'\\y_w'\\1\end{bmatrix} = \begin{bmatrix}\cos\alpha & -\sin\alpha & x_w\\ \sin\alpha & \cos\alpha & y_w\\ 0 & 0 & 1\end{bmatrix}\begin{bmatrix}\Delta x\\0\\1\end{bmatrix}
+$$
+
+Multiplying that out gives the update rule directly:
+
+$$
+x_w' = x_w + \Delta x\cos\alpha \qquad y_w' = y_w + \Delta x\sin\alpha
+$$
+
+Code:
 
 ```python
 xw = xw + np.cos(alpha) * deltaX
@@ -176,4 +202,38 @@ yw = yw + np.sin(alpha) * deltaX
 alpha = alpha + deltaOmegaZ
 ```
 
-This is the rotation-only case from before ($Q_{world} = R \cdot Q_{robot}$), applied to a small step instead of a fixed point. The running estimate $(x_w, y_w)$ plays the role of the accumulated translation $P$: every step rotates the local motion into world coordinates and adds it to that running total, while $\alpha$ keeps track of the robot's current heading.
+### Laser Scanners
+
+A laser scanner (LiDAR) doesn't report Cartesian coordinates — for each beam, it reports a **distance** $r$ and an **angle** $\phi$, measured relative to the robot's own $X_R$ axis. Say one beam travels a distance $r$ at angle $\phi$ before hitting a wall:
+
+<p markdown="1" style="text-align:center;">
+![A laser scanner beam hitting a wall, decomposed into the robot frame's axes](assets/images/lidar_polar.svg)
+</p>
+
+$r$ is the hypotenuse of a right triangle formed with the robot's own axes, so simple trigonometry gives the hit point's coordinates in the robot frame — exactly the two dashed projections shown above:
+
+$$
+x_{robot} = r\cos\phi \qquad y_{robot} = r\sin\phi
+$$
+
+That point is still measured in the robot frame, so it goes through the same transformation as any other point to land in the world frame. A real scanner does this for hundreds of beams at once, so $r$ and $\phi$ become arrays, and the transformation runs on the whole array in a single matrix multiplication:
+
+$$
+{}^{W}\vec X = \begin{bmatrix}\cos\alpha & -\sin\alpha & p_x \\ \sin\alpha & \cos\alpha & p_y \\ 0 & 0 & 1\end{bmatrix}\begin{pmatrix}\vec r\circ\cos\vec\phi\\ \vec r\circ\sin\vec\phi\\ 1\end{pmatrix} = T^W_R\begin{pmatrix}\vec r\circ\cos\vec\phi\\ \vec r\circ\sin\vec\phi\\ 1\end{pmatrix}
+$$
+
+$$
+\underset{(3\times360)}{{}^{W}\vec X} = \underset{(3\times3)}{T^W_R}\ \underset{(3\times360)}{\begin{pmatrix}\vec r\circ\cos\vec\phi\\ \vec r\circ\sin\vec\phi\\ 1\end{pmatrix}}
+$$
+
+Here $\circ$ is element-wise multiplication, $\vec r \circ \cos\vec\phi$ just means "multiply every beam's range by the cosine of its own angle." This is exactly one matrix multiplication in code:
+
+```python
+w_T_r = np.array([[np.cos(theta), -np.sin(theta), xw],
+                  [np.sin(theta), np.cos(theta), yw],
+                  [0, 0, 1]])
+
+X_i = np.array([ranges*np.cos(angles), ranges*np.sin(angles), np.ones((360,))])
+
+D = w_T_r @ X_i  # 3x360
+```
