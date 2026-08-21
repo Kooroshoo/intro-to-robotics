@@ -84,6 +84,26 @@ $$
 \theta_{ee} = \theta_1 + \theta_2
 $$
 
+## Holonomic vs. Non-Holonomic Motion
+
+The two forward kinematics above behave differently in an important way — whether a closed loop in joint space also closes the loop in the workspace:
+
+- **Arm (holonomic):** the end-effector's pose depends only on the current joint angles $\theta_1, \theta_2$. Move the joints along any path and return them to their starting angles, and the end-effector is guaranteed to be back at its starting pose too.
+
+- **Mobile robot (non-holonomic):** drive the wheels around and return them to their original rotation, and the robot won't generally be back at its starting position. The world pose depends on the path taken, not just the final wheel angles.
+
+This difference makes us calculate the error differently. The arm can move freely in any direction, so the error vector can simply be:
+
+$$
+e = \begin{bmatrix} x_g \\ y_g \\ \theta_g \end{bmatrix} - \begin{bmatrix} x_r \\ y_r \\ \theta_r \end{bmatrix}
+$$
+
+The mobile robot can't move that freely, so its error has to be expressed in the $\rho$, $\alpha$, $\theta_e$ terms defined earlier instead:
+
+$$
+e = \begin{bmatrix} \rho \\ \alpha \\ \theta_e \end{bmatrix}
+$$
+
 ## Gradient Descent
 Gradient descent is an algorithm used to find the minimum of a function. By continuously moving in the direction opposite to the mathematical slope, the robot "descends" the error curve until the error reaches zero.
 
