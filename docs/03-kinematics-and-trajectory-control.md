@@ -28,10 +28,12 @@ $$
 \Delta x = \frac{r\Delta\phi_l + r\Delta\phi_r}{2} \qquad \Delta\omega_z = \frac{r\Delta\phi_r - r\Delta\phi_l}{d}
 $$
 
+$r$ is the wheel radius and $d$ is the distance between the two wheels.
+
 Rotating it by the robot's current heading $\alpha$ and adding it to the previous pose gives its actual position in the world:
 
 $$
-x_w = x_w + \Delta x\cos\alpha \qquad y_w = y_w + \Delta x\sin\alpha \qquad \alpha = \alpha + \Delta\omega_z
+x_w \leftarrow x_w + \Delta x\cos\alpha \qquad y_w \leftarrow y_w + \Delta x\sin\alpha \qquad \alpha \leftarrow \alpha + \Delta\omega_z
 $$
 
 A robot arm's forward kinematics works the same way, just with a different actuator: each **joint angle** contributes a rotation followed by a fixed translation along the link to the next joint. Finding the end-effector's position is the same frame-chaining problem from spatial representation, applied once per joint:
@@ -230,6 +232,22 @@ $$
 \Delta q = -L\,J^+e
 $$
 
+How $\Delta q$ is applied depends on what the controller accepts:
+
+- **Position-controlled servo (arm joint)**:
+
+$$
+q \leftarrow q + \Delta q
+$$
+
+because $\Delta q$ is a position increment.
+
+- **Velocity-controlled motor (e.g. wheel)**: use a velocity command instead:
+
+$$
+\dot q = -L\,J^+e
+$$
+
 That gain $L$ is what determines whether the controller actually converges. Given a step input to track, the response can look very different depending on how it's tuned:
 
 <p markdown="1" style="text-align:center;">
@@ -282,23 +300,32 @@ $$
 
 Ignoring $\theta_e$ for simplicity, the error vector is just $e = [\rho, \alpha]^T$.
 
-Applying the general control law from earlier, $\Delta q = -LJ^+e$, with $q = [\phi_l, \phi_r]^T$ and the mobile robot's own inverse Jacobian:
+Applying the general control law from earlier for a velocity-controlled actuator, $\dot q = -LJ^+e$, with $q = [\phi_l, \phi_r]^T$ and the mobile robot's own inverse Jacobian:
 
 $$
-\begin{bmatrix} \Delta\phi_l \\ \Delta\phi_r \end{bmatrix} = -L\,\frac{1}{r}\begin{bmatrix} 1 & -d/2 \\ 1 & d/2 \end{bmatrix} \begin{bmatrix} \rho \\ \alpha \end{bmatrix}
+\begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix} = -L\,\frac{1}{r}\begin{bmatrix} 1 & -d/2 \\ 1 & d/2 \end{bmatrix} \begin{bmatrix} \rho \\ \alpha \end{bmatrix}
 $$
 
-Multiplying this out gives the wheel speeds directly:
+Multiplying this out:
 
 $$
-\dot\phi_l = \frac{-2L\rho + L\alpha d}{2r} \qquad \dot\phi_r = \frac{-2L\rho - L\alpha d}{2r}
+\dot\phi_l = \frac{-L\rho + L\alpha d/2}{r} \qquad \dot\phi_r = \frac{-L\rho - L\alpha d/2}{r}
 $$
 
-Renaming the constants $\frac{L}{r} \to p_2$ and $\frac{Ld}{2r} \to p_1$ (and flipping a sign so the result matches the intuitive direction — drive faster the farther the goal is, turn faster the more misaligned the heading is), this becomes the simple P-controller used in the code below:
+Let the gain be negative, $L = -k$ with $k > 0$. Substituting that it gives:
+
+$$
+\dot\phi_l = \frac{k\rho}{r} - \frac{k\alpha d}{2r} \qquad \dot\phi_r = \frac{k\rho}{r} + \frac{k\alpha d}{2r}
+$$
+
+Renaming $\frac{k}{r} \to p_2$ and $\frac{kd}{2r} \to p_1$ lines these up exactly with the code below: $\dot\phi_l$ and $\dot\phi_r$ are the wheel speeds sent straight to the motors.
 
 Code:
 
 ```python
+p1 = 3.14
+p2 = 6.28 * 2
+
 rho = np.sqrt((xw - target_x)**2 + (yw - target_y)**2)
 alpha = np.arctan2(target_y - yw, target_x - xw) - theta
 
@@ -328,10 +355,10 @@ $$
 \Delta q = -L\,J^+e
 $$
 
-**Final output** — just like the mobile robot's pose update, each joint angle simply gets nudged by its share of $\Delta q$ every iteration:
+**Final output** — the arm's servos take an absolute angle rather than a speed, so $\Delta q$ gets accumulated into each joint angle every iteration:
 
 $$
-\theta_1 = \theta_1 + \Delta\theta_1 \qquad \theta_2 = \theta_2 + \Delta\theta_2
+\theta_1 \leftarrow \theta_1 + \Delta\theta_1 \qquad \theta_2 \leftarrow \theta_2 + \Delta\theta_2
 $$
 
 Code:
