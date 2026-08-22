@@ -127,6 +127,69 @@ $$
 $$
 
 
-## Minimizing the Error Function of the Robot 
+## Minimizing Error
+
+At the beginning of this lecture, we defined a robot's error as the difference between its current pose and the goal pose it needs to reach. Driving the robot to its goal is really just minimizing this error function, and the technique we'll use to do it is **gradient descent**.
+
+Take the simplest possible error function, $y = x^2$: its minimum sits at $x=0$, and its derivative at any point tells us which way is downhill.
+
+<p markdown="1" style="text-align:center;">
+![The minimum of y = x^2 sits where the slope is zero](assets/images/gradient_descent_parabola.svg)
+</p>
+
+Stepping opposite that derivative, a little at a time, always walks you toward the minimum — no matter which side you started on. With more variables, this becomes stepping opposite the full gradient, sliding down toward the center of the error function's contours:
+
+<p markdown="1" style="text-align:center;">
+![Gradient descent converging toward the minimum of an error function](assets/images/gradient_descent_contour.svg)
+</p>
+
+This is the exact technique we'll use to build the robot's controller below: measure the error, step opposite its gradient, and repeat until it reaches zero.
+
+### Gradient Descent
+
+In discrete time, this stepping process becomes an update rule: at each timestep $k$, nudge $x$ opposite the derivative, scaled by a gain $L$ that controls how big each step is:
+
+$$
+x_{k+1} = x_k - L\,f'(x_k)
+$$
+
+### Typical Controller Behavior
+
+That gain $L$ is what determines whether the controller actually converges. Given a step input to track, the response can look very different depending on how it's tuned:
+
+<p markdown="1" style="text-align:center;">
+![Typical controller behaviors: stable, marginally stable, and unstable responses to a step input](assets/images/controller_behavior.svg)
+</p>
+
+- **Stable** — the error settles at zero, either smoothly or with some decaying oscillation on the way there.
+- **Marginally stable** — the error keeps oscillating around zero forever, never quite settling.
+- **Unstable** — the error grows without bound, either steadily or through ever-larger oscillations. A gain that's too large is a common cause of this.
+
+### For the Mobile Robot
+
+Let's apply this directly to the mobile robot. Its control inputs are $\dot x$ and $\dot\theta_r$, and its error components $\rho$, $\alpha$ from earlier are already given in polar coordinates. A convenient error function to minimize is the sum of their squares:
+
+$$
+e = \rho^2 + \alpha^2
+$$
+
+Following the gradient descent rule, each control input steps opposite the error's partial derivative with respect to its matching term:
+
+$$
+\dot x = -p_2\frac{\partial e}{\partial \rho} \qquad \dot\theta_r = -p_1\frac{\partial e}{\partial \alpha}
+$$
+
+Solving for the wheel speeds with the inverse differential kinematics from earlier:
+
+$$
+\dot\phi_l = \frac{2p_2\rho - p_1\alpha d}{2r} \qquad \dot\phi_r = \frac{2p_2\rho + p_1\alpha d}{2r}
+$$
+
+Compare this with the intuitive result: drive faster the farther the goal is, and turn faster the more misaligned the heading is. Absorbing the constants into $p_1$ and $p_2$, this collapses into the simple P-controller used in the code below:
+
+```
+leftwheel  = -p1 * alpha + p2 * rho
+rightwheel =  p1 * alpha + p2 * rho
+```
 
 ## Examples in Practice
