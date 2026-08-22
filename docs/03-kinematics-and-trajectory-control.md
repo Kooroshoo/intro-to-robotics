@@ -219,18 +219,17 @@ In discrete time, this stepping process becomes an update rule: at each timestep
 
 $$
 \begin{gathered}
-x_{k+1} = x_k - L\,f'(x_k) \qquad \Delta x = -L\,f'(x_k) \qquad x_{k+1} = x_k + \Delta x \\[8pt]
+x_{k+1} = x_k - L\,f'(x_k) \\[8pt]
 \dot x = \lim_{\Delta t \to 0}\frac{\Delta x}{\Delta t} = -L\,f'(x)
 \end{gathered}
 $$
 
-For multiple actuators $q$, using the Jacobian from earlier, $f'(x)$ becomes $J^+e$ — giving both a discrete and a continuous form of the controller:
+For multiple actuators $q$, using the Jacobian from earlier, $f'(x)$ becomes $J^+e$:
 
 $$
-\Delta q = -L\,J^+e \qquad q = q + \Delta q \qquad\qquad \dot q = -L\,J^+e
+\Delta q = -L\,J^+e
 $$
 
-Which form to use depends on how the actuator is actually commanded: a position stepped and updated each iteration uses the discrete form, while a velocity commanded continuously uses the second.
 
 That gain $L$ is what determines whether the controller actually converges. Given a step input to track, the response can look very different depending on how it's tuned:
 
