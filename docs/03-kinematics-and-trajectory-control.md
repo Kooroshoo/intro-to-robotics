@@ -126,6 +126,60 @@ $$
 \dot\phi_l = \frac{2\dot x - \dot\omega_z d}{2r} \qquad \dot\phi_r = \frac{2\dot x + \dot\omega_z d}{2r}
 $$
 
+## The Jacobian Matrix
+
+In multi-degree-of-freedom systems, the simple 1D derivative is replaced by the **Jacobian Matrix** ($J$), which contains all the partial derivatives of the robot's kinematics. It relates a vector of actuator velocities $\dot q$ to the resulting task-space velocity $\nu$:
+
+$$
+\nu = \begin{bmatrix} \dot x \\ \dot y \\ \dot z \\ \omega_x \\ \omega_y \\ \omega_z \end{bmatrix} = \begin{bmatrix} \frac{\partial x}{\partial q_1} & \cdots & \frac{\partial x}{\partial q_n} \\ \frac{\partial y}{\partial q_1} & \cdots & \frac{\partial y}{\partial q_n} \\ \vdots & & \vdots \\ \frac{\partial \omega_z}{\partial q_1} & \cdots & \frac{\partial \omega_z}{\partial q_n} \end{bmatrix} \begin{bmatrix} \dot q_1 \\ \vdots \\ \dot q_n \end{bmatrix} = J(q)\cdot\dot q
+$$
+
+### For the Mobile Robot
+
+The mobile robot's actuators are its two wheel velocities, $\dot q = [\dot\phi_l, \dot\phi_r]^T$. Writing out the partial derivatives gives:
+
+$$
+\begin{bmatrix} \dot x_R \\ \dot y_R \\ \dot\theta \end{bmatrix} = \begin{bmatrix} \frac{\partial x_R}{\partial \phi_l} & \frac{\partial x_R}{\partial \phi_r} \\ \frac{\partial y_R}{\partial \phi_l} & \frac{\partial y_R}{\partial \phi_r} \\ \frac{\partial \theta}{\partial \phi_l} & \frac{\partial \theta}{\partial \phi_r} \end{bmatrix} \begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix} = \begin{bmatrix} \frac{r}{2} & \frac{r}{2} \\ 0 & 0 \\ -\frac{r}{d} & \frac{r}{d} \end{bmatrix} \begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix}
+$$
+
+The middle row is zero — no combination of wheel velocities can move the robot along $y_R$ instantaneously. That's the differential-kinematics version of the non-holonomic constraint from earlier: dropping that always-zero row leaves exactly the $\dot x$, $\dot\omega_z$ relationship derived above.
+
+### Inverting the Jacobian
+
+To go the other way — from a desired task-space velocity to the actuator velocities that produce it — invert $J$. For a general $2\times2$ matrix:
+
+$$
+\begin{bmatrix} a & b \\ c & d \end{bmatrix}^{-1} = \frac{1}{ad-bc}\begin{bmatrix} d & -b \\ -c & a \end{bmatrix}
+$$
+
+Applying this to the mobile robot's Jacobian (dropping the always-zero $y_R$ row leaves a square, invertible $2\times2$ matrix):
+
+$$
+\begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix} = \begin{bmatrix} \frac{r}{2} & \frac{r}{2} \\ -\frac{r}{d} & \frac{r}{d} \end{bmatrix}^{-1} \begin{bmatrix} \dot x_R \\ \dot\theta_R \end{bmatrix} = \frac{1}{r}\begin{bmatrix} 1 & -d/2 \\ 1 & d/2 \end{bmatrix} \begin{bmatrix} \dot x_R \\ \dot\theta_R \end{bmatrix}
+$$
+
+This is the same result as the Inverse Differential Kinematics above — just reached by inverting the matrix directly instead of solving the two equations by hand.
+
+### Using the Jacobian for Gradient Descent
+
+The general control law for reducing an error $e$ with the Jacobian is:
+
+$$
+\Delta q = -J^+e
+$$
+
+For the mobile robot, that error is exactly $\rho$ and $\alpha$ from earlier. Plugging them into the inverse Jacobian above gives the wheel velocities directly, with no need to go through $\dot x_R$ and $\dot\theta_R$ at all:
+
+$$
+\begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix} = \frac{1}{r}\begin{bmatrix} 1 & -d/2 \\ 1 & d/2 \end{bmatrix} \begin{bmatrix} \rho \\ \alpha \end{bmatrix}
+$$
+
+Absorbing $r$ and $d$ into a pair of tunable gains $p_1$, $p_2$, this is exactly the same P-controller derived below in Gradient Descent — just arrived at directly from the Jacobian instead of taking partial derivatives of the error function:
+
+```
+leftwheel  = -p1 * alpha + p2 * rho
+rightwheel =  p1 * alpha + p2 * rho
+```
 
 ## Minimizing Error
 
@@ -191,5 +245,23 @@ Compare this with the intuitive result: drive faster the farther the goal is, an
 leftwheel  = -p1 * alpha + p2 * rho
 rightwheel =  p1 * alpha + p2 * rho
 ```
+
+## PID Control
+
+The controller derived above is a pure **Proportional (P)** controller — the control signal is proportional only to the current error. In general, a control signal can be made up of three terms:
+
+- **P** — proportional to the current error.
+- **I** — proportional to the integral of past errors.
+- **D** — proportional to the derivative of the error.
+
+<p markdown="1" style="text-align:center;">
+![PID control loop: proportional, integral, and derivative terms combine into the control signal](assets/images/pid_block_diagram.svg)
+</p>
+
+$$
+u(t) = K_p\,e(t) + K_i\int_0^t e(\tau)\,d\tau + K_d\,\frac{de(t)}{dt}
+$$
+
+In practice, the integral term is computed by summing up just the last $N$ error terms rather than the entire history, to prevent **wind-up** — a large accumulated error continuing to push the controller long after it's no longer relevant. The derivative term reacts to how fast the error is changing, which increases the speed of convergence.
 
 ## Examples in Practice
