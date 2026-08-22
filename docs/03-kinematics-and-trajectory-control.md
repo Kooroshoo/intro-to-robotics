@@ -224,12 +224,11 @@ x_{k+1} = x_k - L\,f'(x_k) \\[8pt]
 \end{gathered}
 $$
 
-For multiple actuators $q$, using the Jacobian from earlier, $f'(x)$ becomes $J^+e$:
+For multiple actuators $q$, using the Jacobian from earlier, $f'(x)$ becomes $J^+e$, giving us the general control law:
 
 $$
 \Delta q = -L\,J^+e
 $$
-
 
 That gain $L$ is what determines whether the controller actually converges. Given a step input to track, the response can look very different depending on how it's tuned:
 
