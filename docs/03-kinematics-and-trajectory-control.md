@@ -224,11 +224,13 @@ x_{k+1} = x_k - L\,f'(x_k) \qquad \Delta x = -L\,f'(x_k) \qquad x_{k+1} = x_k + 
 \end{gathered}
 $$
 
-For multiple actuators $q$, using the Jacobian from earlier, $f'(x)$ becomes $J^+e$ — giving the final formula for the controller:
+For multiple actuators $q$, using the Jacobian from earlier, $f'(x)$ becomes $J^+e$ — giving both a discrete and a continuous form of the controller:
 
 $$
-\Delta q = -L\,J^+e \qquad q = q + \Delta q
+\Delta q = -L\,J^+e \qquad q = q + \Delta q \qquad\qquad \dot q = -L\,J^+e
 $$
+
+Which form to use depends on how the actuator is actually commanded: a position stepped and updated each iteration uses the discrete form, while a velocity commanded continuously uses the second.
 
 That gain $L$ is what determines whether the controller actually converges. Given a step input to track, the response can look very different depending on how it's tuned:
 
@@ -273,28 +275,28 @@ For the mobile robot, that error breaks down into three components: a distance t
 **Distance** ($\rho$) is the straight-line distance to the goal, **direction** ($\alpha$) is the angle the robot needs to turn to face the goal relative to its current heading, and **heading error** ($\theta_e$) is how far off the robot's final orientation is from the goal's:
 
 $$
-\rho = \sqrt{(x_g - x_r)^2 + (y_g - y_r)^2} \qquad \alpha = \text{atan2}(y_g - y_r,\ x_g - x_r) - \theta_r \qquad \theta_e = \theta_g - \theta_r
+\rho = \sqrt{(x_g - x_r)^2 + (y_g - y_r)^2} \qquad \alpha = \text{atan2}(y_g - y_r,\ x_g - x_r) - \theta_r
 $$
 
-Its control inputs are $\dot x$ and $\dot\theta_r$, and $\rho$, $\alpha$ are already given in polar coordinates. A convenient error function to minimize is the sum of their squares:
-
 $$
-e = \rho^2 + \alpha^2
+\theta_e = \theta_g - \theta_r
 $$
 
-Following the gradient descent rule, each control input steps opposite the error's partial derivative with respect to its matching term:
+Ignoring $\theta_e$ for simplicity, the error vector is just $e = [\rho, \alpha]^T$.
+
+Applying the general control law from earlier, $\Delta q = -LJ^+e$, with $q = [\phi_l, \phi_r]^T$ and the mobile robot's own inverse Jacobian:
 
 $$
-\dot x = -p_2\frac{\partial e}{\partial \rho} \qquad \dot\theta_r = -p_1\frac{\partial e}{\partial \alpha}
+\begin{bmatrix} \Delta\phi_l \\ \Delta\phi_r \end{bmatrix} = -L\,\frac{1}{r}\begin{bmatrix} 1 & -d/2 \\ 1 & d/2 \end{bmatrix} \begin{bmatrix} \rho \\ \alpha \end{bmatrix}
 $$
 
-Solving for the wheel speeds with the inverse differential kinematics from earlier:
+Multiplying this out gives the wheel speeds directly:
 
 $$
-\dot\phi_l = \frac{2p_2\rho - p_1\alpha d}{2r} \qquad \dot\phi_r = \frac{2p_2\rho + p_1\alpha d}{2r}
+\dot\phi_l = \frac{-2L\rho + L\alpha d}{2r} \qquad \dot\phi_r = \frac{-2L\rho - L\alpha d}{2r}
 $$
 
-Compare this with the intuitive result: drive faster the farther the goal is, and turn faster the more misaligned the heading is. Absorbing the constants into $p_1$ and $p_2$, this collapses into the simple P-controller used in the code below:
+Renaming the constants $\frac{L}{r} \to p_2$ and $\frac{Ld}{2r} \to p_1$ (and flipping a sign so the result matches the intuitive direction — drive faster the farther the goal is, turn faster the more misaligned the heading is), this becomes the simple P-controller used in the code below:
 
 Code:
 
