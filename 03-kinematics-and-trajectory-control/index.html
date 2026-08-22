@@ -1,0 +1,1122 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A mathematical guide to robot kinematics and control.">
+      
+      
+      
+      
+        <link rel="prev" href="../02-spatial-representation/">
+      
+      
+        <link rel="next" href="../04-mapping-and-navigation/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Kinematics and Trajectory Control - Robotics Control Theory</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-iii-kinematics-and-trajectory-control" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Robotics Control Theory" class="md-header__button md-logo" aria-label="Robotics Control Theory" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Robotics Control Theory
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kinematics and Trajectory Control
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Robotics Control Theory" class="md-nav__button md-logo" aria-label="Robotics Control Theory" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Robotics Control Theory
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-introduction-to-robotic-systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to Robotic Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-spatial-representation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spatial Representation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kinematics and Trajectory Control
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kinematics and Trajectory Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#defining-the-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defining the Error
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#forward-kinematics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forward Kinematics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#holonomic-vs-non-holonomic-motion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Holonomic vs. Non-Holonomic Motion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inverse-kinematics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inverse Kinematics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#differential-kinematics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Differential Kinematics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Differential Kinematics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-jacobian-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Jacobian Matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inverting-the-jacobian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inverting the Jacobian
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#minimizing-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimizing Error
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Minimizing Error">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gradient-descent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gradient Descent
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pid-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PID Control
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples in Practice
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples in Practice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mobile-robot-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mobile Robot Controller
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#robot-arm-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Robot Arm Controller
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-mapping-and-navigation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mapping and Navigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-task-planning-and-execution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task Planning and Execution
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#defining-the-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defining the Error
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#forward-kinematics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forward Kinematics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#holonomic-vs-non-holonomic-motion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Holonomic vs. Non-Holonomic Motion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inverse-kinematics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inverse Kinematics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#differential-kinematics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Differential Kinematics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Differential Kinematics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-jacobian-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Jacobian Matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inverting-the-jacobian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inverting the Jacobian
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#minimizing-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimizing Error
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Minimizing Error">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gradient-descent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gradient Descent
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pid-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PID Control
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples in Practice
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples in Practice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mobile-robot-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mobile Robot Controller
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#robot-arm-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Robot Arm Controller
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="part-iii-kinematics-and-trajectory-control">Part III: Kinematics and Trajectory Control</h1>
+<p>Once we know where the robot is, we use control algorithms to move it to a goal. This is treated as an optimization problem: we want to minimize a error.</p>
+<h2 id="defining-the-error">Defining the Error</h2>
+<p>Before a robot can move toward a goal, it needs to know exactly how "wrong" its current pose is. The <strong>error</strong> is just the difference between the robot's current pose and its goal pose, and driving a robot to its goal really just means minimizing this error.</p>
+<p style="text-align:center;">
+<img alt="The gap between a robot's current pose and its goal pose" src="../assets/images/goal_error_simple.svg" />
+</p>
+<p>Before we can actually reduce this error, we first need a few building blocks: <strong>forward kinematics</strong> (how actuator values map to pose), <strong>holonomy</strong> (what kinds of motion a robot can and can't do), <strong>inverse kinematics</strong> (going the other way, from a target pose to actuator values), and <strong>differential kinematics</strong> (the same relationships, one derivative up, in velocity).</p>
+<h2 id="forward-kinematics">Forward Kinematics</h2>
+<p><strong>Forward kinematics</strong> is where a robot ends up, given its actuator values. Odometry, from the previous lecture, is a special case of this.</p>
+<p>A two wheeled mobile robot only has 2 of 6 possible degrees of freedom — translation along <span class="arithmatex">\(X_R\)</span> and rotation around <span class="arithmatex">\(Z\)</span>:</p>
+<p style="text-align:center;">
+<img alt="A mobile robot's two degrees of freedom: forward step and rotation" src="../assets/images/odometry_step.svg" />
+</p>
+<div class="arithmatex">\[
+\Delta x = \frac{r\Delta\phi_l + r\Delta\phi_r}{2} \qquad \Delta\omega_z = \frac{r\Delta\phi_r - r\Delta\phi_l}{d}
+\]</div>
+<p><span class="arithmatex">\(r\)</span> is the wheel radius and <span class="arithmatex">\(d\)</span> is the distance between the two wheels.</p>
+<p>Rotating it by the robot's current heading <span class="arithmatex">\(\alpha\)</span> and adding it to the previous pose gives its actual position in the world:</p>
+<div class="arithmatex">\[
+x_w \leftarrow x_w + \Delta x\cos\alpha \qquad y_w \leftarrow y_w + \Delta x\sin\alpha \qquad \alpha \leftarrow \alpha + \Delta\omega_z
+\]</div>
+<p>A robot arm's forward kinematics works the same way, just with a different actuator: each <strong>joint angle</strong> contributes a rotation followed by a fixed translation along the link to the next joint. Finding the end-effector's position is the same frame-chaining problem from spatial representation, applied once per joint:</p>
+<p style="text-align:center;">
+<img alt="A 2-link robot arm, with each joint contributing its own transformation to the chain" src="../assets/images/arm_forward_kinematics.svg" />
+</p>
+<div class="arithmatex">\[
+T^W_{ee} = T^W_1 \cdot T^1_2 \cdot T^2_3 \cdots T^{n-1}_{ee}
+\]</div>
+<p>Each <span class="arithmatex">\(T^{i-1}_i\)</span> is a rotation by the joint's own angle <span class="arithmatex">\(\theta_i\)</span>, then a fixed translation of length <span class="arithmatex">\(L_i\)</span> (the link) along the rotated axis. For the 2-link arm:</p>
+<div class="arithmatex">\[
+T^{i-1}_i = \begin{bmatrix} \cos\theta_i &amp; -\sin\theta_i &amp; L_i\cos\theta_i \\ \sin\theta_i &amp; \cos\theta_i &amp; L_i\sin\theta_i \\ 0 &amp; 0 &amp; 1 \end{bmatrix}
+\]</div>
+<p>Only <span class="arithmatex">\(\theta_i\)</span> changes as the joint rotates, <span class="arithmatex">\(L_i\)</span> is fixed by the arm's geometry. Multiplying the two matrices out:</p>
+<div class="arithmatex">\[
+T^0_2 = T^0_1 \cdot T^1_2 = \begin{bmatrix} \cos(\theta_1+\theta_2) &amp; -\sin(\theta_1+\theta_2) &amp; L_1\cos\theta_1 + L_2\cos(\theta_1+\theta_2) \\ \sin(\theta_1+\theta_2) &amp; \cos(\theta_1+\theta_2) &amp; L_1\sin\theta_1 + L_2\sin(\theta_1+\theta_2) \\ 0 &amp; 0 &amp; 1 \end{bmatrix}
+\]</div>
+<p>The rotation part collapsed to <span class="arithmatex">\(\theta_1+\theta_2\)</span> because chaining two rotations just adds their angles. Reading the translation column straight off this matrix gives the end-effector's pose directly in the world frame:</p>
+<div class="arithmatex">\[
+x_{ee} = L_1\cos\theta_1 + L_2\cos(\theta_1+\theta_2) \qquad y_{ee} = L_1\sin\theta_1 + L_2\sin(\theta_1+\theta_2)
+\]</div>
+<div class="arithmatex">\[
+\theta_{ee} = \theta_1 + \theta_2
+\]</div>
+<h2 id="holonomic-vs-non-holonomic-motion">Holonomic vs. Non-Holonomic Motion</h2>
+<p>The two forward kinematics above behave differently in an important way, whether a closed loop in joint space also closes the loop in the workspace:</p>
+<ul>
+<li>
+<p><strong>Arm (holonomic):</strong> the end-effector's pose depends only on the current joint angles <span class="arithmatex">\(\theta_1, \theta_2\)</span>. Move the joints along any path and return them to their starting angles, and the end-effector is guaranteed to be back at its starting pose too.</p>
+</li>
+<li>
+<p><strong>Mobile robot (non-holonomic):</strong> drive the wheels around and return them to their original rotation, and the robot won't generally be back at its starting position. The world pose depends on the path taken, not just the final wheel angles.</p>
+</li>
+</ul>
+<p>This difference makes us calculate the error differently. The arm can move freely in any direction, so the error vector can simply be:</p>
+<div class="arithmatex">\[
+e = \begin{bmatrix} x_g \\ y_g \\ \theta_g \end{bmatrix} - \begin{bmatrix} x_r \\ y_r \\ \theta_r \end{bmatrix}
+\]</div>
+<p>The mobile robot can't move that freely, so its error instead has to be expressed in polar terms — a distance <span class="arithmatex">\(\rho\)</span>, a direction <span class="arithmatex">\(\alpha\)</span>, and a heading error <span class="arithmatex">\(\theta_e\)</span> — which we'll define properly once we get to building its controller:</p>
+<div class="arithmatex">\[
+e = \begin{bmatrix} \rho \\ \alpha \\ \theta_e \end{bmatrix}
+\]</div>
+<h2 id="inverse-kinematics">Inverse Kinematics</h2>
+<p>Forward kinematics answers "given these actuator values, where does the end-effector end up?" <strong>Inverse kinematics</strong> asks the opposite question: given a target pose, what actuator values get us there?</p>
+<p>The mobile robot doesn't get a closed form: it's non-holonomic, so there's no direct mapping from a target pose to wheel angles — the path taken matters, not just the endpoint. That's why the rest of this chapter builds its control at the velocity level instead.</p>
+<p>The arm, being holonomic, doesn't have that problem: given a target end-effector position <span class="arithmatex">\((x_{ee}, y_{ee})\)</span>, the base-to-target distance is:</p>
+<div class="arithmatex">\[
+r = \sqrt{x_{ee}^2 + y_{ee}^2}
+\]</div>
+<p><span class="arithmatex">\(r\)</span>, <span class="arithmatex">\(L_1\)</span>, and <span class="arithmatex">\(L_2\)</span> form a triangle, so the law of cosines gives the elbow angle directly:</p>
+<div class="arithmatex">\[
+\theta_2 = \pm\cos^{-1}\left(\frac{r^2 - L_1^2 - L_2^2}{2L_1L_2}\right)
+\]</div>
+<p style="text-align:center;">
+<img alt="Two valid elbow configurations reaching the same end-effector target" src="../assets/images/arm_inverse_kinematics.svg" />
+</p>
+<p>The <span class="arithmatex">\(\pm\)</span> isn't a rounding artifact, it's two genuinely different, equally valid configurations reaching the same point: elbow up or elbow down. Once <span class="arithmatex">\(\theta_2\)</span> is picked, <span class="arithmatex">\(\theta_1\)</span> follows directly:</p>
+<div class="arithmatex">\[
+\theta_1 = \text{atan2}(y_{ee}, x_{ee}) - \text{atan2}(L_2\sin\theta_2,\ L_1 + L_2\cos\theta_2)
+\]</div>
+<p>This closed-form solution only works for exactly 2 joints. Add a third and the arm becomes redundant — infinitely many configurations reach the same target, so there's no single triangle to solve. Therefore, we also need a velocity-based solution.</p>
+<h2 id="differential-kinematics">Differential Kinematics</h2>
+<p>Forward kinematics relates actuator values to pose. <strong>Differential kinematics</strong> looks at the same relationship one derivative up: instead of position, we're relating <em>velocities</em>.</p>
+<p>Applying this to the mobile robot: replace each incremental step (<span class="arithmatex">\(\Delta x\)</span>, <span class="arithmatex">\(\Delta\omega_z\)</span>, <span class="arithmatex">\(\Delta\phi_l\)</span>, <span class="arithmatex">\(\Delta\phi_r\)</span>) with its derivative, and the odometry formulas from earlier become a velocity relationship instead:</p>
+<div class="arithmatex">\[
+\dot x = \frac{r\dot\phi_l + r\dot\phi_r}{2} \qquad \dot\omega_z = \frac{r\dot\phi_r - r\dot\phi_l}{d}
+\]</div>
+<p><span class="arithmatex">\(x\)</span> is distance, <span class="arithmatex">\(\dot x\)</span> is speed (You'll also see this written as <span class="arithmatex">\(x'\)</span>). <span class="arithmatex">\(\dot\phi_l\)</span> and <span class="arithmatex">\(\dot\phi_r\)</span> are just the wheels' angular velocities instead of a single timestep's rotation.</p>
+<p><strong>Inverse Differential Kinematics</strong>: We can also go the other way, solving those same two equations for <span class="arithmatex">\(\dot\phi_l\)</span> and <span class="arithmatex">\(\dot\phi_r\)</span>, to find the wheel velocities that produce a <em>desired</em> <span class="arithmatex">\(\dot x\)</span> and <span class="arithmatex">\(\dot\omega_z\)</span>:</p>
+<div class="arithmatex">\[
+\dot\phi_l = \frac{2\dot x - \dot\omega_z d}{2r} \qquad \dot\phi_r = \frac{2\dot x + \dot\omega_z d}{2r}
+\]</div>
+<h3 id="the-jacobian-matrix">The Jacobian Matrix</h3>
+<p>We can generalize the previous idea for systems with more actuators. In multi-degree-of-freedom systems, the simple 1D derivative is replaced by the <strong>Jacobian Matrix</strong> (<span class="arithmatex">\(J\)</span>), which contains all the partial derivatives of the robot's kinematics. It relates a vector of actuator velocities <span class="arithmatex">\(\dot q\)</span> to the resulting task-space velocity <span class="arithmatex">\(\nu\)</span>:</p>
+<div class="arithmatex">\[
+\nu = \begin{bmatrix} \dot x \\ \dot y \\ \dot z \\ \omega_x \\ \omega_y \\ \omega_z \end{bmatrix} = \begin{bmatrix} \frac{\partial x}{\partial q_1} &amp; \cdots &amp; \frac{\partial x}{\partial q_n} \\ \frac{\partial y}{\partial q_1} &amp; \cdots &amp; \frac{\partial y}{\partial q_n} \\ \vdots &amp; &amp; \vdots \\ \frac{\partial \omega_z}{\partial q_1} &amp; \cdots &amp; \frac{\partial \omega_z}{\partial q_n} \end{bmatrix} \begin{bmatrix} \dot q_1 \\ \vdots \\ \dot q_n \end{bmatrix} = J(q)\cdot\dot q
+\]</div>
+<p>The mobile robot's actuators are its two wheel velocities, <span class="arithmatex">\(\dot q = [\dot\phi_l, \dot\phi_r]^T\)</span>. Writing out the partial derivatives of the odometry gives:</p>
+<div class="arithmatex">\[
+\begin{bmatrix} \dot x_R \\ \dot y_R \\ \dot\theta \end{bmatrix} = \begin{bmatrix} \frac{\partial x_R}{\partial \phi_l} &amp; \frac{\partial x_R}{\partial \phi_r} \\ \frac{\partial y_R}{\partial \phi_l} &amp; \frac{\partial y_R}{\partial \phi_r} \\ \frac{\partial \theta}{\partial \phi_l} &amp; \frac{\partial \theta}{\partial \phi_r} \end{bmatrix} \begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix} = \begin{bmatrix} \frac{r}{2} &amp; \frac{r}{2} \\ 0 &amp; 0 \\ -\frac{r}{d} &amp; \frac{r}{d} \end{bmatrix} \begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix}
+\]</div>
+<p>The middle row is zero — no combination of wheel velocities can move the robot along <span class="arithmatex">\(y_R\)</span> instantaneously. Dropping that always-zero row leaves the final relationship:</p>
+<div class="arithmatex">\[
+\begin{bmatrix} \dot x_R \\ \dot\theta_R \end{bmatrix} = \begin{bmatrix} \frac{r}{2} &amp; \frac{r}{2} \\ -\frac{r}{d} &amp; \frac{r}{d} \end{bmatrix} \begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix}
+\]</div>
+<p>That's the differential-kinematics version of the non-holonomic constraint from earlier — exactly the <span class="arithmatex">\(\dot x\)</span>, <span class="arithmatex">\(\dot\omega_z\)</span> relationship derived above.</p>
+<p>The arm's actuators are its two joint velocities, <span class="arithmatex">\(\dot q = [\dot\theta_1, \dot\theta_2]^T\)</span>. Writing out the partial derivatives of the forward kinematics gives:</p>
+<div class="arithmatex">\[
+\begin{bmatrix} \dot x_{ee} \\ \dot y_{ee} \\ \dot\theta_{ee} \end{bmatrix} = \begin{bmatrix} \frac{\partial x_{ee}}{\partial \theta_1} &amp; \frac{\partial x_{ee}}{\partial \theta_2} \\ \frac{\partial y_{ee}}{\partial \theta_1} &amp; \frac{\partial y_{ee}}{\partial \theta_2} \\ \frac{\partial \theta_{ee}}{\partial \theta_1} &amp; \frac{\partial \theta_{ee}}{\partial \theta_2} \end{bmatrix} \begin{bmatrix} \dot\theta_1 \\ \dot\theta_2 \end{bmatrix} = \begin{bmatrix} -L_1\sin\theta_1 - L_2\sin(\theta_1+\theta_2) &amp; -L_2\sin(\theta_1+\theta_2) \\ L_1\cos\theta_1 + L_2\cos(\theta_1+\theta_2) &amp; L_2\cos(\theta_1+\theta_2) \\ 1 &amp; 1 \end{bmatrix} \begin{bmatrix} \dot\theta_1 \\ \dot\theta_2 \end{bmatrix}
+\]</div>
+<p>Unlike the mobile robot's, there's no row to drop here — all 3 rows carry real information about the end-effector's pose.</p>
+<h3 id="inverting-the-jacobian">Inverting the Jacobian</h3>
+<p>To go the other way — from a desired task-space velocity to the actuator velocities that produce it — invert <span class="arithmatex">\(J\)</span>. For a general <span class="arithmatex">\(2\times2\)</span> matrix:</p>
+<div class="arithmatex">\[
+\begin{bmatrix} a &amp; b \\ c &amp; d \end{bmatrix}^{-1} = \frac{1}{ad-bc}\begin{bmatrix} d &amp; -b \\ -c &amp; a \end{bmatrix}
+\]</div>
+<p>Applying this to the mobile robot's Jacobian:</p>
+<div class="arithmatex">\[
+\begin{bmatrix} \dot x_R \\ \dot\theta_R \end{bmatrix} = \begin{bmatrix} \frac{r}{2} &amp; \frac{r}{2} \\ -\frac{r}{d} &amp; \frac{r}{d} \end{bmatrix}\begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix} \quad \Rightarrow \quad \begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix} = \begin{bmatrix} \frac{r}{2} &amp; \frac{r}{2} \\ -\frac{r}{d} &amp; \frac{r}{d} \end{bmatrix}^{-1}\begin{bmatrix} \dot x_R \\ \dot\theta_R \end{bmatrix} = \frac{1}{r}\begin{bmatrix} 1 &amp; -d/2 \\ 1 &amp; d/2 \end{bmatrix}\begin{bmatrix} \dot x_R \\ \dot\theta_R \end{bmatrix}
+\]</div>
+<p>This recovers the same <span class="arithmatex">\(\dot\phi_l\)</span>, <span class="arithmatex">\(\dot\phi_r\)</span> from Inverse Differential Kinematics above.</p>
+<p>Unlike the mobile robot's, the arm's <span class="arithmatex">\(J\)</span> isn't square — 3 task-space dimensions (position + orientation) but only 2 joints — so it can't be inverted the same way. Instead of a plain inverse, it uses the pseudo-inverse:</p>
+<div class="arithmatex">\[
+J^+ = (J^TJ)^{-1}J^T
+\]</div>
+<p>Applying this to the arm's Jacobian:</p>
+<div class="arithmatex">\[
+\begin{bmatrix} \dot x_{ee} \\ \dot y_{ee} \\ \dot\theta_{ee} \end{bmatrix} = J\begin{bmatrix} \dot\theta_1 \\ \dot\theta_2 \end{bmatrix} \quad \Rightarrow \quad \begin{bmatrix} \dot\theta_1 \\ \dot\theta_2 \end{bmatrix} = J^+\begin{bmatrix} \dot x_{ee} \\ \dot y_{ee} \\ \dot\theta_{ee} \end{bmatrix}
+\]</div>
+<p>We'll use this Jacobian-based control law to actually reduce the error and reach a goal.</p>
+<h2 id="minimizing-error">Minimizing Error</h2>
+<p>At the beginning of this lecture, we defined a robot's error as the difference between its current pose and the goal pose it needs to reach. Driving the robot to its goal is really just minimizing this error function, and the technique we'll use to do it is <strong>gradient descent</strong>.</p>
+<p>Take the simplest possible error function, <span class="arithmatex">\(y = x^2\)</span>: its minimum sits at <span class="arithmatex">\(x=0\)</span>, and its derivative at any point tells us which way is downhill.</p>
+<p style="text-align:center;">
+<img alt="The minimum of y = x^2 sits where the slope is zero" src="../assets/images/gradient_descent_parabola.svg" />
+</p>
+<p>Stepping opposite that derivative, a little at a time, always walks you toward the minimum — no matter which side you started on. With more variables, this becomes stepping opposite the full gradient, sliding down toward the center of the error function's contours:</p>
+<p style="text-align:center;">
+<img alt="Gradient descent converging toward the minimum of an error function" src="../assets/images/gradient_descent_contour.svg" />
+</p>
+<p>This is the exact technique we'll use to build the robot's controller below: measure the error, step opposite its gradient, and repeat until it reaches zero.</p>
+<h3 id="gradient-descent">Gradient Descent</h3>
+<p>In discrete time, this stepping process becomes an update rule: at each timestep <span class="arithmatex">\(k\)</span>, nudge <span class="arithmatex">\(x\)</span> opposite the derivative, scaled by a gain <span class="arithmatex">\(L\)</span> that controls how big each step is:</p>
+<div class="arithmatex">\[
+\begin{gathered}
+x_{k+1} = x_k - L\,f'(x_k) \\[8pt]
+\dot x = \lim_{\Delta t \to 0}\frac{\Delta x}{\Delta t} = -L\,f'(x)
+\end{gathered}
+\]</div>
+<p>For multiple actuators <span class="arithmatex">\(q\)</span>, using the Jacobian from earlier, <span class="arithmatex">\(f'(x)\)</span> becomes <span class="arithmatex">\(J^+e\)</span>, giving us the general control law:</p>
+<div class="arithmatex">\[
+\Delta q = -L\,J^+e
+\]</div>
+<p>How <span class="arithmatex">\(\Delta q\)</span> is applied depends on what the controller accepts.</p>
+<p><strong>Position-controlled servo (arm joint)</strong>:</p>
+<div class="arithmatex">\[
+q \leftarrow q + \Delta q
+\]</div>
+<p>because <span class="arithmatex">\(\Delta q\)</span> is a position increment.</p>
+<p><strong>Velocity-controlled motor (e.g. wheel)</strong>: use a velocity command instead:</p>
+<div class="arithmatex">\[
+\dot q = -L\,J^+e
+\]</div>
+<p>That gain <span class="arithmatex">\(L\)</span> is what determines whether the controller actually converges. Given a step input to track, the response can look very different depending on how it's tuned:</p>
+<p style="text-align:center;">
+<img alt="Typical controller behaviors: stable, marginally stable, and unstable responses to a step input" src="../assets/images/controller_behavior.svg" />
+</p>
+<ul>
+<li><strong>Stable</strong> — the error settles at zero, either smoothly or with some decaying oscillation on the way there.</li>
+<li><strong>Marginally stable</strong> — the error keeps oscillating around zero forever, never quite settling.</li>
+<li><strong>Unstable</strong> — the error grows without bound, either steadily or through ever-larger oscillations. A gain that's too large is a common cause of this.</li>
+</ul>
+<p>So far, <span class="arithmatex">\(L\)</span> has just been a single fixed number. <strong>PID Control</strong> below expands that into three separate terms instead of one constant.</p>
+<h2 id="pid-control">PID Control</h2>
+<p>The controller derived above is a pure <strong>Proportional (P)</strong> controller — the control signal is proportional only to the current error. In general, a control signal can be made up of three terms:</p>
+<ul>
+<li><strong>P</strong> — proportional to the current error.</li>
+<li><strong>I</strong> — proportional to the integral of past errors.</li>
+<li><strong>D</strong> — proportional to the derivative of the error.</li>
+</ul>
+<p style="text-align:center;">
+<img alt="PID control loop: proportional, integral, and derivative terms combine into the control signal" src="../assets/images/pid_block_diagram.svg" />
+</p>
+<div class="arithmatex">\[
+u(t) = K_p\,e(t) + K_i\int_0^t e(\tau)\,d\tau + K_d\,\frac{de(t)}{dt}
+\]</div>
+<p>In practice, the integral term is computed by summing up just the last <span class="arithmatex">\(N\)</span> error terms rather than the entire history, to prevent <strong>wind-up</strong> — a large accumulated error continuing to push the controller long after it's no longer relevant. The derivative term reacts to how fast the error is changing, which increases the speed of convergence.</p>
+<h2 id="examples-in-practice">Examples in Practice</h2>
+<h3 id="mobile-robot-controller">Mobile Robot Controller</h3>
+<p>For the mobile robot, that error breaks down into three components: a distance to cover, a direction to face to get there, and a final heading to end up at.</p>
+<p style="text-align:center;">
+<img alt="The three components of a robot's pose error: distance, direction, and heading" src="../assets/images/goal_error.svg" />
+</p>
+<p><strong>Distance</strong> (<span class="arithmatex">\(\rho\)</span>) is the straight-line distance to the goal, <strong>direction</strong> (<span class="arithmatex">\(\alpha\)</span>) is the angle the robot needs to turn to face the goal relative to its current heading, and <strong>heading error</strong> (<span class="arithmatex">\(\theta_e\)</span>) is how far off the robot's final orientation is from the goal's:</p>
+<div class="arithmatex">\[
+\rho = \sqrt{(x_g - x_r)^2 + (y_g - y_r)^2} \qquad \alpha = \text{atan2}(y_g - y_r,\ x_g - x_r) - \theta_r
+\]</div>
+<div class="arithmatex">\[
+\theta_e = \theta_g - \theta_r
+\]</div>
+<p>Ignoring <span class="arithmatex">\(\theta_e\)</span> for simplicity, the error vector is just <span class="arithmatex">\(e = [\rho, \alpha]^T\)</span>.</p>
+<p>Applying the general control law from earlier for a velocity-controlled actuator, <span class="arithmatex">\(\dot q = -LJ^+e\)</span>, with <span class="arithmatex">\(q = [\phi_l, \phi_r]^T\)</span> and the mobile robot's own inverse Jacobian:</p>
+<div class="arithmatex">\[
+\begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix} = -L\,\frac{1}{r}\begin{bmatrix} 1 &amp; -d/2 \\ 1 &amp; d/2 \end{bmatrix} \begin{bmatrix} \rho \\ \alpha \end{bmatrix}
+\]</div>
+<p>Multiplying this out:</p>
+<div class="arithmatex">\[
+\dot\phi_l = \frac{-L\rho + L\alpha d/2}{r} \qquad \dot\phi_r = \frac{-L\rho - L\alpha d/2}{r}
+\]</div>
+<p>Let the gain be negative, <span class="arithmatex">\(L = -k\)</span> with <span class="arithmatex">\(k &gt; 0\)</span>. Substituting that it gives:</p>
+<div class="arithmatex">\[
+\dot\phi_l = \frac{k\rho}{r} - \frac{k\alpha d}{2r} \qquad \dot\phi_r = \frac{k\rho}{r} + \frac{k\alpha d}{2r}
+\]</div>
+<p>Renaming <span class="arithmatex">\(\frac{k}{r} \to p_2\)</span> and <span class="arithmatex">\(\frac{kd}{2r} \to p_1\)</span> lines these up exactly with the code below: <span class="arithmatex">\(\dot\phi_l\)</span> and <span class="arithmatex">\(\dot\phi_r\)</span> are the wheel speeds sent straight to the motors.</p>
+<p>Code:</p>
+<pre><code class="language-python">p1 = 3.14
+p2 = 6.28 * 2
+
+rho = np.sqrt((xw - target_x)**2 + (yw - target_y)**2)
+alpha = np.arctan2(target_y - yw, target_x - xw) - theta
+
+leftwheel = -p1 * alpha + p2 * rho
+rightwheel = p1 * alpha + p2 * rho
+</code></pre>
+<p>Every control loop iteration just repeats these three steps: measure the error, step opposite its gradient, convert to wheel speeds, and move.</p>
+<h3 id="robot-arm-controller">Robot Arm Controller</h3>
+<p>The exact same logic applies to the 2-link arm — just with its own error and its own Jacobian from earlier.</p>
+<p><strong>Error</strong> is the difference between the goal pose and the end-effector's current pose:</p>
+<div class="arithmatex">\[
+e = \begin{bmatrix} x_g \\ y_g \\ \theta_g \end{bmatrix} - \begin{bmatrix} x_{ee} \\ y_{ee} \\ \theta_{ee} \end{bmatrix}
+\]</div>
+<p style="text-align:center;">
+<img alt="The 2-link arm's current end-effector pose and its grayed-out goal pose" src="../assets/images/arm_controller.svg" />
+</p>
+<p><strong>Applying the control law</strong> with the arm's own Jacobian <span class="arithmatex">\(J\)</span> and its pseudo-inverse <span class="arithmatex">\(J^+\)</span> (since <span class="arithmatex">\(J\)</span> isn't square):</p>
+<div class="arithmatex">\[
+\Delta q = -L\,J^+e
+\]</div>
+<p><strong>Final output</strong> — the arm's servos take an absolute angle rather than a speed, so <span class="arithmatex">\(\Delta q\)</span> gets accumulated into each joint angle every iteration:</p>
+<div class="arithmatex">\[
+\theta_1 \leftarrow \theta_1 + \Delta\theta_1 \qquad \theta_2 \leftarrow \theta_2 + \Delta\theta_2
+\]</div>
+<p>Code:</p>
+<pre><code class="language-python">e = np.array([xg - xee, yg - yee, thetag - thetaee])
+
+J = np.array([[-L1*np.sin(theta1) - L2*np.sin(theta1+theta2), -L2*np.sin(theta1+theta2)],
+              [ L1*np.cos(theta1) + L2*np.cos(theta1+theta2),  L2*np.cos(theta1+theta2)],
+              [1, 1]])
+
+deltaQ = -np.linalg.pinv(J) @ e
+
+theta1 = theta1 + deltaQ[0]
+theta2 = theta2 + deltaQ[1]
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
