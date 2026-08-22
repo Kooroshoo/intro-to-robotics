@@ -346,7 +346,7 @@ e = \begin{bmatrix} x_g \\ y_g \\ \theta_g \end{bmatrix} - \begin{bmatrix} x_{ee
 $$
 
 <p markdown="1" style="text-align:center;">
-![A 2-link robot arm, with each joint contributing its own transformation to the chain](assets/images/arm_forward_kinematics.svg)
+![The 2-link arm's current end-effector pose and its grayed-out goal pose](assets/images/arm_controller.svg)
 </p>
 
 **Applying the control law** with the arm's own Jacobian $J$ and its pseudo-inverse $J^+$ (since $J$ isn't square):
