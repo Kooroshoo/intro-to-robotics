@@ -6,37 +6,19 @@ Once we know where the robot is, we use control algorithms to move it to a goal.
 
 ## Defining the Error
 
-Before a robot can move toward a goal, it needs to know exactly how "wrong" its current pose is. The error between a robot's current pose $(x_r, y_r, \theta_r)$ and a goal pose $(x_g, y_g, \theta_g)$ is three-fold: a distance to cover, a direction to face to get there, and a final heading to end up at.
+Before a robot can move toward a goal, it needs to know exactly how "wrong" its current pose is. The **error** is just the difference between the robot's current pose and its goal pose, and driving a robot to its goal really just means minimizing this error.
 
 <p markdown="1" style="text-align:center;">
-![The three components of a robot's pose error: distance, direction, and heading](assets/images/goal_error.svg)
+![The gap between a robot's current pose and its goal pose](assets/images/goal_error_simple.svg)
 </p>
 
-**Distance** ($\rho$) is just the straight-line distance to the goal:
-
-$$
-\rho = \sqrt{(x_g - x_r)^2 + (y_g - y_r)^2}
-$$
-
-**Direction** ($\alpha$) is the angle the robot needs to turn to face the goal, measured relative to its current heading:
-
-$$
-\alpha = \text{atan2}(y_g - y_r,\ x_g - x_r) - \theta_r
-$$
-
-**Heading error** ($\theta_e$) is simply how far off the robot's final orientation is from the goal's:
-
-$$
-\theta_e = \theta_g - \theta_r
-$$
-
-These three values — $\rho$, $\alpha$, $\theta_e$ — are exactly what gradient descent below tries to drive to zero.
+Before we can actually reduce this error, we first need a few building blocks: **forward kinematics** (how actuator values map to pose), **holonomy** (what kinds of motion a robot can and can't do), **inverse kinematics** (going the other way, from a target pose to actuator values), and **differential kinematics** (the same relationships, one derivative up, in velocity).
 
 ## Forward Kinematics
 
-Odometry, from the previous lecture, is a special case of **forward kinematics**: given a robot's actuator values, where does it end up?
+**Forward kinematics** is where a robot ends up, given its actuator values. Odometry, from the previous lecture, is a special case of this.
 
-A wheeled robot like the E-puck only has 2 of 6 possible degrees of freedom — translation along $X_R$ and rotation around $Z$:
+A two wheeled mobile robot only has 2 of 6 possible degrees of freedom — translation along $X_R$ and rotation around $Z$:
 
 <p markdown="1" style="text-align:center;">
 ![A mobile robot's two degrees of freedom: forward step and rotation](assets/images/odometry_step.svg)
@@ -46,7 +28,7 @@ $$
 \Delta x = \frac{r\Delta\phi_l + r\Delta\phi_r}{2} \qquad \Delta\omega_z = \frac{r\Delta\phi_r - r\Delta\phi_l}{d}
 $$
 
-That's just the local step. Rotating it by the robot's current heading $\alpha$ and adding it to the previous pose gives its actual position in the world:
+Rotating it by the robot's current heading $\alpha$ and adding it to the previous pose gives its actual position in the world:
 
 $$
 x_w = x_w + \Delta x\cos\alpha \qquad y_w = y_w + \Delta x\sin\alpha \qquad \alpha = \alpha + \Delta\omega_z
@@ -62,13 +44,13 @@ $$
 T^W_{ee} = T^W_1 \cdot T^1_2 \cdot T^2_3 \cdots T^{n-1}_{ee}
 $$
 
-Each $T^{i-1}_i$ has the same rotate-then-translate structure as the odometry matrix above — a rotation by the joint's own angle $\theta_i$, then a fixed translation of length $L_i$ (the link) along the rotated axis. For the 2-link arm:
+Each $T^{i-1}_i$ is a rotation by the joint's own angle $\theta_i$, then a fixed translation of length $L_i$ (the link) along the rotated axis. For the 2-link arm:
 
 $$
 T^{i-1}_i = \begin{bmatrix} \cos\theta_i & -\sin\theta_i & L_i\cos\theta_i \\ \sin\theta_i & \cos\theta_i & L_i\sin\theta_i \\ 0 & 0 & 1 \end{bmatrix}
 $$
 
-Only $\theta_i$ changes as the joint rotates — $L_i$ is fixed by the arm's geometry. Multiplying the two matrices out:
+Only $\theta_i$ changes as the joint rotates, $L_i$ is fixed by the arm's geometry. Multiplying the two matrices out:
 
 $$
 T^0_2 = T^0_1 \cdot T^1_2 = \begin{bmatrix} \cos(\theta_1+\theta_2) & -\sin(\theta_1+\theta_2) & L_1\cos\theta_1 + L_2\cos(\theta_1+\theta_2) \\ \sin(\theta_1+\theta_2) & \cos(\theta_1+\theta_2) & L_1\sin\theta_1 + L_2\sin(\theta_1+\theta_2) \\ 0 & 0 & 1 \end{bmatrix}
@@ -86,7 +68,7 @@ $$
 
 ## Holonomic vs. Non-Holonomic Motion
 
-The two forward kinematics above behave differently in an important way — whether a closed loop in joint space also closes the loop in the workspace:
+The two forward kinematics above behave differently in an important way, whether a closed loop in joint space also closes the loop in the workspace:
 
 - **Arm (holonomic):** the end-effector's pose depends only on the current joint angles $\theta_1, \theta_2$. Move the joints along any path and return them to their starting angles, and the end-effector is guaranteed to be back at its starting pose too.
 
@@ -98,7 +80,7 @@ $$
 e = \begin{bmatrix} x_g \\ y_g \\ \theta_g \end{bmatrix} - \begin{bmatrix} x_r \\ y_r \\ \theta_r \end{bmatrix}
 $$
 
-The mobile robot can't move that freely, so its error has to be expressed in the $\rho$, $\alpha$, $\theta_e$ terms defined earlier instead:
+The mobile robot can't move that freely, so its error instead has to be expressed in polar terms — a distance $\rho$, a direction $\alpha$, and a heading error $\theta_e$ — which we'll define properly once we get to building its controller:
 
 $$
 e = \begin{bmatrix} \rho \\ \alpha \\ \theta_e \end{bmatrix}
@@ -108,9 +90,9 @@ $$
 
 Forward kinematics answers "given these actuator values, where does the end-effector end up?" **Inverse kinematics** asks the opposite question: given a target pose, what actuator values get us there?
 
-### For the Robot Arm
+The mobile robot doesn't get a closed form: it's non-holonomic, so there's no direct mapping from a target pose to wheel angles — the path taken matters, not just the endpoint. That's why the rest of this chapter builds its control at the velocity level instead.
 
-Because the arm is holonomic, its inverse kinematics has a direct, closed-form geometric solution. Given a target end-effector position $(x_{ee}, y_{ee})$, the base-to-target distance is:
+The arm, being holonomic, doesn't have that problem: given a target end-effector position $(x_{ee}, y_{ee})$, the base-to-target distance is:
 
 $$
 r = \sqrt{x_{ee}^2 + y_{ee}^2}
@@ -126,15 +108,14 @@ $$
 ![Two valid elbow configurations reaching the same end-effector target](assets/images/arm_inverse_kinematics.svg)
 </p>
 
-The $\pm$ isn't a rounding artifact — it's two genuinely different, equally valid configurations reaching the same point: elbow up or elbow down. Once $\theta_2$ is picked, $\theta_1$ follows directly:
+The $\pm$ isn't a rounding artifact, it's two genuinely different, equally valid configurations reaching the same point: elbow up or elbow down. Once $\theta_2$ is picked, $\theta_1$ follows directly:
 
 $$
 \theta_1 = \text{atan2}(y_{ee}, x_{ee}) - \text{atan2}(L_2\sin\theta_2,\ L_1 + L_2\cos\theta_2)
 $$
 
-### For the Mobile Robot
+This closed-form solution only works for exactly 2 joints. Add a third and the arm becomes redundant — infinitely many configurations reach the same target, so there's no single triangle to solve. Therefore, we also need a velocity-based solution.
 
-The mobile robot doesn't get this luxury. Because it's non-holonomic, there's no closed-form mapping from a target pose straight to wheel angles — the path taken matters, not just the endpoint. That's exactly why the rest of this chapter builds the mobile robot's control at the velocity level instead of solving for a single actuator command: differential kinematics and gradient descent, continuously stepping the wheels toward the goal rather than computing it in one shot.
 
 ## Differential Kinematics
 
@@ -176,6 +157,16 @@ $$
 
 The middle row is zero — no combination of wheel velocities can move the robot along $y_R$ instantaneously. That's the differential-kinematics version of the non-holonomic constraint from earlier: dropping that always-zero row leaves exactly the $\dot x$, $\dot\omega_z$ relationship derived above.
 
+### For the Robot Arm
+
+The arm's Jacobian is just the derivative of its forward kinematics formulas, one partial derivative per joint:
+
+$$
+J = \begin{bmatrix} -L_1\sin\theta_1 - L_2\sin(\theta_1+\theta_2) & -L_2\sin(\theta_1+\theta_2) \\ L_1\cos\theta_1 + L_2\cos(\theta_1+\theta_2) & L_2\cos(\theta_1+\theta_2) \\ 1 & 1 \end{bmatrix}
+$$
+
+Unlike the mobile robot's, this $J$ isn't square — 3 task-space dimensions (position + orientation) but only 2 joints — so it can't be inverted the usual way. That's covered below.
+
 ### Inverting the Jacobian
 
 To go the other way — from a desired task-space velocity to the actuator velocities that produce it — invert $J$. For a general $2\times2$ matrix:
@@ -184,34 +175,13 @@ $$
 \begin{bmatrix} a & b \\ c & d \end{bmatrix}^{-1} = \frac{1}{ad-bc}\begin{bmatrix} d & -b \\ -c & a \end{bmatrix}
 $$
 
-Applying this to the mobile robot's Jacobian (dropping the always-zero $y_R$ row leaves a square, invertible $2\times2$ matrix):
-
-$$
-\begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix} = \begin{bmatrix} \frac{r}{2} & \frac{r}{2} \\ -\frac{r}{d} & \frac{r}{d} \end{bmatrix}^{-1} \begin{bmatrix} \dot x_R \\ \dot\theta_R \end{bmatrix} = \frac{1}{r}\begin{bmatrix} 1 & -d/2 \\ 1 & d/2 \end{bmatrix} \begin{bmatrix} \dot x_R \\ \dot\theta_R \end{bmatrix}
-$$
-
-This is the same result as the Inverse Differential Kinematics above — just reached by inverting the matrix directly instead of solving the two equations by hand.
-
-### Using the Jacobian for Gradient Descent
-
-The general control law for reducing an error $e$ with the Jacobian is:
+Applying this to the mobile robot's (square) Jacobian recovers exactly the same $\dot\phi_l$, $\dot\phi_r$ derived algebraically above — just reached by inverting the matrix directly instead of solving the two equations by hand. The general control law for reducing an error $e$ with a Jacobian follows the same pattern, using the pseudo-inverse $J^+$ when $J$ isn't square:
 
 $$
 \Delta q = -J^+e
 $$
 
-For the mobile robot, that error is exactly $\rho$ and $\alpha$ from earlier. Plugging them into the inverse Jacobian above gives the wheel velocities directly, with no need to go through $\dot x_R$ and $\dot\theta_R$ at all:
-
-$$
-\begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix} = \frac{1}{r}\begin{bmatrix} 1 & -d/2 \\ 1 & d/2 \end{bmatrix} \begin{bmatrix} \rho \\ \alpha \end{bmatrix}
-$$
-
-Absorbing $r$ and $d$ into a pair of tunable gains $p_1$, $p_2$, this is exactly the same P-controller derived below in Gradient Descent — just arrived at directly from the Jacobian instead of taking partial derivatives of the error function:
-
-```
-leftwheel  = -p1 * alpha + p2 * rho
-rightwheel =  p1 * alpha + p2 * rho
-```
+This is the control law both robots use below to actually reach a goal.
 
 ## Minimizing Error
 
@@ -253,7 +223,31 @@ That gain $L$ is what determines whether the controller actually converges. Give
 
 ### For the Mobile Robot
 
-Let's apply this directly to the mobile robot. Its control inputs are $\dot x$ and $\dot\theta_r$, and its error components $\rho$, $\alpha$ from earlier are already given in polar coordinates. A convenient error function to minimize is the sum of their squares:
+For the mobile robot, that error breaks down into three components: a distance to cover, a direction to face to get there, and a final heading to end up at.
+
+<p markdown="1" style="text-align:center;">
+![The three components of a robot's pose error: distance, direction, and heading](assets/images/goal_error.svg)
+</p>
+
+**Distance** ($\rho$) is just the straight-line distance to the goal:
+
+$$
+\rho = \sqrt{(x_g - x_r)^2 + (y_g - y_r)^2}
+$$
+
+**Direction** ($\alpha$) is the angle the robot needs to turn to face the goal, measured relative to its current heading:
+
+$$
+\alpha = \text{atan2}(y_g - y_r,\ x_g - x_r) - \theta_r
+$$
+
+**Heading error** ($\theta_e$) is simply how far off the robot's final orientation is from the goal's:
+
+$$
+\theta_e = \theta_g - \theta_r
+$$
+
+Its control inputs are $\dot x$ and $\dot\theta_r$, and $\rho$, $\alpha$ are already given in polar coordinates. A convenient error function to minimize is the sum of their squares:
 
 $$
 e = \rho^2 + \alpha^2
@@ -331,7 +325,7 @@ Every control loop iteration just repeats these three steps: measure the error, 
 
 ### Robot Arm
 
-The exact same logic applies to the 2-link arm — just with its own error and its own Jacobian.
+The exact same logic applies to the 2-link arm — just with its own error and its own Jacobian from earlier.
 
 **Error** is the difference between the goal pose and the end-effector's current pose:
 
@@ -343,19 +337,11 @@ $$
 ![A 2-link robot arm, with each joint contributing its own transformation to the chain](assets/images/arm_forward_kinematics.svg)
 </p>
 
-**Gradient descent** uses the arm's own Jacobian derived earlier:
-
-$$
-J = \begin{bmatrix} -L_1\sin\theta_1 - L_2\sin(\theta_1+\theta_2) & -L_2\sin(\theta_1+\theta_2) \\ L_1\cos\theta_1 + L_2\cos(\theta_1+\theta_2) & L_2\cos(\theta_1+\theta_2) \\ 1 & 1 \end{bmatrix}
-$$
-
-and the same control law:
+**Applying the control law** with the arm's own Jacobian $J$ and its pseudo-inverse $J^+$ (since $J$ isn't square):
 
 $$
 \Delta q = -J^+e
 $$
-
-$J$ isn't square here — 3 task-space dimensions but only 2 joints — so $J^+$ is the Moore-Penrose pseudo-inverse rather than a plain matrix inverse. It plays exactly the same role as the mobile robot's inverse Jacobian above, just computed numerically instead of by hand.
 
 **Final output** — just like the mobile robot's pose update, each joint angle simply gets nudged by its share of $\Delta q$ every iteration:
 
