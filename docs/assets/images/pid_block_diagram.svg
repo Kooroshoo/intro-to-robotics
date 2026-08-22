@@ -13,8 +13,8 @@
 
   <circle cx="88" cy="150" r="16" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
   <text x="88" y="155" font-family="serif" font-size="15" text-anchor="middle" fill="#333">&#931;</text>
-  <text x="74" y="138" font-family="sans-serif" font-size="12" fill="#333">+</text>
-  <text x="98" y="170" font-family="sans-serif" font-size="12" fill="#333">-</text>
+  <text x="64" y="138" font-family="sans-serif" font-size="12" fill="#333">+</text>
+  <text x="98" y="180" font-family="sans-serif" font-size="12" fill="#333">-</text>
 
   <!-- e(t) split to the three terms -->
   <line x1="104" y1="150" x2="150" y2="150" stroke="#333" stroke-width="1.5"/>
@@ -28,17 +28,17 @@
   <!-- P term -->
   <rect x="200" y="60" width="105" height="40" fill="#bbf7d0" stroke="#16a34a" stroke-width="1.5"/>
   <text x="210" y="86" font-family="sans-serif" font-size="15" font-weight="bold" fill="#166534">P</text>
-  <text x="232" y="86" font-family="serif" font-style="italic" font-size="13" fill="#166534">K&#8347; e(t)</text>
+  <text x="232" y="86" font-family="serif" font-style="italic" font-size="13" fill="#166534">K<tspan baseline-shift="sub" font-size="9">p</tspan> e(t)</text>
 
   <!-- I term -->
   <rect x="200" y="130" width="105" height="40" fill="#a5f3fc" stroke="#0891b2" stroke-width="1.5"/>
   <text x="210" y="156" font-family="sans-serif" font-size="15" font-weight="bold" fill="#155e75">I</text>
-  <text x="228" y="156" font-family="serif" font-style="italic" font-size="12" fill="#155e75">K&#7522; &#8747;e(&#964;)d&#964;</text>
+  <text x="228" y="156" font-family="serif" font-style="italic" font-size="12" fill="#155e75">K<tspan baseline-shift="sub" font-size="9">i</tspan> &#8747;e(&#964;)d&#964;</text>
 
   <!-- D term -->
   <rect x="200" y="200" width="105" height="40" fill="#fed7aa" stroke="#ea580c" stroke-width="1.5"/>
   <text x="210" y="226" font-family="sans-serif" font-size="15" font-weight="bold" fill="#9a3412">D</text>
-  <text x="228" y="226" font-family="serif" font-style="italic" font-size="12" fill="#9a3412">K&#7649; de(t)/dt</text>
+  <text x="228" y="226" font-family="serif" font-style="italic" font-size="12" fill="#9a3412">K<tspan baseline-shift="sub" font-size="9">d</tspan> de(t)/dt</text>
 
   <!-- Recombine into the second summing junction, right-angled like the incoming P/I/D arrows -->
   <path d="M 305 80 L 410 80 L 410 132" fill="none" stroke="#333" stroke-width="1.5" marker-end="url(#pidArrow)"/>
@@ -48,7 +48,7 @@
   <circle cx="410" cy="150" r="16" fill="#fde68a" stroke="#333" stroke-width="1.5"/>
   <text x="410" y="155" font-family="serif" font-size="15" text-anchor="middle" fill="#333">&#931;</text>
   <text x="416" y="122" font-family="sans-serif" font-size="12" fill="#333">+</text>
-  <text x="398" y="140" font-family="sans-serif" font-size="12" fill="#333">+</text>
+  <text x="388" y="140" font-family="sans-serif" font-size="12" fill="#333">+</text>
   <text x="416" y="182" font-family="sans-serif" font-size="12" fill="#333">+</text>
 
   <!-- Control signal u(t) into the plant -->

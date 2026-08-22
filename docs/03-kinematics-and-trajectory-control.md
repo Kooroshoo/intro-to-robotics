@@ -265,3 +265,83 @@ $$
 In practice, the integral term is computed by summing up just the last $N$ error terms rather than the entire history, to prevent **wind-up** — a large accumulated error continuing to push the controller long after it's no longer relevant. The derivative term reacts to how fast the error is changing, which increases the speed of convergence.
 
 ## Examples in Practice
+
+### Mobile Robot
+
+Pulling every step above together for the mobile robot:
+
+<p markdown="1" style="text-align:center;">
+![The three components of a robot's pose error: distance, direction, and heading](assets/images/goal_error.svg)
+</p>
+
+1. **Error** — from the current and goal poses, compute $\rho$ (distance) and $\alpha$ (heading-to-goal).
+2. **Gradient descent** — minimizing $e = \rho^2 + \alpha^2$ gives $\dot x = p_2\rho$ and $\dot\theta_r = -p_1\alpha$.
+3. **Inverse kinematics** — the inverse Jacobian converts that desired velocity into wheel speeds:
+
+$$
+\text{leftwheel} = -p_1\alpha + p_2\rho \qquad \text{rightwheel} = p_1\alpha + p_2\rho
+$$
+
+Code:
+
+```python
+rho = np.sqrt((xw - target_x)**2 + (yw - target_y)**2)
+alpha = np.arctan2(target_y - yw, target_x - xw) - theta
+
+leftwheel = -p1 * alpha + p2 * rho
+rightwheel = p1 * alpha + p2 * rho
+
+motor_left.setVelocity(leftwheel)
+motor_right.setVelocity(rightwheel)
+```
+
+Every control loop iteration just repeats these three steps: measure the error, step opposite its gradient, convert to wheel speeds, and move.
+
+### Robot Arm
+
+The exact same logic applies to the 2-link arm — just with its own error and its own Jacobian.
+
+**Error** is the difference between the goal pose and the end-effector's current pose:
+
+$$
+e = \begin{bmatrix} x_g \\ y_g \\ \theta_g \end{bmatrix} - \begin{bmatrix} x_{ee} \\ y_{ee} \\ \theta_{ee} \end{bmatrix}
+$$
+
+<p markdown="1" style="text-align:center;">
+![A 2-link robot arm, with each joint contributing its own transformation to the chain](assets/images/arm_forward_kinematics.svg)
+</p>
+
+**Gradient descent** uses the arm's own Jacobian derived earlier:
+
+$$
+J = \begin{bmatrix} -L_1\sin\theta_1 - L_2\sin(\theta_1+\theta_2) & -L_2\sin(\theta_1+\theta_2) \\ L_1\cos\theta_1 + L_2\cos(\theta_1+\theta_2) & L_2\cos(\theta_1+\theta_2) \\ 1 & 1 \end{bmatrix}
+$$
+
+and the same control law:
+
+$$
+\Delta q = -J^+e
+$$
+
+$J$ isn't square here — 3 task-space dimensions but only 2 joints — so $J^+$ is the Moore-Penrose pseudo-inverse rather than a plain matrix inverse. It plays exactly the same role as the mobile robot's inverse Jacobian above, just computed numerically instead of by hand.
+
+**Final output** — just like the mobile robot's pose update, each joint angle simply gets nudged by its share of $\Delta q$ every iteration:
+
+$$
+\theta_1 = \theta_1 + \Delta\theta_1 \qquad \theta_2 = \theta_2 + \Delta\theta_2
+$$
+
+Code:
+
+```python
+e = np.array([xg - xee, yg - yee, thetag - thetaee])
+
+J = np.array([[-L1*np.sin(theta1) - L2*np.sin(theta1+theta2), -L2*np.sin(theta1+theta2)],
+              [ L1*np.cos(theta1) + L2*np.cos(theta1+theta2),  L2*np.cos(theta1+theta2)],
+              [1, 1]])
+
+deltaQ = -np.linalg.pinv(J) @ e
+
+theta1 = theta1 + deltaQ[0]
+theta2 = theta2 + deltaQ[1]
+```
