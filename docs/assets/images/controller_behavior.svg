@@ -1,75 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" width="900" height="460">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 280" width="900" height="280">
   <rect width="100%" height="100%" fill="#ffffff"/>
 
-  <!-- ============ Panel template: axes at (30,170)-(250,170)/(30,10), target step at y=60 ============ -->
-
-  <!-- Panel 1: INPUT -->
-  <g transform="translate(20,20)">
+  <!-- Panel 1: STABLE (smooth, no overshoot) -->
+  <g transform="translate(20,50)">
     <line x1="30" y1="170" x2="250" y2="170" stroke="#333" stroke-width="1"/>
     <line x1="30" y1="170" x2="30" y2="10" stroke="#333" stroke-width="1"/>
-    <text x="24" y="12" font-family="sans-serif" font-size="13" font-style="italic" fill="#333">x</text>
-    <text x="252" y="182" font-family="sans-serif" font-size="13" font-style="italic" fill="#333">t</text>
-    <path d="M 30 170 L 30 60 L 250 60" fill="none" stroke="#111" stroke-width="3"/>
-    <text x="90" y="205" font-family="sans-serif" font-size="14" font-weight="bold" fill="#333" text-anchor="middle">INPUT</text>
-  </g>
-
-  <!-- Panel 2: STABLE (decaying oscillation) -->
-  <g transform="translate(320,20)">
-    <line x1="30" y1="170" x2="250" y2="170" stroke="#333" stroke-width="1"/>
-    <line x1="30" y1="170" x2="30" y2="10" stroke="#333" stroke-width="1"/>
-    <text x="24" y="12" font-family="sans-serif" font-size="13" font-style="italic" fill="#333">x</text>
-    <text x="252" y="182" font-family="sans-serif" font-size="13" font-style="italic" fill="#333">t</text>
-    <path d="M 30 170 L 30 60 L 250 60" fill="none" stroke="#111" stroke-width="3"/>
-    <path d="M 30 170 C 40 100, 45 35, 60 35 C 75 35, 85 90, 100 82 C 112 76, 118 48, 130 48 C 142 48, 148 66, 160 66 C 172 66, 176 58, 190 58 C 210 58, 220 60, 250 60"
-          fill="none" stroke="#334155" stroke-width="2"/>
-    <text x="90" y="205" font-family="sans-serif" font-size="14" font-weight="bold" fill="#333" text-anchor="middle">STABLE</text>
-  </g>
-
-  <!-- Panel 3: STABLE (smooth, no overshoot) -->
-  <g transform="translate(620,20)">
-    <line x1="30" y1="170" x2="250" y2="170" stroke="#333" stroke-width="1"/>
-    <line x1="30" y1="170" x2="30" y2="10" stroke="#333" stroke-width="1"/>
-    <text x="24" y="12" font-family="sans-serif" font-size="13" font-style="italic" fill="#333">x</text>
+    <text x="16" y="12" font-family="sans-serif" font-size="13" font-style="italic" fill="#333">x</text>
     <text x="252" y="182" font-family="sans-serif" font-size="13" font-style="italic" fill="#333">t</text>
     <path d="M 30 170 L 30 60 L 250 60" fill="none" stroke="#111" stroke-width="3"/>
     <path d="M 30 170 C 50 168, 60 140, 75 115 C 90 92, 105 78, 125 70 C 145 64, 170 61, 200 60 C 220 60, 235 60, 250 60"
           fill="none" stroke="#334155" stroke-width="2"/>
-    <text x="90" y="205" font-family="sans-serif" font-size="14" font-weight="bold" fill="#333" text-anchor="middle">STABLE</text>
+    <text x="140" y="205" font-family="sans-serif" font-size="14" font-weight="bold" fill="#333" text-anchor="middle">STABLE</text>
   </g>
 
-  <!-- Panel 4: MARGINALLY STABLE (sustained oscillation) -->
-  <g transform="translate(20,240)">
+  <!-- Panel 2: MARGINALLY STABLE (sustained oscillation) -->
+  <g transform="translate(320,50)">
     <line x1="30" y1="170" x2="250" y2="170" stroke="#333" stroke-width="1"/>
     <line x1="30" y1="170" x2="30" y2="10" stroke="#333" stroke-width="1"/>
-    <text x="24" y="12" font-family="sans-serif" font-size="13" font-style="italic" fill="#333">x</text>
+    <text x="16" y="12" font-family="sans-serif" font-size="13" font-style="italic" fill="#333">x</text>
     <text x="252" y="182" font-family="sans-serif" font-size="13" font-style="italic" fill="#333">t</text>
     <path d="M 30 170 L 30 60 L 250 60" fill="none" stroke="#111" stroke-width="3"/>
     <path d="M 30 170 C 40 100, 50 25, 65 25 C 80 25, 90 95, 105 95 C 120 95, 130 25, 145 25 C 160 25, 170 95, 185 95 C 200 95, 210 25, 225 25 C 238 25, 245 45, 250 60"
           fill="none" stroke="#334155" stroke-width="2"/>
-    <text x="90" y="205" font-family="sans-serif" font-size="14" font-weight="bold" fill="#333" text-anchor="middle">MARGINALLY STABLE</text>
+    <text x="140" y="205" font-family="sans-serif" font-size="14" font-weight="bold" fill="#333" text-anchor="middle">MARGINALLY STABLE</text>
   </g>
 
-  <!-- Panel 5: UNSTABLE (monotonic divergence) -->
-  <g transform="translate(320,240)">
+  <!-- Panel 3: UNSTABLE (monotonic divergence) -->
+  <g transform="translate(620,50)">
     <line x1="30" y1="170" x2="250" y2="170" stroke="#333" stroke-width="1"/>
     <line x1="30" y1="170" x2="30" y2="10" stroke="#333" stroke-width="1"/>
-    <text x="24" y="12" font-family="sans-serif" font-size="13" font-style="italic" fill="#333">x</text>
+    <text x="16" y="12" font-family="sans-serif" font-size="13" font-style="italic" fill="#333">x</text>
     <text x="252" y="182" font-family="sans-serif" font-size="13" font-style="italic" fill="#333">t</text>
     <path d="M 30 170 L 30 60 L 250 60" fill="none" stroke="#111" stroke-width="3"/>
     <path d="M 30 170 C 70 165, 110 145, 140 115 C 165 90, 185 55, 200 30 C 210 15, 218 8, 225 5"
           fill="none" stroke="#334155" stroke-width="2"/>
-    <text x="90" y="205" font-family="sans-serif" font-size="14" font-weight="bold" fill="#333" text-anchor="middle">UNSTABLE</text>
-  </g>
-
-  <!-- Panel 6: UNSTABLE (growing oscillation) -->
-  <g transform="translate(620,240)">
-    <line x1="30" y1="170" x2="250" y2="170" stroke="#333" stroke-width="1"/>
-    <line x1="30" y1="170" x2="30" y2="10" stroke="#333" stroke-width="1"/>
-    <text x="24" y="12" font-family="sans-serif" font-size="13" font-style="italic" fill="#333">x</text>
-    <text x="252" y="182" font-family="sans-serif" font-size="13" font-style="italic" fill="#333">t</text>
-    <path d="M 30 170 L 30 60 L 250 60" fill="none" stroke="#111" stroke-width="3"/>
-    <path d="M 30 170 C 45 155, 55 130, 68 130 C 80 130, 90 95, 105 90 C 120 85, 130 40, 148 35 C 165 30, 180 100, 195 105 C 208 108, 215 15, 225 12"
-          fill="none" stroke="#334155" stroke-width="2"/>
-    <text x="90" y="205" font-family="sans-serif" font-size="14" font-weight="bold" fill="#333" text-anchor="middle">UNSTABLE</text>
+    <text x="140" y="205" font-family="sans-serif" font-size="14" font-weight="bold" fill="#333" text-anchor="middle">UNSTABLE</text>
   </g>
 </svg>
