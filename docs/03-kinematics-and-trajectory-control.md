@@ -104,6 +104,38 @@ $$
 e = \begin{bmatrix} \rho \\ \alpha \\ \theta_e \end{bmatrix}
 $$
 
+## Inverse Kinematics
+
+Forward kinematics answers "given these actuator values, where does the end-effector end up?" **Inverse kinematics** asks the opposite question: given a target pose, what actuator values get us there?
+
+### For the Robot Arm
+
+Because the arm is holonomic, its inverse kinematics has a direct, closed-form geometric solution. Given a target end-effector position $(x_{ee}, y_{ee})$, the base-to-target distance is:
+
+$$
+r = \sqrt{x_{ee}^2 + y_{ee}^2}
+$$
+
+$r$, $L_1$, and $L_2$ form a triangle, so the law of cosines gives the elbow angle directly:
+
+$$
+\theta_2 = \pm\cos^{-1}\left(\frac{r^2 - L_1^2 - L_2^2}{2L_1L_2}\right)
+$$
+
+<p markdown="1" style="text-align:center;">
+![Two valid elbow configurations reaching the same end-effector target](assets/images/arm_inverse_kinematics.svg)
+</p>
+
+The $\pm$ isn't a rounding artifact — it's two genuinely different, equally valid configurations reaching the same point: elbow up or elbow down. Once $\theta_2$ is picked, $\theta_1$ follows directly:
+
+$$
+\theta_1 = \text{atan2}(y_{ee}, x_{ee}) - \text{atan2}(L_2\sin\theta_2,\ L_1 + L_2\cos\theta_2)
+$$
+
+### For the Mobile Robot
+
+The mobile robot doesn't get this luxury. Because it's non-holonomic, there's no closed-form mapping from a target pose straight to wheel angles — the path taken matters, not just the endpoint. That's exactly why the rest of this chapter builds the mobile robot's control at the velocity level instead of solving for a single actuator command: differential kinematics and gradient descent, continuously stepping the wheels toward the goal rather than computing it in one shot.
+
 ## Differential Kinematics
 
 Forward kinematics relates actuator values to pose. **Differential kinematics** looks at the same relationship one derivative up: instead of position, we're relating *velocities*.
