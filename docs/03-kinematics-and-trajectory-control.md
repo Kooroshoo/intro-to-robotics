@@ -143,21 +143,27 @@ $$
 \nu = \begin{bmatrix} \dot x \\ \dot y \\ \dot z \\ \omega_x \\ \omega_y \\ \omega_z \end{bmatrix} = \begin{bmatrix} \frac{\partial x}{\partial q_1} & \cdots & \frac{\partial x}{\partial q_n} \\ \frac{\partial y}{\partial q_1} & \cdots & \frac{\partial y}{\partial q_n} \\ \vdots & & \vdots \\ \frac{\partial \omega_z}{\partial q_1} & \cdots & \frac{\partial \omega_z}{\partial q_n} \end{bmatrix} \begin{bmatrix} \dot q_1 \\ \vdots \\ \dot q_n \end{bmatrix} = J(q)\cdot\dot q
 $$
 
-The mobile robot's actuators are its two wheel velocities, $\dot q = [\dot\phi_l, \dot\phi_r]^T$. Writing out the partial derivatives gives:
+The mobile robot's actuators are its two wheel velocities, $\dot q = [\dot\phi_l, \dot\phi_r]^T$. Writing out the partial derivatives of the odometry gives:
 
 $$
 \begin{bmatrix} \dot x_R \\ \dot y_R \\ \dot\theta \end{bmatrix} = \begin{bmatrix} \frac{\partial x_R}{\partial \phi_l} & \frac{\partial x_R}{\partial \phi_r} \\ \frac{\partial y_R}{\partial \phi_l} & \frac{\partial y_R}{\partial \phi_r} \\ \frac{\partial \theta}{\partial \phi_l} & \frac{\partial \theta}{\partial \phi_r} \end{bmatrix} \begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix} = \begin{bmatrix} \frac{r}{2} & \frac{r}{2} \\ 0 & 0 \\ -\frac{r}{d} & \frac{r}{d} \end{bmatrix} \begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix}
 $$
 
-The middle row is zero — no combination of wheel velocities can move the robot along $y_R$ instantaneously. That's the differential-kinematics version of the non-holonomic constraint from earlier: dropping that always-zero row leaves exactly the $\dot x$, $\dot\omega_z$ relationship derived above.
-
-The arm's Jacobian is just the derivative of its forward kinematics formulas, one partial derivative per joint:
+The middle row is zero — no combination of wheel velocities can move the robot along $y_R$ instantaneously. Dropping that always-zero row leaves the final relationship:
 
 $$
-J = \begin{bmatrix} -L_1\sin\theta_1 - L_2\sin(\theta_1+\theta_2) & -L_2\sin(\theta_1+\theta_2) \\ L_1\cos\theta_1 + L_2\cos(\theta_1+\theta_2) & L_2\cos(\theta_1+\theta_2) \\ 1 & 1 \end{bmatrix}
+\begin{bmatrix} \dot x_R \\ \dot\theta_R \end{bmatrix} = \begin{bmatrix} \frac{r}{2} & \frac{r}{2} \\ -\frac{r}{d} & \frac{r}{d} \end{bmatrix} \begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix}
 $$
 
-Unlike the mobile robot's, this $J$ isn't square — 3 task-space dimensions (position + orientation) but only 2 joints — so it can't be inverted the usual way. That's covered below.
+That's the differential-kinematics version of the non-holonomic constraint from earlier — exactly the $\dot x$, $\dot\omega_z$ relationship derived above.
+
+The arm's actuators are its two joint velocities, $\dot q = [\dot\theta_1, \dot\theta_2]^T$. Writing out the partial derivatives of the forward kinematics gives:
+
+$$
+\begin{bmatrix} \dot x_{ee} \\ \dot y_{ee} \\ \dot\theta_{ee} \end{bmatrix} = \begin{bmatrix} \frac{\partial x_{ee}}{\partial \theta_1} & \frac{\partial x_{ee}}{\partial \theta_2} \\ \frac{\partial y_{ee}}{\partial \theta_1} & \frac{\partial y_{ee}}{\partial \theta_2} \\ \frac{\partial \theta_{ee}}{\partial \theta_1} & \frac{\partial \theta_{ee}}{\partial \theta_2} \end{bmatrix} \begin{bmatrix} \dot\theta_1 \\ \dot\theta_2 \end{bmatrix} = \begin{bmatrix} -L_1\sin\theta_1 - L_2\sin(\theta_1+\theta_2) & -L_2\sin(\theta_1+\theta_2) \\ L_1\cos\theta_1 + L_2\cos(\theta_1+\theta_2) & L_2\cos(\theta_1+\theta_2) \\ 1 & 1 \end{bmatrix} \begin{bmatrix} \dot\theta_1 \\ \dot\theta_2 \end{bmatrix}
+$$
+
+Unlike the mobile robot's, there's no row to drop here — all 3 rows carry real information about the end-effector's pose.
 
 ### Inverting the Jacobian
 
@@ -173,13 +179,21 @@ $$
 \begin{bmatrix} \dot x_R \\ \dot\theta_R \end{bmatrix} = \begin{bmatrix} \frac{r}{2} & \frac{r}{2} \\ -\frac{r}{d} & \frac{r}{d} \end{bmatrix}\begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix} \quad \Rightarrow \quad \begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix} = \begin{bmatrix} \frac{r}{2} & \frac{r}{2} \\ -\frac{r}{d} & \frac{r}{d} \end{bmatrix}^{-1}\begin{bmatrix} \dot x_R \\ \dot\theta_R \end{bmatrix} = \frac{1}{r}\begin{bmatrix} 1 & -d/2 \\ 1 & d/2 \end{bmatrix}\begin{bmatrix} \dot x_R \\ \dot\theta_R \end{bmatrix}
 $$
 
-This recovers the same $\dot\phi_l$, $\dot\phi_r$ from Inverse Differential Kinematics above. The general control law for reducing an error $e$ with a Jacobian follows the same pattern, using the pseudo-inverse $J^+$ when $J$ isn't square:
+This recovers the same $\dot\phi_l$, $\dot\phi_r$ from Inverse Differential Kinematics above.
+
+Unlike the mobile robot's, the arm's $J$ isn't square — 3 task-space dimensions (position + orientation) but only 2 joints — so it can't be inverted the same way. Instead of a plain inverse, it uses the pseudo-inverse:
 
 $$
-\Delta q = -J^+e
+J^+ = (J^TJ)^{-1}J^T
 $$
 
-This is the control law both robots use below to actually reach a goal.
+Applying this to the arm's Jacobian:
+
+$$
+\begin{bmatrix} \dot x_{ee} \\ \dot y_{ee} \\ \dot\theta_{ee} \end{bmatrix} = J\begin{bmatrix} \dot\theta_1 \\ \dot\theta_2 \end{bmatrix} \quad \Rightarrow \quad \begin{bmatrix} \dot\theta_1 \\ \dot\theta_2 \end{bmatrix} = J^+\begin{bmatrix} \dot x_{ee} \\ \dot y_{ee} \\ \dot\theta_{ee} \end{bmatrix}
+$$
+
+We'll use this Jacobian-based control law to actually reduce the error and reach a goal.
 
 ## Minimizing Error
 
@@ -207,8 +221,6 @@ $$
 x_{k+1} = x_k - L\,f'(x_k)
 $$
 
-### Typical Controller Behavior
-
 That gain $L$ is what determines whether the controller actually converges. Given a step input to track, the response can look very different depending on how it's tuned:
 
 <p markdown="1" style="text-align:center;">
@@ -218,8 +230,6 @@ That gain $L$ is what determines whether the controller actually converges. Give
 - **Stable** — the error settles at zero, either smoothly or with some decaying oscillation on the way there.
 - **Marginally stable** — the error keeps oscillating around zero forever, never quite settling.
 - **Unstable** — the error grows without bound, either steadily or through ever-larger oscillations. A gain that's too large is a common cause of this.
-
-### For the Mobile Robot
 
 For the mobile robot, that error breaks down into three components: a distance to cover, a direction to face to get there, and a final heading to end up at.
 
