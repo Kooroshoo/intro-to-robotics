@@ -121,23 +121,23 @@ This closed-form solution only works for exactly 2 joints. Add a third and the a
 
 Forward kinematics relates actuator values to pose. **Differential kinematics** looks at the same relationship one derivative up: instead of position, we're relating *velocities*.
 
-The derivative of distance is speed — $x$ is distance, $\dot x$ is speed. (You'll also see this written as $x'$; both mean the same thing.)
-
 Applying this to the mobile robot: replace each incremental step ($\Delta x$, $\Delta\omega_z$, $\Delta\phi_l$, $\Delta\phi_r$) with its derivative, and the odometry formulas from earlier become a velocity relationship instead:
 
 $$
 \dot x = \frac{r\dot\phi_l + r\dot\phi_r}{2} \qquad \dot\omega_z = \frac{r\dot\phi_r - r\dot\phi_l}{d}
 $$
 
-Nothing about the geometry changed — $\dot\phi_l$ and $\dot\phi_r$ are just the wheels' angular velocities instead of a single timestep's rotation.
+$x$ is distance, $\dot x$ is speed (You'll also see this written as $x'$). $\dot\phi_l$ and $\dot\phi_r$ are just the wheels' angular velocities instead of a single timestep's rotation.
 
-We can also go the other way (**Inverse Differential Kinematics**): solve those same two equations for $\dot\phi_l$ and $\dot\phi_r$, to find the wheel velocities that produce a *desired* $\dot x$ and $\dot\omega_z$:
+**Inverse Differential Kinematics**: We can also go the other way, solving those same two equations for $\dot\phi_l$ and $\dot\phi_r$, to find the wheel velocities that produce a *desired* $\dot x$ and $\dot\omega_z$:
 
 $$
 \dot\phi_l = \frac{2\dot x - \dot\omega_z d}{2r} \qquad \dot\phi_r = \frac{2\dot x + \dot\omega_z d}{2r}
 $$
 
-In multi-degree-of-freedom systems, the simple 1D derivative is replaced by the **Jacobian Matrix** ($J$), which contains all the partial derivatives of the robot's kinematics. It relates a vector of actuator velocities $\dot q$ to the resulting task-space velocity $\nu$:
+### The Jacobian Matrix
+
+We can generalize the previous idea for systems with more actuators. In multi-degree-of-freedom systems, the simple 1D derivative is replaced by the **Jacobian Matrix** ($J$), which contains all the partial derivatives of the robot's kinematics. It relates a vector of actuator velocities $\dot q$ to the resulting task-space velocity $\nu$:
 
 $$
 \nu = \begin{bmatrix} \dot x \\ \dot y \\ \dot z \\ \omega_x \\ \omega_y \\ \omega_z \end{bmatrix} = \begin{bmatrix} \frac{\partial x}{\partial q_1} & \cdots & \frac{\partial x}{\partial q_n} \\ \frac{\partial y}{\partial q_1} & \cdots & \frac{\partial y}{\partial q_n} \\ \vdots & & \vdots \\ \frac{\partial \omega_z}{\partial q_1} & \cdots & \frac{\partial \omega_z}{\partial q_n} \end{bmatrix} \begin{bmatrix} \dot q_1 \\ \vdots \\ \dot q_n \end{bmatrix} = J(q)\cdot\dot q
@@ -159,7 +159,7 @@ $$
 
 Unlike the mobile robot's, this $J$ isn't square — 3 task-space dimensions (position + orientation) but only 2 joints — so it can't be inverted the usual way. That's covered below.
 
-## Inverse Differential Kinematics
+### Inverting the Jacobian
 
 To go the other way — from a desired task-space velocity to the actuator velocities that produce it — invert $J$. For a general $2\times2$ matrix:
 
@@ -167,7 +167,13 @@ $$
 \begin{bmatrix} a & b \\ c & d \end{bmatrix}^{-1} = \frac{1}{ad-bc}\begin{bmatrix} d & -b \\ -c & a \end{bmatrix}
 $$
 
-Applying this to the mobile robot's (square) Jacobian recovers exactly the same $\dot\phi_l$, $\dot\phi_r$ derived algebraically above — just reached by inverting the matrix directly instead of solving the two equations by hand. The general control law for reducing an error $e$ with a Jacobian follows the same pattern, using the pseudo-inverse $J^+$ when $J$ isn't square:
+Applying this to the mobile robot's Jacobian:
+
+$$
+\begin{bmatrix} \dot x_R \\ \dot\theta_R \end{bmatrix} = \begin{bmatrix} \frac{r}{2} & \frac{r}{2} \\ -\frac{r}{d} & \frac{r}{d} \end{bmatrix}\begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix} \quad \Rightarrow \quad \begin{bmatrix} \dot\phi_l \\ \dot\phi_r \end{bmatrix} = \begin{bmatrix} \frac{r}{2} & \frac{r}{2} \\ -\frac{r}{d} & \frac{r}{d} \end{bmatrix}^{-1}\begin{bmatrix} \dot x_R \\ \dot\theta_R \end{bmatrix} = \frac{1}{r}\begin{bmatrix} 1 & -d/2 \\ 1 & d/2 \end{bmatrix}\begin{bmatrix} \dot x_R \\ \dot\theta_R \end{bmatrix}
+$$
+
+This recovers the same $\dot\phi_l$, $\dot\phi_r$ from Inverse Differential Kinematics above. The general control law for reducing an error $e$ with a Jacobian follows the same pattern, using the pseudo-inverse $J^+$ when $J$ isn't square:
 
 $$
 \Delta q = -J^+e
