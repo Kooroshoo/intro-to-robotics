@@ -232,9 +232,9 @@ $$
 \Delta q = -L\,J^+e
 $$
 
-How $\Delta q$ is applied depends on what the controller accepts:
+How $\Delta q$ is applied depends on what the controller accepts.
 
-- **Position-controlled servo (arm joint)**:
+**Position-controlled servo (arm joint)**:
 
 $$
 q \leftarrow q + \Delta q
@@ -242,7 +242,7 @@ $$
 
 because $\Delta q$ is a position increment.
 
-- **Velocity-controlled motor (e.g. wheel)**: use a velocity command instead:
+**Velocity-controlled motor (e.g. wheel)**: use a velocity command instead:
 
 $$
 \dot q = -L\,J^+e
