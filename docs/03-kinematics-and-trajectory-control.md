@@ -237,22 +237,10 @@ For the mobile robot, that error breaks down into three components: a distance t
 ![The three components of a robot's pose error: distance, direction, and heading](assets/images/goal_error.svg)
 </p>
 
-**Distance** ($\rho$) is just the straight-line distance to the goal:
+**Distance** ($\rho$) is the straight-line distance to the goal, **direction** ($\alpha$) is the angle the robot needs to turn to face the goal relative to its current heading, and **heading error** ($\theta_e$) is how far off the robot's final orientation is from the goal's:
 
 $$
-\rho = \sqrt{(x_g - x_r)^2 + (y_g - y_r)^2}
-$$
-
-**Direction** ($\alpha$) is the angle the robot needs to turn to face the goal, measured relative to its current heading:
-
-$$
-\alpha = \text{atan2}(y_g - y_r,\ x_g - x_r) - \theta_r
-$$
-
-**Heading error** ($\theta_e$) is simply how far off the robot's final orientation is from the goal's:
-
-$$
-\theta_e = \theta_g - \theta_r
+\rho = \sqrt{(x_g - x_r)^2 + (y_g - y_r)^2} \qquad \alpha = \text{atan2}(y_g - y_r,\ x_g - x_r) - \theta_r \qquad \theta_e = \theta_g - \theta_r
 $$
 
 Its control inputs are $\dot x$ and $\dot\theta_r$, and $\rho$, $\alpha$ are already given in polar coordinates. A convenient error function to minimize is the sum of their squares:
