@@ -224,7 +224,7 @@ x_{k+1} = x_k - L\,f'(x_k) \qquad \Delta x = -L\,f'(x_k) \qquad x_{k+1} = x_k + 
 \end{gathered}
 $$
 
-For multiple actuators $q$, we use the Jacobian from earlier: $f'(x)$ becomes $J^+e$:
+For multiple actuators $q$, using the Jacobian from earlier, $f'(x)$ becomes $J^+e$ — giving the final formula for the controller:
 
 $$
 \Delta q = -L\,J^+e \qquad q = q + \Delta q
