@@ -218,7 +218,16 @@ This is the exact technique we'll use to build the robot's controller below: mea
 In discrete time, this stepping process becomes an update rule: at each timestep $k$, nudge $x$ opposite the derivative, scaled by a gain $L$ that controls how big each step is:
 
 $$
-x_{k+1} = x_k - L\,f'(x_k)
+\begin{gathered}
+x_{k+1} = x_k - L\,f'(x_k) \qquad \Delta x = -L\,f'(x_k) \qquad x_{k+1} = x_k + \Delta x \\[8pt]
+\dot x = \lim_{\Delta t \to 0}\frac{\Delta x}{\Delta t} = -L\,f'(x)
+\end{gathered}
+$$
+
+For multiple actuators $q$, we use the Jacobian from earlier: $f'(x)$ becomes $J^+e$:
+
+$$
+\Delta q = -L\,J^+e \qquad q = q + \Delta q
 $$
 
 That gain $L$ is what determines whether the controller actually converges. Given a step input to track, the response can look very different depending on how it's tuned:
@@ -230,6 +239,30 @@ That gain $L$ is what determines whether the controller actually converges. Give
 - **Stable** — the error settles at zero, either smoothly or with some decaying oscillation on the way there.
 - **Marginally stable** — the error keeps oscillating around zero forever, never quite settling.
 - **Unstable** — the error grows without bound, either steadily or through ever-larger oscillations. A gain that's too large is a common cause of this.
+
+So far, $L$ has just been a single fixed number. **PID Control** below expands that into three separate terms instead of one constant.
+
+## PID Control
+
+The controller derived above is a pure **Proportional (P)** controller — the control signal is proportional only to the current error. In general, a control signal can be made up of three terms:
+
+- **P** — proportional to the current error.
+- **I** — proportional to the integral of past errors.
+- **D** — proportional to the derivative of the error.
+
+<p markdown="1" style="text-align:center;">
+![PID control loop: proportional, integral, and derivative terms combine into the control signal](assets/images/pid_block_diagram.svg)
+</p>
+
+$$
+u(t) = K_p\,e(t) + K_i\int_0^t e(\tau)\,d\tau + K_d\,\frac{de(t)}{dt}
+$$
+
+In practice, the integral term is computed by summing up just the last $N$ error terms rather than the entire history, to prevent **wind-up** — a large accumulated error continuing to push the controller long after it's no longer relevant. The derivative term reacts to how fast the error is changing, which increases the speed of convergence.
+
+## Examples in Practice
+
+### Mobile Robot Controller
 
 For the mobile robot, that error breaks down into three components: a distance to cover, a direction to face to get there, and a final heading to end up at.
 
@@ -263,47 +296,6 @@ $$
 
 Compare this with the intuitive result: drive faster the farther the goal is, and turn faster the more misaligned the heading is. Absorbing the constants into $p_1$ and $p_2$, this collapses into the simple P-controller used in the code below:
 
-```
-leftwheel  = -p1 * alpha + p2 * rho
-rightwheel =  p1 * alpha + p2 * rho
-```
-
-## PID Control
-
-The controller derived above is a pure **Proportional (P)** controller — the control signal is proportional only to the current error. In general, a control signal can be made up of three terms:
-
-- **P** — proportional to the current error.
-- **I** — proportional to the integral of past errors.
-- **D** — proportional to the derivative of the error.
-
-<p markdown="1" style="text-align:center;">
-![PID control loop: proportional, integral, and derivative terms combine into the control signal](assets/images/pid_block_diagram.svg)
-</p>
-
-$$
-u(t) = K_p\,e(t) + K_i\int_0^t e(\tau)\,d\tau + K_d\,\frac{de(t)}{dt}
-$$
-
-In practice, the integral term is computed by summing up just the last $N$ error terms rather than the entire history, to prevent **wind-up** — a large accumulated error continuing to push the controller long after it's no longer relevant. The derivative term reacts to how fast the error is changing, which increases the speed of convergence.
-
-## Examples in Practice
-
-### Mobile Robot
-
-Pulling every step above together for the mobile robot:
-
-<p markdown="1" style="text-align:center;">
-![The three components of a robot's pose error: distance, direction, and heading](assets/images/goal_error.svg)
-</p>
-
-1. **Error** — from the current and goal poses, compute $\rho$ (distance) and $\alpha$ (heading-to-goal).
-2. **Gradient descent** — minimizing $e = \rho^2 + \alpha^2$ gives $\dot x = p_2\rho$ and $\dot\theta_r = -p_1\alpha$.
-3. **Inverse kinematics** — the inverse Jacobian converts that desired velocity into wheel speeds:
-
-$$
-\text{leftwheel} = -p_1\alpha + p_2\rho \qquad \text{rightwheel} = p_1\alpha + p_2\rho
-$$
-
 Code:
 
 ```python
@@ -312,14 +304,11 @@ alpha = np.arctan2(target_y - yw, target_x - xw) - theta
 
 leftwheel = -p1 * alpha + p2 * rho
 rightwheel = p1 * alpha + p2 * rho
-
-motor_left.setVelocity(leftwheel)
-motor_right.setVelocity(rightwheel)
 ```
 
 Every control loop iteration just repeats these three steps: measure the error, step opposite its gradient, convert to wheel speeds, and move.
 
-### Robot Arm
+### Robot Arm Controller
 
 The exact same logic applies to the 2-link arm — just with its own error and its own Jacobian from earlier.
 
@@ -336,7 +325,7 @@ $$
 **Applying the control law** with the arm's own Jacobian $J$ and its pseudo-inverse $J^+$ (since $J$ isn't square):
 
 $$
-\Delta q = -J^+e
+\Delta q = -L\,J^+e
 $$
 
 **Final output** — just like the mobile robot's pose update, each joint angle simply gets nudged by its share of $\Delta q$ every iteration:
