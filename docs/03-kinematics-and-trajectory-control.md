@@ -226,7 +226,7 @@ x_{k+1} = x_k - L\,f'(x_k) \\[8pt]
 \end{gathered}
 $$
 
-For multiple actuators $q$, using the Jacobian from earlier, $f'(x)$ becomes $J^+e$, giving us the general control law:
+For multiple actuators $q$, we need to determine how each actuator should move to reduce the end-effector pose error. The Jacobian $J$ describes how changes in the actuators affect the pose. Because the error $e$ is expressed in pose space, the pseudo-inverse $J^+$ maps this error back into actuator space, producing an appropriate actuator adjustment. The control law is therefore:
 
 $$
 \Delta q = -L\,J^+e
