@@ -232,21 +232,10 @@ $$
 \Delta q = -L\,J^+e
 $$
 
-How $\Delta q$ is applied depends on what the controller accepts.
+How $\Delta q$ is applied depends on what the controller accepts:
 
-**Position-controlled servo (arm joint)**:
-
-$$
-q \leftarrow q + \Delta q
-$$
-
-because $\Delta q$ is a position increment.
-
-**Velocity-controlled motor (e.g. wheel)**: use a velocity command instead:
-
-$$
-\dot q = -L\,J^+e
-$$
+- **Position-controlled servo** (arm joint): accumulate it, $q \leftarrow q + \Delta q$, since $\Delta q$ is a position increment.
+- **Velocity-controlled motor** (wheel): send it directly as a velocity command, $\dot q = -L\,J^+e$.
 
 That gain $L$ is what determines whether the controller actually converges. Given a step input to track, the response can look very different depending on how it's tuned:
 
