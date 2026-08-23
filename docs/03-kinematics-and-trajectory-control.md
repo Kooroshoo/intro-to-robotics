@@ -352,6 +352,8 @@ $$
 
 Let $p = -L$, with $p > 0$, so the code below just uses a plain positive gain instead of a negative one.
 
+Getting $x_{ee}, y_{ee}, \theta_{ee}$ using forward kinematics from earlier. Differentiating with respect to each joint gives us $J$:
+
 ```python
 e = np.array([xg - xee, yg - yee, thetag - thetaee])
 
@@ -368,11 +370,17 @@ theta2 = theta2 + deltaQ[1]
 
 We can extend the same idea to 3D. To keep things simple, we will use a 3-DOF arm: the first joint rotates the entire arm around the world's vertical axis, while the other two joints bend the arm within the resulting plane. This gives the end-effector enough freedom to reach different positions in 3D space.
 
-For simplicity, we will focus only on the **position** of the end-effector and ignore its orientation.
+For simplicity, we will focus only on the **position** of the end-effector and ignore its orientation. Computing the forward kinematics for the robot's end-effector gives:
+
+$$
+x_{ee} = \cos\theta_1(L_2\cos\theta_2 + L_3\cos(\theta_2+\theta_3)) \quad y_{ee} = \sin\theta_1(L_2\cos\theta_2 + L_3\cos(\theta_2+\theta_3)) \quad z_{ee} = -L_2\sin\theta_2 - L_3\sin(\theta_2+\theta_3)
+$$
 
 <p markdown="1" style="text-align:center;">
 ![A 3-DOF arm reaching for a goal position in 3D, with its base rotation sweeping the arm's plane around the vertical axis](assets/images/arm_controller_3d.svg)
 </p>
+
+Differentiating $x_{ee}$, $y_{ee}$, and $z_{ee}$ with respect to each joint gives us $J$:
 
 ```python
 e = np.array([xg - xee, yg - yee, zg - zee])
