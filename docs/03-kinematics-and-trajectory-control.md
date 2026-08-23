@@ -350,7 +350,7 @@ $$
 \theta_1 \leftarrow \theta_1 + \Delta\theta_1 \qquad \theta_2 \leftarrow \theta_2 + \Delta\theta_2
 $$
 
-Code:
+Let $p = -L$, with $p > 0$, so the code below just uses a plain positive gain instead of a negative one.
 
 ```python
 e = np.array([xg - xee, yg - yee, thetag - thetaee])
@@ -359,8 +359,34 @@ J = np.array([[-L1*np.sin(theta1) - L2*np.sin(theta1+theta2), -L2*np.sin(theta1+
               [ L1*np.cos(theta1) + L2*np.cos(theta1+theta2),  L2*np.cos(theta1+theta2)],
               [1, 1]])
 
-deltaQ = -np.linalg.pinv(J) @ e
+p = 0.1
+deltaQ = p * np.linalg.pinv(J) @ e
 
 theta1 = theta1 + deltaQ[0]
 theta2 = theta2 + deltaQ[1]
 ```
+
+We can extend the same idea to 3D. To keep things simple, we will use a 3-DOF arm: the first joint rotates the entire arm around the world's vertical axis, while the other two joints bend the arm within the resulting plane. This gives the end-effector enough freedom to reach different positions in 3D space.
+
+For simplicity, we will focus only on the **position** of the end-effector and ignore its orientation.
+
+<p markdown="1" style="text-align:center;">
+![A 3-DOF arm reaching for a goal position in 3D, with its base rotation sweeping the arm's plane around the vertical axis](assets/images/arm_controller_3d.svg)
+</p>
+
+```python
+e = np.array([xg - xee, yg - yee, zg - zee])
+
+J = np.array([[-np.sin(theta1)*(L2*np.cos(theta2) + L3*np.cos(theta2+theta3)), np.cos(theta1)*(-L2*np.sin(theta2) - L3*np.sin(theta2+theta3)), np.cos(theta1)*(-L3*np.sin(theta2+theta3))],
+              [ np.cos(theta1)*(L2*np.cos(theta2) + L3*np.cos(theta2+theta3)), np.sin(theta1)*(-L2*np.sin(theta2) - L3*np.sin(theta2+theta3)), np.sin(theta1)*(-L3*np.sin(theta2+theta3))],
+              [ 0.0, -L2*np.cos(theta2) - L3*np.cos(theta2+theta3), -L3*np.cos(theta2+theta3)]])
+
+p = 0.1
+deltaQ = p * np.linalg.pinv(J) @ e
+
+theta1 = theta1 + deltaQ[0]
+theta2 = theta2 + deltaQ[1]
+theta3 = theta3 + deltaQ[2]
+```
+
+In a real robot, the arm would typically have more degrees of freedom, often six or more. Deriving the full kinematics and Jacobian by hand can quickly become complicated and prone to errors. In practice, robotics libraries are typically used to handle these calculations.
