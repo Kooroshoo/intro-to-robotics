@@ -20,6 +20,14 @@ The chapters ahead are about closing the loop between the two: turning sensor me
 * **Mobile robots** (wheeled, legged, aerial) move their entire body through the environment. Their kinematics describes how wheel or leg motion translates into changes in position and heading.
 * **Manipulators** (robot arms) stay fixed at their base and move an end-effector through a chain of joints. Their kinematics describes how joint angles translate into the position and orientation of that end-effector.
 
+<div markdown="1" style="display:flex; justify-content:center; align-items:flex-start; flex-wrap:wrap; gap:24px;">
+
+![A mobile robot moves its entire body through the environment](assets/images/mobile_robot_type.svg)
+
+![A manipulator stays fixed at its base and moves an end-effector](assets/images/manipulator_type.svg)
+
+</div>
+
 Both are described with the same underlying math — frames, rotations, and transformations.
 
 ## Degrees of Freedom (DOF)
@@ -27,7 +35,7 @@ Both are described with the same underlying math — frames, rotations, and tran
 A robot's **degrees of freedom** are the independent ways it can move. DOF is counted in two different spaces:
 
 * **Actuator-space DOF** — the number of independently driven joints or motors.
-* **Cartesian-space DOF** — the number of independent directions the end-effector (or body) can move in the world, up to 6: three for position, three for orientation.
+* **Cartesian-space DOF** — the number of independent directions the end-effector (or body) can move in the world: up to 3 in 2D (position and heading), or up to 6 in 3D (three for position, three for orientation).
 
 <div markdown="1" style="display:flex; justify-content:center; align-items:flex-start; flex-wrap:wrap; gap:24px;">
 
