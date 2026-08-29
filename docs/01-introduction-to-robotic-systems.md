@@ -120,3 +120,14 @@ In an open chain, DOF is simply the sum of each joint's freedom. In a closed cha
 </p>
 
 Whether a mobile robot is holonomic or not comes down to its wheels. Differential-drive and car-like robots are non-holonomic; omnidirectional wheels remove that restriction entirely. Depending on where and how a wheel is mounted, it can add a DOF, remove one, or have no effect at all.
+
+## Compliance vs. Rigidity
+
+* **Rigid robots** resist external forces and hold their commanded position as precisely as their actuators allow. Most industrial arms are built this way.
+* **Compliant robots** yield to external forces instead of fighting them, either through soft, springy hardware or through control software that makes a rigid robot behave that way.
+
+<p markdown="1" style="text-align:center;">
+![A rigid robot holds its position against a push; a compliant robot yields and then settles](assets/images/compliance_rigidity.svg)
+</p>
+
+Compliance doesn't require special hardware — a common technique called **impedance control** lets an otherwise rigid robot behave like a spring, purely in software. This trade-off matters most where robots interact with people or uncertain environments, like collaborative robots (cobots).
