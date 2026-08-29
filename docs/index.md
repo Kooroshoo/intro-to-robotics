@@ -1,11 +1,12 @@
-# Introduction to Robotics Control
+# Introduction to Robotics
 
-Welcome to the **Intro to Robotics** guide! This book covers the fundamental mathematical concepts behind robot kinematics and control, starting from basic coordinate transformations and culminating in how Jacobian-based gradient descent is used to command robots.
+Welcome to the **Intro to Robotics** guide! This book covers the fundamental mathematical concepts behind robot kinematics and control.
 
-## What You Will Learn
-* **Spatial Representation:** How a robot understands its position and orientation in a 3D world.
-* **Transformations:** The matrix math required to translate local robot coordinates into absolute world coordinates.
-* **Differential Kinematics:** How to use the Jacobian matrix to map errors in 3D space directly to motor commands.
-* **Control Theory:** Using algebraic simplifications to write clean, proportional controllers in Python.
+## Table of Contents
 
-Use the sidebar navigation to explore the chapters!
+1. [Introduction to Robotic Systems](01-introduction-to-robotic-systems.md)
+2. [Spatial Representation](02-spatial-representation.md)
+3. [Kinematics and Trajectory Control](03-kinematics-and-trajectory-control.md)
+4. [Mapping and Navigation](04-mapping-and-navigation.md)
+5. [Task Planning and Execution](05-task-planning-and-execution.md)
+
