@@ -1,4 +1,4 @@
-# Introduction to Robotics
+# Overview
 
 Welcome to the **Intro to Robotics** guide! This book covers the fundamental mathematical concepts behind robot kinematics and control.
 
