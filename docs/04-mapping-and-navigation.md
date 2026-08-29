@@ -127,3 +127,14 @@ graph = {'A': {'B': 3, 'C': 5},
          'F': {'C': 3, 'E': 1}}
 ```
 
+### Exploring the Graph
+
+Having a graph isn't enough — we still have to **explore** it to find a path. **Breadth-first search (BFS)** visits every neighbor before going deeper, using a FIFO queue; **depth-first search (DFS)** commits to one path as deep as it can go, using a LIFO stack.
+
+<div markdown="1" style="display:flex; justify-content:center; align-items:flex-start; flex-wrap:wrap; gap:24px;">
+
+![Breadth-first search: every neighbor of a node is visited before moving on to the next one](assets/images/bfs_traversal.svg)
+
+![Depth-first search: the search commits to one path as deep as it goes before backtracking](assets/images/dfs_traversal.svg)
+
+</div>
