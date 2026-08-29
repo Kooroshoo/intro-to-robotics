@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <defs>
+    <marker id="armArrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#334155"/>
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <text x="20" y="24" font-family="sans-serif" font-size="15" font-weight="bold" fill="#334155">Arm C-space</text>
+
+  <!-- Plot border -->
+  <rect x="40" y="40" width="220" height="220" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+
+  <!-- Axes: one per joint angle -->
+  <line x1="40" y1="260" x2="270" y2="260" stroke="#334155" stroke-width="2" marker-end="url(#armArrow)"/>
+  <line x1="40" y1="260" x2="40" y2="30" stroke="#334155" stroke-width="2" marker-end="url(#armArrow)"/>
+  <text x="278" y="265" font-family="sans-serif" font-size="15" font-style="italic" fill="#334155">q&#8321;</text>
+  <text x="20" y="42" font-family="sans-serif" font-size="15" font-style="italic" fill="#334155">q&#8322;</text>
+
+  <!-- Blocked configurations: joint angle combinations that make the arm collide -->
+  <path d="M150,190 C170,175 185,150 180,120 C176,95 155,80 130,90 C110,98 100,120 108,145 C114,165 130,200 150,190 Z" fill="#94a3b8" stroke="#475569" stroke-width="2"/>
+  <text x="140" y="220" font-family="sans-serif" font-size="12" fill="#475569" text-anchor="middle">blocked</text>
+</svg>
