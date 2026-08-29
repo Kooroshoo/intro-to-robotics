@@ -4,13 +4,17 @@
 A robot is a programmable physical system that senses its environment, makes decisions, and acts on the world to accomplish a task. At its core, every robot repeats the same loop:
 
 <p markdown="1" style="text-align:center;">
-**sense → think → act**
+![The sense, think, act loop every robot repeats](assets/images/sense_think_act_loop.svg)
 </p>
 
 ## Sensors and Actuators
 
 * **Sensors** (cameras, LiDAR, wheel encoders, IMUs, force/touch sensors) perceive the environment and the robot's own state.
 * **Actuators** (motors, servos, hydraulic and pneumatic drives) act on the world, turning commands into motion.
+
+<p markdown="1" style="text-align:center;">
+![Sensors perceive the world; actuators act on it](assets/images/sensors_actuators.svg)
+</p>
 
 The chapters ahead are about closing the loop between the two: turning sensor measurements into the right actuator commands.
 
