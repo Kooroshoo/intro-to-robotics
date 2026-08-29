@@ -1,25 +1,38 @@
 # Part I: Introduction to Robotic Systems
-
-Before diving into the math behind robot motion, it helps to establish a shared vocabulary: what a robot actually is, what lets it sense and act, and how we classify the different kinds you'll encounter throughout this book.
-
 ## What Is a Robot?
 
-A robot is a programmable physical system that senses its environment, makes decisions, and acts on the world to accomplish a task. At its core, every robot repeats the same loop: **sense → think → act**.
+A robot is a programmable physical system that senses its environment, makes decisions, and acts on the world to accomplish a task. At its core, every robot repeats the same loop:
+
+<p markdown="1" style="text-align:center;">
+**sense → think → act**
+</p>
 
 ## Sensors and Actuators
 
-* **Sensors** are how a robot perceives its environment and its own state — cameras, LiDAR, wheel encoders, IMUs, and force/touch sensors all report measurements back to the robot's controller.
-* **Actuators** are how a robot acts on the world — motors, servos, and hydraulic or pneumatic drives that turn commands into physical motion.
+* **Sensors** (cameras, LiDAR, wheel encoders, IMUs, force/touch sensors) perceive the environment and the robot's own state.
+* **Actuators** (motors, servos, hydraulic and pneumatic drives) act on the world, turning commands into motion.
 
-Everything in the chapters that follow is really about closing the loop between these two: turning sensor measurements into the right actuator commands.
+The chapters ahead are about closing the loop between the two: turning sensor measurements into the right actuator commands.
 
-## Degrees of Freedom (DOF)
-
-A robot's **degrees of freedom** are the independent ways it can move — each one usually corresponds to a single motor or joint. A wheeled robot moving on a flat floor has 3 DOF ($x$, $y$, and heading $\theta$); a 6-axis industrial arm has 6 DOF, letting its end-effector reach any position *and* orientation in 3D space.
 
 ## Mobile Robots vs. Manipulators
 
 * **Mobile robots** (wheeled, legged, aerial) move their entire body through the environment. Their kinematics describes how wheel or leg motion translates into changes in position and heading.
 * **Manipulators** (robot arms) stay fixed at their base and move an end-effector through a chain of joints. Their kinematics describes how joint angles translate into the position and orientation of that end-effector.
 
-Both are described with the same underlying math — frames, rotations, and transformations — which is exactly where this book picks up next.
+Both are described with the same underlying math — frames, rotations, and transformations.
+
+## Degrees of Freedom (DOF)
+
+A robot's **degrees of freedom** are the independent ways it can move. DOF is counted in two different spaces:
+
+* **Actuator-space DOF** — the number of independently driven joints or motors.
+* **Cartesian-space DOF** — the number of independent directions the end-effector (or body) can move in the world, up to 6: three for position, three for orientation.
+
+<div markdown="1" style="display:flex; justify-content:center; flex-wrap:wrap; gap:24px;">
+![A mobile robot's actuator-space DOF: one per driven wheel](assets/images/actuator_space_dof.svg)
+![The same robot's Cartesian-space DOF: the independent directions it can move in the world](assets/images/cartesian_space_dof.svg)
+</div>
+
+These two counts don't have to match. A robot is **redundant** when it has more actuator-space DOF than Cartesian-space DOF, and **underactuated** when it has fewer.
+
