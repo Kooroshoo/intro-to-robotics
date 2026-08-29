@@ -119,7 +119,7 @@ In an open chain, DOF is simply the sum of each joint's freedom. In a closed cha
 ![A non-holonomic robot can't move sideways directly; a holonomic robot can move any direction at once](assets/images/wheel_configurations.svg)
 </p>
 
-Whether a mobile robot is holonomic or not comes down to its wheels. Differential-drive and car-like robots are non-holonomic; omnidirectional wheels remove that restriction entirely. Depending on where and how a wheel is mounted, it can add a DOF, remove one, or have no effect at all.
+Whether a mobile robot is holonomic or not comes down to its wheels. Differential-drive and car-like robots are non-holonomic; omnidirectional wheels remove that restriction entirely. Depending on where and how a wheel is mounted, it can add a DOF, remove one, or have no effect at all. Chapter 3 revisits this idea more precisely, in terms of what a robot's motion actually depends on.
 
 ## Compliance vs. Rigidity
 
