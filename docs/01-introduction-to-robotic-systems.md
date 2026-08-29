@@ -18,6 +18,17 @@ A robot is a programmable physical system that senses its environment, makes dec
 
 The chapters ahead are about closing the loop between the two: turning sensor measurements into the right actuator commands.
 
+## Open-Loop vs. Closed-Loop Control
+
+* **Open-loop control** sends commands to the actuators without checking the result — like a washing machine running on a fixed timer. It's simple, but any disturbance or model error goes uncorrected.
+* **Closed-loop control** uses sensor feedback to compare the actual state against the goal and continuously corrects the error. This is how most real-world robots operate.
+
+<p markdown="1" style="text-align:center;">
+![Open-loop control has no feedback; closed-loop control corrects itself using sensor feedback](assets/images/open_closed_loop.svg)
+</p>
+
+Chapter 3 builds on this idea directly: its controllers compute exactly how much correction to apply at each step, based on the error between the current and goal pose.
+
 
 ## Mobile Robots vs. Manipulators
 
