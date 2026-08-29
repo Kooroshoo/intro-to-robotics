@@ -53,9 +53,9 @@ A robot's **configuration space** (or **C-space**) is the minimal set of numbers
 
 ## Mapping
 
-In order to build the waypoints from the last section, we first need a map of the environment. This map can be acquired **offline** — built ahead of time, before the robot ever moves — or **online**, with the robot exploring on its own and building the map as it goes, until it has learned enough of the room to plan a path.
+In order to build the waypoints, we first need a map of the environment. This map can be acquired **offline** — built ahead of time, before the robot ever moves — or **online**, with the robot exploring on its own and building the map as it goes, until it has learned enough of the room to plan a path.
 
-One common way to build a map online is to scan the environment with sensors — lidar, cameras, sonar — that measure distance to nearby surfaces. Sweeping these measurements around the robot marks a point everywhere a beam hits something solid, building up a **point cloud** of the space around it.
+One common way to build a map online is to scan the environment with a lidar sensor that measures distance to nearby surfaces, marking a point everywhere a beam hits something solid and building up a **point cloud** of the space around it.
 
 <div markdown="1" style="display:flex; justify-content:center; align-items:flex-start; flex-wrap:wrap; gap:24px;">
 
@@ -80,5 +80,19 @@ We can inflate the obstacle in the grid to account for the robot's own size usin
 ![The same grid after convolution: every cell the kernel could reach from the obstacle is now occupied too](assets/images/convolution_after.svg)
 
 </div>
+
+## Navigation
+
+Once we have the map, how do we get the waypoints? We can treat the grid as a graph problem: treat every free cell as a node, connect it to its free neighbors, and search that graph for the shortest path from the robot's cell to the goal's cell — with algorithms like **Dijkstra** or **A\***.
+
+<div markdown="1" style="display:flex; justify-content:center; align-items:flex-start; flex-wrap:wrap; gap:24px;">
+
+![A grid map of 1s and 0s, with a green path from start to goal around both obstacles](assets/images/grid_map_with_path.svg)
+
+![The same grid as a graph: every free cell is a node connected to its free neighbors, with the found path highlighted](assets/images/graph_full.svg)
+
+</div>
+
+This conversion only goes one way — a grid always maps cleanly to a graph, but not every graph corresponds to a grid.
 
 
