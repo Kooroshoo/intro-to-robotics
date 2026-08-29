@@ -29,6 +29,24 @@ The chapters ahead are about closing the loop between the two: turning sensor me
 
 Chapter 3 builds on this idea directly: its controllers compute exactly how much correction to apply at each step, based on the error between the current and goal pose.
 
+## Model-Based vs. Model-Free Control
+
+* **Model-based control** uses an explicit mathematical model of the robot — its frames, transforms, and Jacobians — to compute the correction needed at each step. This is the approach this book builds, step by step.
+* **Model-free control** skips the explicit model and learns a control policy directly from data and experience, at the cost of needing far more of it.
+
+<p markdown="1" style="text-align:center;">
+![Model-based control derives commands from equations; model-free control learns them from data](assets/images/model_based_free.svg)
+</p>
+
+## Kinematics vs. Dynamics
+
+* **Kinematics** describes motion in terms of positions, velocities, and accelerations, without asking what caused it. This is pure geometry, and it's the focus of this book.
+* **Dynamics** goes further, relating motion to the forces and torques that produce it, along with mass and inertia.
+
+<p markdown="1" style="text-align:center;">
+![Kinematics is about positions and velocities; dynamics is about the forces and torques behind them](assets/images/kinematics_dynamics.svg)
+</p>
+
 
 ## Mobile Robots vs. Manipulators
 
