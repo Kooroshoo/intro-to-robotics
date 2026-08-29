@@ -63,6 +63,17 @@ Chapter 3 builds on this idea directly: its controllers compute exactly how much
 
 Both are described with the same underlying math — frames, rotations, and transformations.
 
+## Revolute vs. Prismatic Joints
+
+* **Revolute joints** rotate about a fixed point, like an elbow or a door hinge. Their variable is an angle, $\theta$ or $q$.
+* **Prismatic joints** slide along a fixed axis, like a piston or a linear rail. Their variable is a distance, $d$ or $q$.
+
+<p markdown="1" style="text-align:center;">
+![Revolute joints rotate; prismatic joints slide](assets/images/joint_types.svg)
+</p>
+
+Every manipulator is a chain of these two joint types — most are built entirely from revolute joints, since they're cheaper and more common in practice.
+
 ## Degrees of Freedom (DOF)
 
 A robot's **degrees of freedom** are the independent ways it can move. DOF is counted in two different spaces:
@@ -87,3 +98,25 @@ A robot's **degrees of freedom** are the independent ways it can move. DOF is co
 </div>
 
 These two counts don't have to match. A robot is **redundant** when it has more actuator-space DOF than Cartesian-space DOF, and **underactuated** when it has fewer.
+
+## Open-Chain vs. Closed-Chain Mechanisms
+
+* **Open-chain (serial) mechanisms** connect their links in a single unbranched sequence, from the base to the end-effector, with no loops.
+* **Closed-chain (parallel) mechanisms** connect their links into one or more closed loops, like a four-bar linkage or a Stewart platform.
+
+<p markdown="1" style="text-align:center;">
+![An open kinematic chain has no loops; a closed kinematic chain's loop constrains its joints](assets/images/open_closed_chain.svg)
+</p>
+
+In an open chain, DOF is simply the sum of each joint's freedom. In a closed chain, the loop constrains the joints, so DOF ends up *lower* than the raw joint count — how the joints are connected can give or take away freedom, not just how many motors drive them.
+
+## Holonomic vs. Non-Holonomic Constraints
+
+* **Holonomic robots** can move directly in any direction their DOF allow — turning and sliding sideways at the same time, like an omnidirectional robot.
+* **Non-holonomic robots** can't do that — a car or a differential-drive robot has to turn before it can move sideways, even though it can still reach any position eventually (think parallel parking).
+
+<p markdown="1" style="text-align:center;">
+![A non-holonomic robot can't move sideways directly; a holonomic robot can move any direction at once](assets/images/wheel_configurations.svg)
+</p>
+
+Whether a mobile robot is holonomic or not comes down to its wheels. Differential-drive and car-like robots are non-holonomic; omnidirectional wheels remove that restriction entirely. Depending on where and how a wheel is mounted, it can add a DOF, remove one, or have no effect at all.
