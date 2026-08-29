@@ -29,10 +29,20 @@ A robot's **degrees of freedom** are the independent ways it can move. DOF is co
 * **Actuator-space DOF** — the number of independently driven joints or motors.
 * **Cartesian-space DOF** — the number of independent directions the end-effector (or body) can move in the world, up to 6: three for position, three for orientation.
 
-<div markdown="1" style="display:flex; justify-content:center; flex-wrap:wrap; gap:24px;">
+<div markdown="1" style="display:flex; justify-content:center; align-items:flex-start; flex-wrap:wrap; gap:24px;">
+
 ![A mobile robot's actuator-space DOF: one per driven wheel](assets/images/actuator_space_dof.svg)
+
 ![The same robot's Cartesian-space DOF: the independent directions it can move in the world](assets/images/cartesian_space_dof.svg)
+
+</div>
+
+<div markdown="1" style="display:flex; justify-content:center; align-items:flex-start; flex-wrap:wrap; gap:24px;">
+
+![A redundant arm's actuator-space DOF: one per driven joint](assets/images/arm_actuator_space_dof.svg)
+
+![The same arm's Cartesian-space DOF: the independent directions its end-effector can move](assets/images/arm_cartesian_space_dof.svg)
+
 </div>
 
 These two counts don't have to match. A robot is **redundant** when it has more actuator-space DOF than Cartesian-space DOF, and **underactuated** when it has fewer.
-
