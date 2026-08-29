@@ -130,4 +130,4 @@ Whether a mobile robot is holonomic or not comes down to its wheels. Differentia
 ![A rigid robot holds its position against a push; a compliant robot yields and then settles](assets/images/compliance_rigidity.svg)
 </p>
 
-Compliance doesn't require special hardware — a common technique called **impedance control** lets an otherwise rigid robot behave like a spring, purely in software. This trade-off matters most where robots interact with people or uncertain environments, like collaborative robots (cobots).
+Compliance doesn't always require special hardware — a common technique called **impedance control** lets an otherwise rigid robot behave like a spring, purely in software. This trade-off matters most where robots interact with people or uncertain environments, like collaborative robots (cobots).
