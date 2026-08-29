@@ -95,4 +95,35 @@ Once we have the map, how do we get the waypoints? We can treat the grid as a gr
 
 This conversion only goes one way — a grid always maps cleanly to a graph, but not every graph corresponds to a grid.
 
+### Graphs
+
+A graph is simply **nodes** connected by **edges**. If the edges have direction, it's a **directed graph**.
+
+<p markdown="1" style="text-align:center;">
+![A small directed graph: nodes A, B, C, D connected by edges, some one-way and some both ways](assets/images/directed_graph_example.svg)
+</p>
+
+```python
+graph = {'A': ['B', 'C'],
+         'B': ['D'],
+         'C': ['A'],
+         'D': ['B']}
+
+path = ['A', 'B', 'D']  # sample
+```
+
+Edges can also carry a **weight** — a cost like distance, time, energy, or number of turns. Finding the path that minimizes total cost is the **shortest path problem**, exactly what Dijkstra and A\* solve.
+
+<p markdown="1" style="text-align:center;">
+![A weighted graph: six nodes connected by edges, each labeled with its cost](assets/images/weighted_graph_example.svg)
+</p>
+
+```python
+graph = {'A': {'B': 3, 'C': 5},
+         'B': {'A': 3, 'D': 1, 'E': 3},
+         'C': {'A': 5, 'F': 3},
+         'D': {'B': 1},
+         'E': {'B': 3, 'F': 1},
+         'F': {'C': 3, 'E': 1}}
+```
 
