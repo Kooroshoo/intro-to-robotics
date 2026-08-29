@@ -46,21 +46,17 @@
     <circle cx="0" cy="0" r="3" fill="#64748b"/>
 
     <!-- Four omni/mecanum wheels, one at each corner, with angled rollers -->
-    <rect x="-38" y="-26" width="14" height="8" rx="2" fill="#334155"/>
-    <line x1="-35" y1="-18" x2="-31" y2="-26" stroke="#f8fafc" stroke-width="1.5"/>
-    <line x1="-30" y1="-18" x2="-26" y2="-26" stroke="#f8fafc" stroke-width="1.5"/>
+    <circle cx="-31" cy="-22" r="7" fill="#334155"/>
+    <line x1="-35" y1="-18" x2="-27" y2="-26" stroke="#f8fafc" stroke-width="1.5"/>
 
-    <rect x="24" y="-26" width="14" height="8" rx="2" fill="#334155"/>
-    <line x1="27" y1="-18" x2="31" y2="-26" stroke="#f8fafc" stroke-width="1.5"/>
-    <line x1="32" y1="-18" x2="36" y2="-26" stroke="#f8fafc" stroke-width="1.5"/>
+    <circle cx="31" cy="-22" r="7" fill="#334155"/>
+    <line x1="27" y1="-18" x2="35" y2="-26" stroke="#f8fafc" stroke-width="1.5"/>
 
-    <rect x="-38" y="18" width="14" height="8" rx="2" fill="#334155"/>
-    <line x1="-35" y1="26" x2="-31" y2="18" stroke="#f8fafc" stroke-width="1.5"/>
-    <line x1="-30" y1="26" x2="-26" y2="18" stroke="#f8fafc" stroke-width="1.5"/>
+    <circle cx="-31" cy="22" r="7" fill="#334155"/>
+    <line x1="-35" y1="26" x2="-27" y2="18" stroke="#f8fafc" stroke-width="1.5"/>
 
-    <rect x="24" y="18" width="14" height="8" rx="2" fill="#334155"/>
-    <line x1="27" y1="26" x2="31" y2="18" stroke="#f8fafc" stroke-width="1.5"/>
-    <line x1="32" y1="26" x2="36" y2="18" stroke="#f8fafc" stroke-width="1.5"/>
+    <circle cx="31" cy="22" r="7" fill="#334155"/>
+    <line x1="27" y1="26" x2="35" y2="18" stroke="#f8fafc" stroke-width="1.5"/>
 
     <!-- Free to move any direction at once -->
     <line x1="0" y1="-22" x2="0" y2="-50" stroke="#2563eb" stroke-width="2.5" marker-end="url(#hnArrowBlue)"/>
