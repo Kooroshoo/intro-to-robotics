@@ -139,5 +139,13 @@ Having a graph isn't enough — we still have to **explore** it to find a path. 
 
 </div>
 
+### Dijkstra's Algorithm
+
+Dijkstra's algorithm searches a weighted graph the same way water floods outward from a drain: it expands outward from the start one step of cost at a time, always exploring the cheapest unvisited node next, until it reaches the goal. What's left behind is the shortest path.
+
+<p markdown="1" style="text-align:center;">
+![Dijkstra's algorithm expanding outward from the start, around an obstacle, until it reaches the goal and reveals the shortest path](assets/images/dijkstra_wavefront.svg)
+</p>
+
 
 ## Examples in Practice
