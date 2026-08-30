@@ -204,6 +204,10 @@ graph = {(row, col): get_neighbors((row, col))
 
 With the grid turned into `graph`, the same graph can be handed to any of the four search algorithms from this chapter — each one returns `previous`, a dictionary mapping every node to whichever node discovered it, so the shortest path is recovered by walking `previous` backward from the goal to the start.
 
+<p markdown="1" style="text-align:center;">
+![The shortest path on the tiny graph, from (0,0) to (2,0), the only route around the obstacle](assets/images/tiny_graph_path.svg)
+</p>
+
 BFS explores its FIFO queue neighbor by neighbor, exactly as pictured earlier:
 
 ```python
@@ -248,7 +252,11 @@ def dfs(graph, start, goal):
     return previous
 ```
 
-Dijkstra's swaps the stack for a priority queue ordered by cost, so it always expands the cheapest node next instead of the most recently discovered one:
+Dijkstra's swaps the stack for a priority queue ordered by cost, so it always expands the cheapest node next instead of the most recently discovered one.
+
+<p markdown="1" style="text-align:center;">
+![The same tiny graph with weights added, plus a costly shortcut edge directly from (0,0) to (2,0)](assets/images/tiny_weighted_graph.svg)
+</p>
 
 ```python
 import heapq
@@ -262,13 +270,15 @@ def dijkstra(graph, start, goal):
         cost, node = heapq.heappop(queue)
         if node == goal:
             return previous
-        for neighbor in graph[node]:
-            new_cost = cost + 1   # every grid edge costs 1
+        for neighbor, weight in graph[node].items():
+            new_cost = cost + weight
             if new_cost < g.get(neighbor, float('inf')):
                 g[neighbor] = new_cost
                 previous[neighbor] = node
                 heapq.heappush(queue, (new_cost, neighbor))
 ```
+
+Run on `weighted_graph`, Dijkstra ignores the tempting shortcut and returns the cheap six-step route instead, exactly as the diagram above shows.
 
 A\* reuses Dijkstra almost exactly — the only change is adding the Manhattan-distance heuristic to what gets pushed onto the heap:
 
@@ -292,3 +302,5 @@ def astar(graph, start, goal):
                 previous[neighbor] = node
                 heapq.heappush(queue, (new_cost + manhattan(neighbor, goal), neighbor))
 ```
+
+All four end up walking the exact same graph — the only thing that changes between them is which node gets popped next, and that one choice is the whole difference between blindly flooding outward and searching with a sense of direction.
