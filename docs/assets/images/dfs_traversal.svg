@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 280" width="300" height="280">
   <defs>
-    <marker id="dfsArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="dfsArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
       <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
     </marker>
   </defs>
@@ -9,16 +9,21 @@
 
   <!-- Every edge in the graph -->
   <g stroke="#334155" stroke-width="2">
-    <line x1="165" y1="70" x2="201" y2="120"/>
+    <line x1="135" y1="70" x2="95" y2="120"/>
+    <line x1="165" y1="70" x2="200" y2="120"/>
+    <line x1="73" y1="164" x2="62" y2="201"/>
+    <line x1="96" y1="159" x2="137" y2="206"/>
+    <line x1="226" y1="163" x2="244" y2="201"/>
+    <line x1="178" y1="225" x2="230" y2="224"/>
   </g>
 
   <!-- DFS commits to one path as deep as it can go before backtracking -->
-  <g stroke="#2563eb" stroke-width="3">
-    <line x1="135" y1="70" x2="95" y2="120" marker-end="url(#dfsArrow)"/>
-    <line x1="73" y1="164" x2="62" y2="201" marker-end="url(#dfsArrow)"/>
-    <line x1="96" y1="159" x2="137" y2="206" marker-end="url(#dfsArrow)"/>
-    <line x1="178" y1="225" x2="230" y2="224" marker-end="url(#dfsArrow)"/>
-    <line x1="226" y1="163" x2="244" y2="201" marker-start="url(#dfsArrow)"/>
+  <g stroke="#2563eb" stroke-width="2.5" opacity="0.75">
+    <line x1="116" y1="73" x2="94" y2="101" marker-end="url(#dfsArrow)"/>
+    <line x1="61" y1="160" x2="50" y2="195" marker-end="url(#dfsArrow)"/>
+    <line x1="86" y1="217" x2="122" y2="217" marker-end="url(#dfsArrow)"/>
+    <line x1="186" y1="217" x2="222" y2="216" marker-end="url(#dfsArrow)"/>
+    <line x1="238" y1="160" x2="254" y2="192" marker-start="url(#dfsArrow)"/>
   </g>
 
   <!-- Nodes -->
