@@ -141,11 +141,20 @@ Having a graph isn't enough — we still have to **explore** it to find a path. 
 
 ### Dijkstra's Algorithm
 
-Dijkstra's algorithm searches a weighted graph the same way water floods outward from a drain: it expands outward from the start one step of cost at a time, always exploring the cheapest unvisited node next, until it reaches the goal. What's left behind is the shortest path.
+Dijkstra's algorithm is designed to find the shortest path in a weighted graph. It is essentially a weighted version of Breadth-First Search (BFS): at each step it expands whichever node has the lowest cost from the start so far, called $g$, tracking the cheapest known route to every node it has seen.
 
 <p markdown="1" style="text-align:center;">
 ![Dijkstra's algorithm expanding outward from the start, around an obstacle, until it reaches the goal and reveals the shortest path](assets/images/dijkstra_wavefront.svg)
 </p>
 
+### A* Search
+
+A\* is simply an extension of Dijkstra's algorithm. The critical difference is that A\* is informed, whereas Dijkstra's is blind — it ranks nodes by $f = g + h$, where $g$ is the cost so far and $h$ is a heuristic estimate of the remaining distance to the goal.
+
+Manhattan distance and Euclidean distance are both common, good heuristics.
+
+<p markdown="1" style="text-align:center;">
+![A* searching the same map, guided toward the goal instead of expanding evenly in every direction](assets/images/astar_wavefront.svg)
+</p>
 
 ## Examples in Practice
