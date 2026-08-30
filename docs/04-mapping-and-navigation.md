@@ -138,3 +138,6 @@ Having a graph isn't enough — we still have to **explore** it to find a path. 
 ![Depth-first search: the search commits to one path as deep as it goes before backtracking](assets/images/dfs_traversal.svg)
 
 </div>
+
+
+## Examples in Practice
