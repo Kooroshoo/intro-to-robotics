@@ -166,3 +166,129 @@ $$
 </p>
 
 ## Examples in Practice
+
+
+### Grids to Graphs
+
+In order to go from a grid to a graph, every free cell becomes a node, connected to whichever of its neighbors are also free. Instead of labeling nodes `'A'`, `'B'`, `'C'`, ..., a grid's nodes can just be their `(row, col)` tuples, and rather than typing the graph out by hand like the small examples earlier, it can be generated directly from the grid itself:
+
+<div markdown="1" style="display:flex; justify-content:center; align-items:flex-start; flex-wrap:wrap; gap:24px;">
+
+![A tiny 3x3 grid with a 2-cell obstacle](assets/images/tiny_grid_example.svg)
+
+![The same grid turned into a graph: free cells become nodes, connected to their free neighbors](assets/images/tiny_graph_example.svg)
+
+</div>
+
+```python
+grid = [[0, 0, 0],
+        [1, 1, 0],
+        [0, 0, 0]]
+
+def get_neighbors(cell):
+    row, col = cell
+    neighbors = []
+    for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+        r, c = row + dr, col + dc
+        if 0 <= r < len(grid) and 0 <= c < len(grid[0]) and grid[r][c] == 0:
+            neighbors.append((r, c))
+    return neighbors
+
+graph = {(row, col): get_neighbors((row, col))
+         for row in range(len(grid))
+         for col in range(len(grid[0]))
+         if grid[row][col] == 0}
+```
+
+### Finding the Shortest Path
+
+With the grid turned into `graph`, the same graph can be handed to any of the four search algorithms from this chapter — each one returns `previous`, a dictionary mapping every node to whichever node discovered it, so the shortest path is recovered by walking `previous` backward from the goal to the start.
+
+BFS explores its FIFO queue neighbor by neighbor, exactly as pictured earlier:
+
+```python
+from collections import deque
+
+def bfs(graph, start, goal):
+    visited = {start}
+    queue = deque([start])
+    previous = {}
+
+    while queue:
+        node = queue.popleft()
+        if node == goal:
+            break
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                previous[neighbor] = node
+                queue.append(neighbor)
+
+    return previous
+```
+
+DFS is nearly identical — swap the queue for a LIFO stack, and it commits to one path as deep as it can go before backtracking:
+
+```python
+def dfs(graph, start, goal):
+    visited = {start}
+    stack = [start]
+    previous = {}
+
+    while stack:
+        node = stack.pop()
+        if node == goal:
+            break
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                previous[neighbor] = node
+                stack.append(neighbor)
+
+    return previous
+```
+
+Dijkstra's swaps the stack for a priority queue ordered by cost, so it always expands the cheapest node next instead of the most recently discovered one:
+
+```python
+import heapq
+
+def dijkstra(graph, start, goal):
+    g = {start: 0}
+    queue = [(0, start)]
+    previous = {}
+
+    while queue:
+        cost, node = heapq.heappop(queue)
+        if node == goal:
+            return previous
+        for neighbor in graph[node]:
+            new_cost = cost + 1   # every grid edge costs 1
+            if new_cost < g.get(neighbor, float('inf')):
+                g[neighbor] = new_cost
+                previous[neighbor] = node
+                heapq.heappush(queue, (new_cost, neighbor))
+```
+
+A\* reuses Dijkstra almost exactly — the only change is adding the Manhattan-distance heuristic to what gets pushed onto the heap:
+
+```python
+def manhattan(a, b):
+    return abs(a[0] - b[0]) + abs(a[1] - b[1])
+
+def astar(graph, start, goal):
+    g = {start: 0}
+    queue = [(manhattan(start, goal), start)]
+    previous = {}
+
+    while queue:
+        _, node = heapq.heappop(queue)
+        if node == goal:
+            return previous
+        for neighbor in graph[node]:
+            new_cost = g[node] + 1
+            if new_cost < g.get(neighbor, float('inf')):
+                g[neighbor] = new_cost
+                previous[neighbor] = node
+                heapq.heappush(queue, (new_cost + manhattan(neighbor, goal), neighbor))
+```
