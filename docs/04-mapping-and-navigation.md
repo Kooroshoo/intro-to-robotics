@@ -185,19 +185,31 @@ grid = [[0, 0, 0],
         [1, 1, 0],
         [0, 0, 0]]
 
-def get_neighbors(cell):
-    row, col = cell
+def get_neighbors(u: tuple, grid: list):
     neighbors = []
-    for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1)):
-        r, c = row + dr, col + dc
-        if 0 <= r < len(grid) and 0 <= c < len(grid[0]) and grid[r][c] == 0:
-            neighbors.append((r, c))
+    for delta in ((0, 1), (0, -1), (1, 0), (-1, 0)):
+        cand = (u[0] + delta[0], u[1] + delta[1])
+        
+        if cand[0] < 0 or cand[1] < 0:
+            continue
+        if cand[0] >= len(grid) or cand[1] >= len(grid[0]):
+            continue
+            
+        if grid[cand[0]][cand[1]] == 0:
+            neighbors.append(cand)
+            
     return neighbors
 
-graph = {(row, col): get_neighbors((row, col))
-         for row in range(len(grid))
-         for col in range(len(grid[0]))
-         if grid[row][col] == 0}
+def build_graph(grid: list):
+    graph = {}
+    
+    for row in range(len(grid)):
+        for col in range(len(grid[0])):
+            if grid[row][col] == 0:
+                current_node = (row, col)
+                graph[current_node] = get_neighbors(current_node, grid)
+                
+    return graph
 ```
 
 ### Finding the Shortest Path
