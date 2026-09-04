@@ -214,55 +214,49 @@ def build_graph(grid: list):
 
 ### Finding the Shortest Path
 
-With the grid turned into `graph`, the same graph can be handed to any of the four search algorithms from this chapter — each one returns `previous`, a dictionary mapping every node to whichever node discovered it, so the shortest path is recovered by walking `previous` backward from the goal to the start.
+The graph below can be handed to any of the four search algorithms in this chapter to find the shortest path from start to goal.
 
 <p markdown="1" style="text-align:center;">
-![The shortest path on the tiny graph, from (0,0) to (2,0), the only route around the obstacle](assets/images/tiny_graph_path.svg)
+![The A-F graph used by all four search algorithms below](assets/images/graph_shortest_path.svg)
 </p>
 
-BFS explores its FIFO queue neighbor by neighbor, exactly as pictured earlier:
+BFS pulls from a FIFO queue: `queue.pop(0)` always removes the oldest entry from the front, so every neighbor gets visited before the search goes deeper:
 
 ```python
-from collections import deque
+graph = {'A' : ['B', 'C'],
+         'B' : ['A', 'D', 'E'],
+         'C' : ['A', 'F'],
+         'D' : ['B'],
+         'E' : ['B', 'F'],
+         'F' : ['C', 'E']
+}
 
-def bfs(graph, start, goal):
-    visited = {start}
-    queue = deque([start])
-    previous = {}
+start = 'A'
+goal = 'F'
 
-    while queue:
-        node = queue.popleft()
-        if node == goal:
-            break
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                previous[neighbor] = node
-                queue.append(neighbor)
+# EXPLORE 
+queue = [start]
+visited = set(start)
+parent = {}
+while queue:
+    v = queue.pop(0)    # FIFO: remove from the front
+    for u in graph[v]:
+        if u not in visited:
+            queue.append(u)
+            visited.add(u)
+            parent[u] = v
 
-    return previous
+# SHORTEST PATH           
+key = goal
+path = []
+while key in parent.keys():
+    key = parent[key]
+    path.insert(0, key) # Add to the front of the list
+    
+path.append(goal)
 ```
 
-DFS is nearly identical — swap the queue for a LIFO stack, and it commits to one path as deep as it can go before backtracking:
-
-```python
-def dfs(graph, start, goal):
-    visited = {start}
-    stack = [start]
-    previous = {}
-
-    while stack:
-        node = stack.pop()
-        if node == goal:
-            break
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                previous[neighbor] = node
-                stack.append(neighbor)
-
-    return previous
-```
+DFS is nearly identical — swap the queue for a LIFO stack: `stack.pop()` removes the most recent entry from the back, letting the search commit to one path as deep as it can go before backtracking.
 
 Dijkstra's swaps the stack for a priority queue ordered by cost, so it always expands the cheapest node next instead of the most recently discovered one.
 
