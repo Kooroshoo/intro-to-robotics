@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="60 0 590 460" width="590" height="460">
+  <defs>
+    <marker id="btpArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#334155"/>
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <!-- Repeat decorator into the parallel node -->
+  <polygon points="450,8 470,28 450,48 430,28" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="480" y="24" font-family="sans-serif" font-size="12" fill="#1e293b">Repeat</text>
+  <line x1="450" y1="48" x2="450" y2="88" stroke="#334155" stroke-width="2"/>
+
+  <!-- Connectors: parallel node to its two children -->
+  <line x1="450" y1="145" x2="315" y2="180" stroke="#334155" stroke-width="2"/>
+  <line x1="450" y1="145" x2="555" y2="180" stroke="#334155" stroke-width="2"/>
+
+  <!-- Root: parallel node -->
+  <rect x="370" y="90" width="160" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="450" y="125" font-family="sans-serif" font-size="18" text-anchor="middle" fill="#1e293b">&#8649;</text>
+
+  <!-- Children: sensing leaf and the "Navigate" tree from before -->
+  <rect x="230" y="180" width="170" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="315" y="212" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#1e293b">Sense Environment</text>
+
+  <rect x="470" y="180" width="170" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="555" y="212" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#1e293b">Navigate</text>
+
+  <!-- Write / Read edges to and from the blackboard -->
+  <path d="M 315 235 Q 260 280 200 317" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#btpArrow)"/>
+  <text x="235" y="270" font-family="sans-serif" font-size="12" fill="#1e293b">Write</text>
+
+  <path d="M 300 391 Q 500 430 555 239" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#btpArrow)"/>
+  <text x="470" y="330" font-family="sans-serif" font-size="12" fill="#1e293b">Read</text>
+
+  <!-- Blackboard: shared memory -->
+  <rect x="90" y="320" width="210" height="90" fill="#1e293b" stroke="#1e293b" stroke-width="2"/>
+  <text x="195" y="345" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#ffffff">Blackboard</text>
+  <text x="195" y="364" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#ffffff">Light level</text>
+  <text x="195" y="381" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#ffffff">Obstacle distance</text>
+</svg>

@@ -36,7 +36,15 @@ A **selector** node (`?`) instead tries its children left to right and stops at 
 ![A behavior tree for the same light-following robot: a selector node tries handling an obstacle, then a wall, before falling back to following the light](assets/images/behavior_tree_navigate.svg)
 </p>
 
-Naively, each leaf would run to completion before the tree moves on, so a slow leaf could block everything else for seconds at a time. Real implementations avoid this with a third leaf status, `RUNNING`, and re-evaluate the whole tree on a fixed interval called a **tick** (e.g. every 32 ms), picking back up from whatever was last `RUNNING` — which is what makes behavior trees reactive in real time and lets multiple branches run in parallel.
+Each leaf actually returns one of three results: success, failure, or **running**, if it isn't done yet. Instead of letting a slow leaf block everything else, the whole tree gets re-checked on a fixed interval called a **tick** — say, every 32 ms — picking back up from whichever leaf was still running last time. This is what makes behavior trees reactive in real time, and it's also what makes it possible to run several branches at once.
+
+A **parallel** node (`⇉`) does exactly that: instead of trying its children one at a time like a sequence or selector, it runs all of them at the same time, succeeding based on a policy set on the node — every child must succeed, only one has to, or at least $n$ of them do. In our light-following robot, one branch can keep sensing the environment while another branch, the `Navigate` tree from before, decides what to do with it.
+
+<p markdown="1" style="text-align:center;">
+![A parallel node running a sensing leaf and the Navigate tree at the same time, sharing data through a blackboard](assets/images/behavior_tree_parallel.svg)
+</p>
+
+Running side by side only works if the two branches can share what they find, so parallel nodes are usually paired with a **blackboard** — memory any branch can read or write. Here, `Sense Environment` writes the light level and obstacle distance it measures, and `Navigate` reads them back on its next tick.
 
 
 
