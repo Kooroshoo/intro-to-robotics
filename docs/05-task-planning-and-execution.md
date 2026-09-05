@@ -26,23 +26,13 @@ As the robot's environment gets more dynamic, more transitions are needed to rea
 
 State machines get even harder to manage once failure handling is added — every step also needs a way to retry or recover when it doesn't succeed, which means wiring up still more transitions by hand. **Behavior trees** sidestep this by organizing behavior as a tree of composable nodes instead of a flat set of states and transitions.
 
-### Leaf Nodes and Sequence Nodes
-
-The actual implementation lives in the **leaves** — the individual actions the robot performs. **Sequence** nodes group leaves together and run them in order. Every leaf either **succeeds** or **fails**: a sequence keeps advancing through its children as long as they succeed, but fails immediately if any of them does. Only if every leaf succeeds does the sequence succeed too.
+The actual implementation lives in the **leaves** — the individual actions the robot performs, each of which either **succeeds** or **fails**. A **sequence** node (`→`) groups leaves together and runs them in order, advancing only as long as each one succeeds; if any leaf fails, the whole sequence fails, and it only succeeds once every leaf has. A **selector** node (`?`) instead tries its children left to right and stops at the first one that succeeds, only failing if all of them do — a natural way to express a fallback, like checking whether the peg is already in the gripper before falling back to the full pick-up sequence.
 
 <p markdown="1" style="text-align:center;">
-![A sequence node for inserting a square peg, grouping three leaf actions to run in order: move the peg over the hole, rotate it until aligned, then move it down until contact](assets/images/behavior_tree_sequence.svg)
+![A behavior tree for a full peg-in-hole task: a sequence node combining a selector (pick up the peg, falling back to a full grasp sequence) with a sequence for inserting it](assets/images/behavior_tree_composability.svg)
 </p>
 
-### Selector Nodes
-
-**Selector** nodes try their children left to right and stop at the first one that succeeds; if every child fails, the selector fails too. This is a natural way to express a fallback: try the cheap check first, and only fall back to the full action if it doesn't succeed.
-
-<p markdown="1" style="text-align:center;">
-![A selector node for picking up a square peg: it first checks whether the peg is already in the gripper, falling back to the full Get Peg sequence only if that check fails](assets/images/behavior_tree_selector.svg)
-</p>
-
-Reproducing this same fallback-and-retry logic in a plain state machine would mean adding an explicit failure transition out of every single leaf-turned-state, back to whichever state should handle the retry — reintroducing exactly the transition explosion from before. A behavior tree gets that retry logic for free, just from the type of node used to group its children.
+Reproducing this same fallback-and-retry logic in a plain state machine would mean adding an explicit failure transition out of every single leaf-turned-state, back to whichever state should handle the retry — reintroducing exactly the transition explosion from before. A behavior tree gets that retry logic for free, just from the type of node used to group its children, and larger behaviors can be built simply by composing smaller trees together like this one.
 
 
 
