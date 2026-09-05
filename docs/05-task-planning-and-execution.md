@@ -46,6 +46,85 @@ A **parallel** node (`⇉`) does exactly that: instead of trying its children on
 
 Running side by side only works if the two branches can share what they find, so parallel nodes are usually paired with a **blackboard** — memory any branch can read or write. Here, `Sense Environment` writes the light level and obstacle distance it measures, and `Navigate` reads them back on its next tick.
 
+## Examples in Practice
+
+### Finite State Machines
+
+The transition function $\delta$ from the light-following state machine maps directly onto a dictionary keyed by `(state, event)` pairs, exactly like the graphs from the previous chapter:
+
+```python
+transitions = {
+    ('Follow light', 'Obstacle detected'): 'Avoid obstacle',
+    ('Avoid obstacle', 'Obstacle free'):   'Follow light',
+    ('Avoid obstacle', 'Light decreases'): 'Follow wall',
+    ('Follow wall', 'Light increases'):    'Avoid obstacle',
+    ('Follow light', 'Under light'):       'Stop',
+}
+
+def step(state, event):
+    return transitions.get((state, event), state)  # ignore unhandled events
+
+state = 'Follow light'
+events = ['Obstacle detected', 'Obstacle free', 'Under light']
+
+for event in events:
+    state = step(state, event)
+    print(state)
+
+# Avoid obstacle
+# Follow light
+# Stop
+```
+
+### Behavior Trees with `py_trees`
+
+The `Navigate` tree from earlier maps onto [py_trees](https://py-trees.readthedocs.io/), a Python behavior tree library used widely in robotics. Conditions and actions are just behaviours that return `SUCCESS` or `FAILURE`, grouped under `Sequence` and `Selector` composites:
+
+```python
+import py_trees
+from py_trees.common import Status
+
+class Condition(py_trees.behaviour.Behaviour):
+    def __init__(self, name, check):
+        super().__init__(name)
+        self.check = check
+
+    def update(self):
+        return Status.SUCCESS if self.check() else Status.FAILURE
+
+class Action(py_trees.behaviour.Behaviour):
+    def __init__(self, name, act):
+        super().__init__(name)
+        self.act = act
+
+    def update(self):
+        self.act()
+        return Status.SUCCESS
+
+handle_obstacle = py_trees.composites.Sequence(name="Handle Obstacle", memory=False, children=[
+    Condition("Obstacle Detected?", obstacle_detected),
+    Action("Avoid Obstacle", avoid_obstacle),
+])
+
+handle_wall = py_trees.composites.Sequence(name="Handle Wall", memory=False, children=[
+    Condition("Light Decreasing?", light_decreasing),
+    Action("Follow Wall", follow_wall),
+])
+
+navigate = py_trees.composites.Selector(name="Navigate", memory=False, children=[
+    handle_obstacle,
+    handle_wall,
+    Action("Follow Light", follow_light),
+])
+
+tree = py_trees.trees.BehaviourTree(navigate)
+
+while True:
+    tree.tick()  # re-evaluate the whole tree once per tick
+```
+
+`obstacle_detected`, `light_decreasing`, `avoid_obstacle`, `follow_wall`, and `follow_light` are the same sensing and control functions from earlier chapters — the tree just decides which of them to call, and when.
+
 
 
 
