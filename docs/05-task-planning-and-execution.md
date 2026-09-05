@@ -26,13 +26,18 @@ As the robot's environment gets more dynamic, more transitions are needed to rea
 
 State machines get even harder to manage once failure handling is added — every step also needs a way to retry or recover when it doesn't succeed, which means wiring up still more transitions by hand. **Behavior trees** sidestep this by organizing behavior as a tree of composable nodes instead of a flat set of states and transitions.
 
-The actual implementation lives in the **leaves** — the individual actions the robot performs, each of which either **succeeds** or **fails**. A **sequence** node (`→`) groups leaves together and runs them in order, advancing only as long as each one succeeds; if any leaf fails, the whole sequence fails, and it only succeeds once every leaf has. A **selector** node (`?`) instead tries its children left to right and stops at the first one that succeeds, only failing if all of them do — a natural way to express a fallback, like checking whether the peg is already in the gripper before falling back to the full pick-up sequence.
+The actual implementation lives in the **leaves** — the individual actions the robot performs, each of which either **succeeds** or **fails**.
+
+A **sequence** node (`→`) groups leaves together and runs them in order, advancing only as long as each one succeeds; if any leaf fails, the whole sequence fails, and it only succeeds once every leaf has.
+
+A **selector** node (`?`) instead tries its children left to right and stops at the first one that succeeds, only failing if all of them do — a natural way to express a fallback, like trying to avoid an obstacle before falling back to just following the light.
 
 <p markdown="1" style="text-align:center;">
-![A behavior tree for a full peg-in-hole task: a sequence node combining a selector (pick up the peg, falling back to a full grasp sequence) with a sequence for inserting it](assets/images/behavior_tree_composability.svg)
+![A behavior tree for the same light-following robot: a selector node tries handling an obstacle, then a wall, before falling back to following the light](assets/images/behavior_tree_navigate.svg)
 </p>
 
-Reproducing this same fallback-and-retry logic in a plain state machine would mean adding an explicit failure transition out of every single leaf-turned-state, back to whichever state should handle the retry — reintroducing exactly the transition explosion from before. A behavior tree gets that retry logic for free, just from the type of node used to group its children, and larger behaviors can be built simply by composing smaller trees together like this one.
+Naively, each leaf would run to completion before the tree moves on, so a slow leaf could block everything else for seconds at a time. Real implementations avoid this with a third leaf status, `RUNNING`, and re-evaluate the whole tree on a fixed interval called a **tick** (e.g. every 32 ms), picking back up from whatever was last `RUNNING` — which is what makes behavior trees reactive in real time and lets multiple branches run in parallel.
+
 
 
 
