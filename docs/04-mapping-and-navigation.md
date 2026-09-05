@@ -254,59 +254,116 @@ while key in parent.keys():
     path.insert(0, key) # Add to the front of the list
     
 path.append(goal)
+print(path)
 ```
 
 DFS is nearly identical — swap the queue for a LIFO stack: `stack.pop()` removes the most recent entry from the back, letting the search commit to one path as deep as it can go before backtracking.
 
-Dijkstra's swaps the stack for a priority queue ordered by cost, so it always expands the cheapest node next instead of the most recently discovered one.
+Both BFS and DFS treat every edge as equally costly, so neither can tell a short expensive detour from a long cheap route — once edges carry different weights, we need an algorithm that actually accounts for cost. The same blind spot shows up with diagonal movement: a diagonal step covers more physical distance than an orthogonal one, but BFS and DFS would count both as a single hop, often returning a path that isn't actually the shortest. Dijkstra's swaps the stack for a priority queue ordered by cost, so it always expands the cheapest node next instead of the most recently discovered one.
 
 <p markdown="1" style="text-align:center;">
-![The same tiny graph with weights added, plus a costly shortcut edge directly from (0,0) to (2,0)](assets/images/tiny_weighted_graph.svg)
+![A weighted graph: six nodes connected by edges, each labeled with its cost](assets/images/weighted_graph_example.svg)
 </p>
 
 ```python
-import heapq
+from heapq import heapify, heappush, heappop
+from collections import defaultdict
 
-def dijkstra(graph, start, goal):
-    g = {start: 0}
-    queue = [(0, start)]
-    previous = {}
+graph = {'A' : [(3,'B'),(5,'C')],
+         'B' : [(3,'A'),(1,'D'),(3,'E')],
+         'C' : [(5,'A'),(3,'F')],
+         'D' : [(1,'B')],
+         'E' : [(3,'B'),(1,'F')],
+         'F' : [(3,'C'),(1,'E')]
+}
 
-    while queue:
-        cost, node = heapq.heappop(queue)
-        if node == goal:
-            return previous
-        for neighbor, weight in graph[node].items():
-            new_cost = cost + weight
-            if new_cost < g.get(neighbor, float('inf')):
-                g[neighbor] = new_cost
-                previous[neighbor] = node
-                heapq.heappush(queue, (new_cost, neighbor))
+start = 'A'
+goal = 'F'
+queue = [(0,start)]
+heapify(queue)
+
+distances = defaultdict(lambda:float("inf"))
+distances[start] = 0
+
+visited = {start}
+parent = {}
+
+# EXPLORE 
+while queue:
+    (currentdist, v) = heappop(queue)       # remove lowest cost node 
+    visited.add(v)
+    for (costvu, u) in graph[v]:
+        if u not in visited:
+            newcost = distances[v] + costvu 
+            if newcost < distances[u]:
+                distances[u] = newcost      # update cost
+                heappush(queue, (newcost, u))
+                parent[u] = v
+
+# SHORTEST PATH           
+key = goal
+path = []
+while key in parent.keys():
+    key = parent[key]
+    path.insert(0, key)                     # add to the front of the list
+    
+path.append(goal)
+print(path)
 ```
 
-Run on `weighted_graph`, Dijkstra ignores the tempting shortcut and returns the cheap six-step route instead, exactly as the diagram above shows.
+Dijkstra finds that `A → B → E → F` is the cheapest route to `F`, at a total cost of 7 — beating the more direct-looking `A → C → F`, which costs 8.
 
-A\* reuses Dijkstra almost exactly — the only change is adding the Manhattan-distance heuristic to what gets pushed onto the heap:
+A\* reuses Dijkstra's script almost line for line — the only changes are a `coords` lookup and `manhattan` heuristic, and adding that heuristic to what gets pushed onto the heap:
 
 ```python
-def manhattan(a, b):
-    return abs(a[0] - b[0]) + abs(a[1] - b[1])
+from heapq import heapify, heappush, heappop
+from collections import defaultdict
 
-def astar(graph, start, goal):
-    g = {start: 0}
-    queue = [(manhattan(start, goal), start)]
-    previous = {}
+graph = {'A' : [(3,'B'),(5,'C')],
+         'B' : [(3,'A'),(1,'D'),(3,'E')],
+         'C' : [(5,'A'),(3,'F')],
+         'D' : [(1,'B')],
+         'E' : [(3,'B'),(1,'F')],
+         'F' : [(3,'C'),(1,'E')]
+}
 
-    while queue:
-        _, node = heapq.heappop(queue)
-        if node == goal:
-            return previous
-        for neighbor in graph[node]:
-            new_cost = g[node] + 1
-            if new_cost < g.get(neighbor, float('inf')):
-                g[neighbor] = new_cost
-                previous[neighbor] = node
-                heapq.heappush(queue, (new_cost + manhattan(neighbor, goal), neighbor))
+coords = {'A': (2,3), 'B': (1,2), 'C': (3,2), 'D': (0,1), 'E': (2,1), 'F': (4,1)}  
+
+def manhattan(a, b):                                                              
+    return abs(coords[a][0] - coords[b][0]) + abs(coords[a][1] - coords[b][1])
+
+start = 'A'
+goal = 'F'
+queue = [(manhattan(start, goal), start)]         # seeded with the heuristic
+heapify(queue)
+
+distances = defaultdict(lambda:float("inf"))
+distances[start] = 0
+
+visited = {start}
+parent = {}
+
+# EXPLORE 
+while queue:
+    (currentcost, v) = heappop(queue)       # remove lowest cost node 
+    visited.add(v)
+    for (costvu, u) in graph[v]:
+        if u not in visited:
+            newcost = distances[v] + costvu 
+            if newcost < distances[u]:
+                distances[u] = newcost      # update cost
+                heappush(queue, (newcost + manhattan(u, goal), u))  # heuristic added
+                parent[u] = v
+
+# SHORTEST PATH           
+key = goal
+path = []
+while key in parent.keys():
+    key = parent[key]
+    path.insert(0, key)                     # add to the front of the list
+    
+path.append(goal)
+print(path)
 ```
 
-All four end up walking the exact same graph — the only thing that changes between them is which node gets popped next, and that one choice is the whole difference between blindly flooding outward and searching with a sense of direction.
+All four algorithms walk the exact same graph — the only thing that changes is which node gets popped next, and that single choice is what separates blindly flooding outward from searching with a sense of direction.
