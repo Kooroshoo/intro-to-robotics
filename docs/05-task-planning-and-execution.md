@@ -33,7 +33,7 @@ A **sequence** node (`→`) groups leaves together and runs them in order, advan
 A **selector** node (`?`) instead tries its children left to right and stops at the first one that succeeds, only failing if all of them do — a natural way to express a fallback, like trying to avoid an obstacle before falling back to just following the light.
 
 <p markdown="1" style="text-align:center;">
-![A behavior tree for the same light-following robot: a selector node tries handling an obstacle, then a wall, before falling back to following the light](assets/images/behavior_tree_navigate.svg)
+![A behavior tree for the same light-following robot: a selector node tries four behaviors in order, one of which, Avoid Obstacle, is itself a sequence of a condition and an action](assets/images/behavior_tree_navigate.svg)
 </p>
 
 Each leaf actually returns one of three results: success, failure, or **running**, if it isn't done yet. Instead of letting a slow leaf block everything else, the whole tree gets re-checked on a fixed interval called a **tick** — say, every 32 ms — picking back up from whichever leaf was still running last time. This is what makes behavior trees reactive in real time, and it's also what makes it possible to run several branches at once.
