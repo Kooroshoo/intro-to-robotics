@@ -1,0 +1,955 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A mathematical guide to robot kinematics and control.">
+      
+      
+      
+      
+        <link rel="prev" href="../01-introduction-to-robotic-systems/">
+      
+      
+        <link rel="next" href="../03-kinematics-and-trajectory-control/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Spatial Representation - Intro to Robotics</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-ii-spatial-representation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Intro to Robotics" class="md-header__button md-logo" aria-label="Intro to Robotics" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Intro to Robotics
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Spatial Representation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Intro to Robotics" class="md-nav__button md-logo" aria-label="Intro to Robotics" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Intro to Robotics
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-introduction-to-robotic-systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to Robotic Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spatial Representation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spatial Representation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cartesian-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cartesian Space
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#describing-position-and-rotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Describing Position and Rotation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#combining-rotation-and-translation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Combining Rotation and Translation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-transformation-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Transformation Matrix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Transformation Matrix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extending-to-3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extending to 3D
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reversing-a-transformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reversing a Transformation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chaining-transformations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chaining Transformations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples in Practice
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples in Practice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#odometry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Odometry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#laser-scanners" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Laser Scanners
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-kinematics-and-trajectory-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kinematics and Trajectory Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-mapping-and-navigation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mapping and Navigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-task-planning-and-execution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task Planning and Execution
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cartesian-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cartesian Space
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#describing-position-and-rotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Describing Position and Rotation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#combining-rotation-and-translation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Combining Rotation and Translation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-transformation-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Transformation Matrix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Transformation Matrix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extending-to-3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extending to 3D
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reversing-a-transformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reversing a Transformation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chaining-transformations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chaining Transformations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples in Practice
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples in Practice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#odometry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Odometry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#laser-scanners" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Laser Scanners
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="part-ii-spatial-representation">Part II: Spatial Representation</h1>
+<h2 id="cartesian-space">Cartesian Space</h2>
+<p>To describe a robot's position in space, we must account for both its <strong>position</strong> (translation) and its <strong>orientation</strong> (rotation). This position and rotation are always defined relative to a world coordinate frame. This representation is known as <strong>Cartesian space</strong>.</p>
+<p style="text-align:center;">
+<img alt="Frame Transformation" src="../assets/images/frame_transform.svg" />
+</p>
+<h2 id="describing-position-and-rotation">Describing Position and Rotation</h2>
+<p>A robot's location can be described with three values, one along each of the <span class="arithmatex">\(X\)</span>, <span class="arithmatex">\(Y\)</span>, and <span class="arithmatex">\(Z\)</span> axes, measured relative to the world frame:</p>
+<div class="arithmatex">\[
+\vec p = \begin{bmatrix}c_1\\c_2\\c_3\end{bmatrix}
+\]</div>
+<p>A robot also has an orientation — its roll, pitch, and yaw. We can expand the previous formula in the following manner:</p>
+<div class="arithmatex">\[
+\vec p = \begin{bmatrix}c_1\\c_2\\c_3\end{bmatrix} = c_1\begin{bmatrix}1\\0\\0\end{bmatrix} + c_2\begin{bmatrix}0\\1\\0\end{bmatrix} + c_3\begin{bmatrix}0\\0\\1\end{bmatrix} = c_1\vec b_1 + c_2\vec b_2 + c_3\vec b_3
+\]</div>
+<div class="arithmatex">\[
+\vec p = \begin{bmatrix}\vec b_1 &amp; \vec b_2 &amp; \vec b_3\end{bmatrix}\begin{bmatrix}c_1\\c_2\\c_3\end{bmatrix}
+\]</div>
+<div class="arithmatex">\[
+\vec p = \begin{bmatrix}1&amp;0&amp;0\\0&amp;1&amp;0\\0&amp;0&amp;1\end{bmatrix}\begin{bmatrix}c_1\\c_2\\c_3\end{bmatrix} = R\vec c
+\]</div>
+<p>Here, <span class="arithmatex">\(R\)</span> represents the robot's rotation. When the robot's orientation matches the world's, <span class="arithmatex">\(R = I\)</span> and <span class="arithmatex">\(\vec p = \vec c\)</span>.</p>
+<p><span class="arithmatex">\(R\)</span> can also be built directly from the two frames' axes, without knowing the rotation angle beforehand. Each entry is the dot product between an axis of the robot frame and an axis of the world frame:</p>
+<p style="text-align:center;">
+<img alt="Rotation matrix from axis dot products" src="../assets/images/rotation_dot_product.svg" />
+</p>
+<div class="arithmatex">\[
+\begin{pmatrix}x\\y\\z\end{pmatrix}_{world} = \begin{pmatrix}\vec x_R\cdot\vec x_W &amp; \vec y_R\cdot\vec x_W &amp; \vec z_R\cdot\vec x_W \\ \vec x_R\cdot\vec y_W &amp; \vec y_R\cdot\vec y_W &amp; \vec z_R\cdot\vec y_W \\ \vec x_R\cdot\vec z_W &amp; \vec y_R\cdot\vec z_W &amp; \vec z_R\cdot\vec z_W\end{pmatrix} \cdot \begin{pmatrix}x\\y\\z\end{pmatrix}_{robot}
+\]</div>
+<p>Each dot product is just the cosine of the angle between the two axes, scaled by their lengths ("Dot Product"):</p>
+<div class="arithmatex">\[
+\vec x_R\cdot\vec x_W = \cos\alpha\,|\vec x_R||\vec x_W|
+\]</div>
+<p>Since each axis is a unit vector, its length is <span class="arithmatex">\(1\)</span>, so the dot product simplifies to just the cosine of the angle between them:</p>
+<div class="arithmatex">\[
+\vec x_R\cdot\vec x_W = \cos\alpha
+\]</div>
+<p>For a planar robot rotating only around <span class="arithmatex">\(Z\)</span> (yaw, <span class="arithmatex">\(\alpha\)</span>), most of these dot products reduce to <span class="arithmatex">\(0\)</span> or <span class="arithmatex">\(1\)</span>, and the matrix collapses into the familiar 2D rotation matrix:</p>
+<div class="arithmatex">\[
+\begin{pmatrix}x\\y\\z\end{pmatrix}_{world} = \begin{pmatrix}\cos\alpha &amp; -\sin\alpha &amp; 0\\ \sin\alpha &amp; \cos\alpha &amp; 0 \\ 0 &amp; 0 &amp; 1\end{pmatrix}\begin{pmatrix}x\\y\\z\end{pmatrix}_{robot}
+\]</div>
+<h2 id="combining-rotation-and-translation">Combining Rotation and Translation</h2>
+<p>A point is often measured with respect to the robot's frame, but we need its position in the world frame instead.</p>
+<p style="text-align:center;">
+<img alt="Frame Transformation with a Target Point" src="../assets/images/frame_transform_target.svg" />
+</p>
+<div class="arithmatex">\[
+Q_{world} = R \cdot Q_{robot} + P
+\]</div>
+<div class="arithmatex">\[
+\begin{pmatrix}q_x\\q_y\\q_z\end{pmatrix}_{world} = \begin{pmatrix}\cos\alpha &amp; -\sin\alpha &amp; 0\\ \sin\alpha &amp; \cos\alpha &amp; 0 \\ 0 &amp; 0 &amp; 1\end{pmatrix}\begin{pmatrix}q_x\\q_y\\q_z\end{pmatrix}_{robot} + \begin{pmatrix}p_x\\p_y\\p_z\end{pmatrix}
+\]</div>
+<p><span class="arithmatex">\(R\)</span> is the rotation matrix derived above, <span class="arithmatex">\(Q_{robot}\)</span> is the target point's coordinates in the robot frame, and <span class="arithmatex">\(P\)</span> is the translation between the two origins.</p>
+<h2 id="the-transformation-matrix">The Transformation Matrix</h2>
+<p>To combine rotation and translation into a single operation, we use a <strong>Homogeneous Transformation Matrix</strong> (<span class="arithmatex">\(T\)</span>). On a flat plane, rotation only happens around one axis (yaw, <span class="arithmatex">\(\alpha\)</span>):</p>
+<div class="arithmatex">\[
+T^W_R = \begin{bmatrix}\cos\alpha &amp; -\sin\alpha &amp; p_x \\ \sin\alpha &amp; \cos\alpha &amp; p_y \\ 0 &amp; 0 &amp; 1\end{bmatrix}
+\]</div>
+<p>A point measured in the robot frame (<span class="arithmatex">\(Q_{robot}\)</span>, e.g. the <strong>Target Point</strong> shown above) is converted to the world frame with:</p>
+<div class="arithmatex">\[
+Q_{world} = T^W_R \cdot Q_{robot}
+\]</div>
+<div class="arithmatex">\[
+\begin{bmatrix}q_x\\q_y\\1\end{bmatrix}_{world} = \begin{bmatrix}\cos\alpha &amp; -\sin\alpha &amp; p_x \\ \sin\alpha &amp; \cos\alpha &amp; p_y \\ 0 &amp; 0 &amp; 1\end{bmatrix}\begin{bmatrix}q_x\\q_y\\1\end{bmatrix}_{robot}
+\]</div>
+<h3 id="extending-to-3d">Extending to 3D</h3>
+<p>Robots that also move or rotate vertically (drones, arms, legged robots) need a third axis, <span class="arithmatex">\(Z\)</span>. The same idea scales up to a <span class="arithmatex">\(4 \times 4\)</span> matrix:</p>
+<p style="text-align:center;">
+<img alt="Frame Transformation in 3D" src="../assets/images/frame_transform_3d.svg" />
+</p>
+<div class="arithmatex">\[
+T^W_R =
+\begin{bmatrix}
+R_{3 \times 3} &amp; P_{3 \times 1} \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}
+=
+\begin{bmatrix}
+\vec x_R\cdot\vec x_W &amp; \vec y_R\cdot\vec x_W &amp; \vec z_R\cdot\vec x_W &amp; p_x \\
+\vec x_R\cdot\vec y_W &amp; \vec y_R\cdot\vec y_W &amp; \vec z_R\cdot\vec y_W &amp; p_y \\
+\vec x_R\cdot\vec z_W &amp; \vec y_R\cdot\vec z_W &amp; \vec z_R\cdot\vec z_W &amp; p_z \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}
+\]</div>
+<p>For a robot that only yaws (rotates around <span class="arithmatex">\(Z\)</span>), those dot products fill in with the same <span class="arithmatex">\(\cos\alpha / \sin\alpha\)</span> terms as the 2D case, leaving <span class="arithmatex">\(Z\)</span> untouched:</p>
+<div class="arithmatex">\[
+T^W_R =
+\begin{bmatrix}
+\cos\alpha &amp; -\sin\alpha &amp; 0 &amp; p_x \\
+\sin\alpha &amp; \cos\alpha &amp; 0 &amp; p_y \\
+0 &amp; 0 &amp; 1 &amp; p_z \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}
+\]</div>
+<h3 id="reversing-a-transformation">Reversing a Transformation</h3>
+<p>Going the other way — from the world frame back into the robot frame — doesn't require recomputing anything. Since <span class="arithmatex">\(R\)</span> is orthogonal, its inverse is just its transpose (<span class="arithmatex">\(R^{-1} = R^T\)</span>), so:</p>
+<div class="arithmatex">\[
+T^{-1} = \begin{bmatrix} R^T &amp; -R^T P \\ 0\ 0\ 0 &amp; 1 \end{bmatrix}
+\]</div>
+<p>Rotation is undone with <span class="arithmatex">\(R^T\)</span>, and the translation must first be rotated by <span class="arithmatex">\(R^T\)</span> as well before being subtracted — since <span class="arithmatex">\(P\)</span> was expressed in the world's orientation, not the robot's.</p>
+<h3 id="chaining-transformations">Chaining Transformations</h3>
+<p>Frames can be linked in a chain — a world frame, a robot base, and a sensor mounted on the robot, for example. To move a point through the whole chain, multiply the transformation matrices together:</p>
+<div class="arithmatex">\[
+T^A_C = T^A_B \cdot T^B_C
+\]</div>
+<p style="text-align:center;">
+<img alt="Chaining transformations across three frames" src="../assets/images/frame_chain.svg" />
+</p>
+<p>Once combined, the result behaves exactly like any other transformation matrix — a point measured in frame <span class="arithmatex">\(\{C\}\)</span> is converted all the way into frame <span class="arithmatex">\(\{A\}\)</span> in one multiplication:</p>
+<div class="arithmatex">\[
+Q_A = T^A_C \cdot Q_C
+\]</div>
+<h2 id="examples-in-practice">Examples in Practice</h2>
+<h3 id="odometry">Odometry</h3>
+<p>Odometry is the process of estimating a robot's position from its own movement. Picture a differential-drive robot like the one below: it has two degrees of freedom in actuator space — it can move forward or backward by <span class="arithmatex">\(\Delta x\)</span>, and turn left or right by <span class="arithmatex">\(\Delta\omega_z\)</span>.</p>
+<p style="text-align:center;">
+<img alt="A differential-drive robot's forward step and rotation" src="../assets/images/odometry_step.svg" />
+</p>
+<p>If we know the wheel radius <span class="arithmatex">\(r\)</span> and how much each wheel turned this step, <span class="arithmatex">\(\Delta\phi_l\)</span> and <span class="arithmatex">\(\Delta\phi_r\)</span>, we can compute how far the robot moved. Each wheel travels its own distance, <span class="arithmatex">\(r\Delta\phi_l\)</span> and <span class="arithmatex">\(r\Delta\phi_r\)</span>, and the robot's center (midway between them) moves by their average:</p>
+<div class="arithmatex">\[
+\Delta x = \frac{r\Delta\phi_l + r\Delta\phi_r}{2}
+\]</div>
+<p>The same goes for the rotation: if we also know how far apart the wheels are, <span class="arithmatex">\(d\)</span>, then:</p>
+<div class="arithmatex">\[
+\Delta\omega_z = \frac{r\Delta\phi_r - r\Delta\phi_l}{d}
+\]</div>
+<p><em>(These equations only hold for a small <span class="arithmatex">\(\Delta\)</span> — they're a linear approximation of the robot's motion over one short timestep.)</em></p>
+<p>The step only happens along <span class="arithmatex">\(X_R\)</span>, so it's just the point <span class="arithmatex">\((\Delta x, 0)\)</span> in the robot frame. Plugging it into the transformation matrix we already derived — using the robot's <em>current</em> position <span class="arithmatex">\((x_w, y_w)\)</span> as the translation — directly gives its new position in the world frame:</p>
+<div class="arithmatex">\[
+\begin{bmatrix}x_w\\y_w\\1\end{bmatrix} = \begin{bmatrix}\cos\alpha &amp; -\sin\alpha &amp; x_w\\ \sin\alpha &amp; \cos\alpha &amp; y_w\\ 0 &amp; 0 &amp; 1\end{bmatrix}\begin{bmatrix}\Delta x\\0\\1\end{bmatrix}
+\]</div>
+<p>Multiplying that out gives the update rule directly:</p>
+<div class="arithmatex">\[
+x_w = x_w + \Delta x\cos\alpha \qquad y_w = y_w + \Delta x\sin\alpha \qquad \alpha = \alpha + \Delta\omega_z
+\]</div>
+<p>Code:</p>
+<pre><code class="language-python">xw = xw + np.cos(alpha) * deltaX
+yw = yw + np.sin(alpha) * deltaX
+alpha = alpha + deltaOmegaZ
+</code></pre>
+<h3 id="laser-scanners">Laser Scanners</h3>
+<p>A laser scanner (LiDAR) doesn't report Cartesian coordinates — for each beam, it reports a <strong>distance</strong> <span class="arithmatex">\(r\)</span> and an <strong>angle</strong> <span class="arithmatex">\(\phi\)</span>, measured relative to the robot's own <span class="arithmatex">\(X_R\)</span> axis. Say one beam travels a distance <span class="arithmatex">\(r\)</span> at angle <span class="arithmatex">\(\phi\)</span> before hitting a wall:</p>
+<p style="text-align:center;">
+<img alt="A laser scanner beam hitting a wall, decomposed into the robot frame's axes" src="../assets/images/lidar_polar.svg" />
+</p>
+<p><span class="arithmatex">\(r\)</span> is the hypotenuse of a right triangle formed with the robot's own axes, so simple trigonometry gives the hit point's coordinates in the robot frame — exactly the two dashed projections shown above:</p>
+<div class="arithmatex">\[
+x_{robot} = r\cos\phi \qquad y_{robot} = r\sin\phi
+\]</div>
+<p>That point is still measured in the robot frame, so it goes through the same transformation as any other point to land in the world frame. A real scanner does this for hundreds of beams at once, so <span class="arithmatex">\(r\)</span> and <span class="arithmatex">\(\phi\)</span> become arrays, and the transformation runs on the whole array in a single matrix multiplication:</p>
+<div class="arithmatex">\[
+{}^{W}\vec X = \begin{bmatrix}\cos\alpha &amp; -\sin\alpha &amp; p_x \\ \sin\alpha &amp; \cos\alpha &amp; p_y \\ 0 &amp; 0 &amp; 1\end{bmatrix}\begin{pmatrix}\vec r\circ\cos\vec\phi\\ \vec r\circ\sin\vec\phi\\ 1\end{pmatrix} = T^W_R\begin{pmatrix}\vec r\circ\cos\vec\phi\\ \vec r\circ\sin\vec\phi\\ 1\end{pmatrix}
+\]</div>
+<div class="arithmatex">\[
+\underset{(3\times360)}{{}^{W}\vec X} = \underset{(3\times3)}{T^W_R}\ \underset{(3\times360)}{\begin{pmatrix}\vec r\circ\cos\vec\phi\\ \vec r\circ\sin\vec\phi\\ 1\end{pmatrix}}
+\]</div>
+<p>Here <span class="arithmatex">\(\circ\)</span> is element-wise multiplication, <span class="arithmatex">\(\vec r \circ \cos\vec\phi\)</span> just means "multiply every beam's range by the cosine of its own angle." This is exactly one matrix multiplication in code:</p>
+<pre><code class="language-python">w_T_r = np.array([[np.cos(theta), -np.sin(theta), xw],
+                  [np.sin(theta), np.cos(theta), yw],
+                  [0, 0, 1]])
+
+X_i = np.array([ranges*np.cos(angles), ranges*np.sin(angles), np.ones((360,))])
+
+D = w_T_r @ X_i  # 3x360
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

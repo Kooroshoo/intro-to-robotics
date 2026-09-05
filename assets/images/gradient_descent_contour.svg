@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <marker id="gdStepArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <!-- Contour lines of the error function (level sets) -->
+  <g fill="none" stroke="#2563eb" stroke-width="1.2">
+    <circle cx="200" cy="200" r="20"/>
+    <circle cx="200" cy="200" r="40"/>
+    <circle cx="200" cy="200" r="60"/>
+    <circle cx="200" cy="200" r="80"/>
+    <circle cx="200" cy="200" r="100"/>
+    <circle cx="200" cy="200" r="120"/>
+    <circle cx="200" cy="200" r="140"/>
+    <circle cx="200" cy="200" r="160"/>
+    <circle cx="200" cy="200" r="180"/>
+  </g>
+
+  <!-- Minimum at the center -->
+  <circle cx="200" cy="200" r="3" fill="#333"/>
+
+  <!-- Gradient descent path, stepping toward the minimum -->
+  <path d="M 95 305 L 138 262" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#gdStepArrow)"/>
+  <path d="M 138 262 L 163 236" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#gdStepArrow)"/>
+  <path d="M 163 236 L 181 219" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#gdStepArrow)"/>
+  <path d="M 181 219 L 197 202" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#gdStepArrow)"/>
+
+  <g font-family="sans-serif" font-size="13" fill="#333">
+    <text x="76" y="318">x&#8320;</text>
+    <text x="120" y="272">x&#8321;</text>
+    <text x="145" y="246">x&#8322;</text>
+    <text x="163" y="229">x&#8323;</text>
+  </g>
+</svg>

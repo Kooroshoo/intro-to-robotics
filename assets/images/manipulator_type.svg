@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 220" width="280" height="220">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <text x="20" y="30" font-family="sans-serif" font-size="15" font-weight="bold" fill="#334155">Manipulator</text>
+  <text x="20" y="50" font-family="sans-serif" font-size="13" fill="#64748b">Fixed base, moving end-effector</text>
+
+  <!-- Fixed base: hatched support symbol -->
+  <line x1="50" y1="190" x2="110" y2="190" stroke="#334155" stroke-width="2.5"/>
+  <line x1="52" y1="190" x2="44" y2="200" stroke="#334155" stroke-width="2"/>
+  <line x1="64" y1="190" x2="56" y2="200" stroke="#334155" stroke-width="2"/>
+  <line x1="76" y1="190" x2="68" y2="200" stroke="#334155" stroke-width="2"/>
+  <line x1="88" y1="190" x2="80" y2="200" stroke="#334155" stroke-width="2"/>
+  <line x1="100" y1="190" x2="92" y2="200" stroke="#334155" stroke-width="2"/>
+
+  <!-- Link 1: base to Joint 1 -->
+  <line x1="80" y1="190" x2="120" y2="120" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="80" cy="190" r="6" fill="#333"/>
+  <circle cx="120" cy="120" r="6" fill="#333"/>
+
+  <!-- Link 2: Joint 1 to Joint 2 -->
+  <line x1="120" y1="120" x2="175" y2="95" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="175" cy="95" r="6" fill="#333"/>
+
+  <!-- Link 3: Joint 2 to the end-effector -->
+  <line x1="175" y1="95" x2="210" y2="135" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
+
+  <circle cx="210" cy="135" r="6" fill="#0d9488"/>
+  <path d="M 228 149 L 210 149 L 210 121 L 228 121" fill="none" stroke="#0d9488" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

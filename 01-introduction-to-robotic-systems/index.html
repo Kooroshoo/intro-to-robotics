@@ -1,0 +1,889 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A mathematical guide to robot kinematics and control.">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../02-spatial-representation/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Introduction to Robotic Systems - Intro to Robotics</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#part-i-introduction-to-robotic-systems" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Intro to Robotics" class="md-header__button md-logo" aria-label="Intro to Robotics" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Intro to Robotics
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Introduction to Robotic Systems
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Intro to Robotics" class="md-nav__button md-logo" aria-label="Intro to Robotics" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Intro to Robotics
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to Robotic Systems
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction to Robotic Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-a-robot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Is a Robot?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sensors-and-actuators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sensors and Actuators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-loop-vs-closed-loop-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open-Loop vs. Closed-Loop Control
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model-based-vs-model-free-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model-Based vs. Model-Free Control
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kinematics-vs-dynamics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kinematics vs. Dynamics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mobile-robots-vs-manipulators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mobile Robots vs. Manipulators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#revolute-vs-prismatic-joints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Revolute vs. Prismatic Joints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#degrees-of-freedom-dof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Degrees of Freedom (DOF)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-chain-vs-closed-chain-mechanisms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open-Chain vs. Closed-Chain Mechanisms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#holonomic-vs-non-holonomic-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Holonomic vs. Non-Holonomic Constraints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compliance-vs-rigidity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compliance vs. Rigidity
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-spatial-representation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spatial Representation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-kinematics-and-trajectory-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kinematics and Trajectory Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-mapping-and-navigation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mapping and Navigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-task-planning-and-execution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task Planning and Execution
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-a-robot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Is a Robot?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sensors-and-actuators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sensors and Actuators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-loop-vs-closed-loop-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open-Loop vs. Closed-Loop Control
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model-based-vs-model-free-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model-Based vs. Model-Free Control
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kinematics-vs-dynamics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kinematics vs. Dynamics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mobile-robots-vs-manipulators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mobile Robots vs. Manipulators
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#revolute-vs-prismatic-joints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Revolute vs. Prismatic Joints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#degrees-of-freedom-dof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Degrees of Freedom (DOF)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-chain-vs-closed-chain-mechanisms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open-Chain vs. Closed-Chain Mechanisms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#holonomic-vs-non-holonomic-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Holonomic vs. Non-Holonomic Constraints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compliance-vs-rigidity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compliance vs. Rigidity
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="part-i-introduction-to-robotic-systems">Part I: Introduction to Robotic Systems</h1>
+<h2 id="what-is-a-robot">What Is a Robot?</h2>
+<p>A robot is a programmable physical system that senses its environment, makes decisions, and acts on the world to accomplish a task. At its core, every robot repeats the same loop:</p>
+<p style="text-align:center;">
+<img alt="The sense, think, act loop every robot repeats" src="../assets/images/sense_think_act_loop.svg" />
+</p>
+<h2 id="sensors-and-actuators">Sensors and Actuators</h2>
+<ul>
+<li><strong>Sensors</strong> (cameras, LiDAR, wheel encoders, IMUs, force/touch sensors) perceive the environment and the robot's own state.</li>
+<li><strong>Actuators</strong> (motors, servos, hydraulic and pneumatic drives) act on the world, turning commands into motion.</li>
+</ul>
+<p style="text-align:center;">
+<img alt="Sensors perceive the world; actuators act on it" src="../assets/images/sensors_actuators.svg" />
+</p>
+<p>The chapters ahead are about closing the loop between the two: turning sensor measurements into the right actuator commands.</p>
+<h2 id="open-loop-vs-closed-loop-control">Open-Loop vs. Closed-Loop Control</h2>
+<ul>
+<li><strong>Open-loop control</strong> sends commands to the actuators without checking the result — like a washing machine running on a fixed timer. It's simple, but any disturbance or model error goes uncorrected.</li>
+<li><strong>Closed-loop control</strong> uses sensor feedback to compare the actual state against the goal and continuously corrects the error. This is how most real-world robots operate.</li>
+</ul>
+<p style="text-align:center;">
+<img alt="Open-loop control has no feedback; closed-loop control corrects itself using sensor feedback" src="../assets/images/open_closed_loop.svg" />
+</p>
+<p>Chapter 3 builds on this idea directly: its controllers compute exactly how much correction to apply at each step, based on the error between the current and goal pose.</p>
+<h2 id="model-based-vs-model-free-control">Model-Based vs. Model-Free Control</h2>
+<ul>
+<li><strong>Model-based control</strong> uses an explicit mathematical model of the robot — its frames, transforms, and Jacobians — to compute the correction needed at each step. This is the approach this book builds, step by step.</li>
+<li><strong>Model-free control</strong> skips the explicit model and learns a control policy directly from data and experience, at the cost of needing far more of it.</li>
+</ul>
+<p style="text-align:center;">
+<img alt="Model-based control derives commands from equations; model-free control learns them from data" src="../assets/images/model_based_free.svg" />
+</p>
+<h2 id="kinematics-vs-dynamics">Kinematics vs. Dynamics</h2>
+<ul>
+<li><strong>Kinematics</strong> describes motion in terms of positions, velocities, and accelerations, without asking what caused it. This is pure geometry, and it's the focus of this book.</li>
+<li><strong>Dynamics</strong> goes further, relating motion to the forces and torques that produce it, along with mass and inertia.</li>
+</ul>
+<p style="text-align:center;">
+<img alt="Kinematics is about positions and velocities; dynamics is about the forces and torques behind them" src="../assets/images/kinematics_dynamics.svg" />
+</p>
+<h2 id="mobile-robots-vs-manipulators">Mobile Robots vs. Manipulators</h2>
+<ul>
+<li><strong>Mobile robots</strong> (wheeled, legged, aerial) move their entire body through the environment. Their kinematics describes how wheel or leg motion translates into changes in position and heading.</li>
+<li><strong>Manipulators</strong> (robot arms) stay fixed at their base and move an end-effector through a chain of joints. Their kinematics describes how joint angles translate into the position and orientation of that end-effector.</li>
+</ul>
+<div style="display:flex; justify-content:center; align-items:flex-start; flex-wrap:wrap; gap:24px;">
+<p><img alt="A mobile robot moves its entire body through the environment" src="../assets/images/mobile_robot_type.svg" /></p>
+<p><img alt="A manipulator stays fixed at its base and moves an end-effector" src="../assets/images/manipulator_type.svg" /></p>
+</div>
+<p>Both are described with the same underlying math — frames, rotations, and transformations.</p>
+<h2 id="revolute-vs-prismatic-joints">Revolute vs. Prismatic Joints</h2>
+<ul>
+<li><strong>Revolute joints</strong> rotate about a fixed point, like an elbow or a door hinge. Their variable is an angle, <span class="arithmatex">\(\theta\)</span> or <span class="arithmatex">\(q\)</span>.</li>
+<li><strong>Prismatic joints</strong> slide along a fixed axis, like a piston or a linear rail. Their variable is a distance, <span class="arithmatex">\(d\)</span> or <span class="arithmatex">\(q\)</span>.</li>
+</ul>
+<p style="text-align:center;">
+<img alt="Revolute joints rotate; prismatic joints slide" src="../assets/images/joint_types.svg" />
+</p>
+<p>Every manipulator is a chain of these two joint types — most are built entirely from revolute joints, since they're cheaper and more common in practice.</p>
+<h2 id="degrees-of-freedom-dof">Degrees of Freedom (DOF)</h2>
+<p>A robot's <strong>degrees of freedom</strong> are the independent ways it can move. DOF is counted in two different spaces:</p>
+<ul>
+<li><strong>Actuator-space DOF</strong> — the number of independently driven joints or motors.</li>
+<li><strong>Cartesian-space DOF</strong> — the number of independent directions the end-effector (or body) can move in the world: up to 3 in 2D (position and heading), or up to 6 in 3D (three for position, three for orientation).</li>
+</ul>
+<div style="display:flex; justify-content:center; align-items:flex-start; flex-wrap:wrap; gap:24px;">
+<p><img alt="A mobile robot's actuator-space DOF: one per driven wheel" src="../assets/images/actuator_space_dof.svg" /></p>
+<p><img alt="The same robot's Cartesian-space DOF: the independent directions it can move in the world" src="../assets/images/cartesian_space_dof.svg" /></p>
+</div>
+<div style="display:flex; justify-content:center; align-items:flex-start; flex-wrap:wrap; gap:24px;">
+<p><img alt="A redundant arm's actuator-space DOF: one per driven joint" src="../assets/images/arm_actuator_space_dof.svg" /></p>
+<p><img alt="The same arm's Cartesian-space DOF: the independent directions its end-effector can move" src="../assets/images/arm_cartesian_space_dof.svg" /></p>
+</div>
+<p>These two counts don't have to match. A robot is <strong>redundant</strong> when it has more actuator-space DOF than Cartesian-space DOF, and <strong>underactuated</strong> when it has fewer.</p>
+<h2 id="open-chain-vs-closed-chain-mechanisms">Open-Chain vs. Closed-Chain Mechanisms</h2>
+<ul>
+<li><strong>Open-chain (serial) mechanisms</strong> connect their links in a single unbranched sequence, from the base to the end-effector, with no loops.</li>
+<li><strong>Closed-chain (parallel) mechanisms</strong> connect their links into one or more closed loops, like a four-bar linkage or a Stewart platform.</li>
+</ul>
+<p style="text-align:center;">
+<img alt="An open kinematic chain has no loops; a closed kinematic chain's loop constrains its joints" src="../assets/images/open_closed_chain.svg" />
+</p>
+<p>In an open chain, DOF is simply the sum of each joint's freedom. In a closed chain, the loop constrains the joints, so DOF ends up <em>lower</em> than the raw joint count — how the joints are connected can give or take away freedom, not just how many motors drive them.</p>
+<h2 id="holonomic-vs-non-holonomic-constraints">Holonomic vs. Non-Holonomic Constraints</h2>
+<ul>
+<li><strong>Holonomic robots</strong> can move directly in any direction their DOF allow — turning and sliding sideways at the same time, like an omnidirectional robot.</li>
+<li><strong>Non-holonomic robots</strong> can't do that — a car or a differential-drive robot has to turn before it can move sideways, even though it can still reach any position eventually (think parallel parking).</li>
+</ul>
+<p style="text-align:center;">
+<img alt="A non-holonomic robot can't move sideways directly; a holonomic robot can move any direction at once" src="../assets/images/wheel_configurations.svg" />
+</p>
+<p>Whether a mobile robot is holonomic or not comes down to its wheels. Differential-drive and car-like robots are non-holonomic; omnidirectional wheels remove that restriction entirely. Depending on where and how a wheel is mounted, it can add a DOF, remove one, or have no effect at all. Chapter 3 revisits this idea more precisely, in terms of what a robot's motion actually depends on.</p>
+<h2 id="compliance-vs-rigidity">Compliance vs. Rigidity</h2>
+<ul>
+<li><strong>Rigid robots</strong> resist external forces and hold their commanded position as precisely as their actuators allow. Most industrial arms are built this way.</li>
+<li><strong>Compliant robots</strong> yield to external forces instead of fighting them, either through soft, springy hardware or through control software that makes a rigid robot behave that way.</li>
+</ul>
+<p style="text-align:center;">
+<img alt="A rigid robot holds its position against a push; a compliant robot yields and then settles" src="../assets/images/compliance_rigidity.svg" />
+</p>
+<p>Compliance doesn't always require special hardware — a common technique called <strong>impedance control</strong> lets an otherwise rigid robot behave like a spring, purely in software. This trade-off matters most where robots interact with people or uncertain environments, like collaborative robots (cobots).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
