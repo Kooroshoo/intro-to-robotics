@@ -9,4 +9,5 @@ Welcome to the **Intro to Robotics** guide! This book covers the fundamental mat
 3. [Kinematics and Trajectory Control](03-kinematics-and-trajectory-control.md)
 4. [Mapping and Navigation](04-mapping-and-navigation.md)
 5. [Task Planning and Execution](05-task-planning-and-execution.md)
+6. [Next Steps](06-next-steps.md)
 
