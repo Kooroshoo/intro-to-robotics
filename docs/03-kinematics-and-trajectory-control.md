@@ -1,6 +1,6 @@
 # Part III: Kinematics and Trajectory Control
 
-Once we know where the robot is, we use control algorithms to move it to a goal. This is treated as an optimization problem: we want to minimize a error.
+Once we know where the robot is, we use control algorithms to move it to a goal. This is treated as an optimization problem: we want to minimize an error.
 
 
 

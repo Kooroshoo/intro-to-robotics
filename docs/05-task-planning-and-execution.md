@@ -95,7 +95,6 @@ The `Move to Light` tree translates into code with the help of [py_trees](https:
 
 ```python
 import time
-
 import py_trees
 from py_trees.common import Status
 
@@ -141,7 +140,6 @@ move_to_light = py_trees.composites.Selector(name="Move to Light", memory=False,
 tree = py_trees.trees.BehaviourTree(move_to_light)
 py_trees.display.render_dot_tree(move_to_light)  # writes move_to_light.png/.svg/.dot next to this script
 
-# One world change per tick, like the finite state machine's list of events.
 events = [
     {},
     {"obstacle": True},
