@@ -33,18 +33,18 @@ A **sequence** node (`→`) groups leaves together and runs them in order, advan
 A **selector** node (`?`) instead tries its children left to right and stops at the first one that succeeds, only failing if all of them do — a natural way to express a fallback, like trying to avoid an obstacle before falling back to just following the light.
 
 <p markdown="1" style="text-align:center;">
-![A behavior tree for the same light-following robot: a selector node tries four behaviors in order, one of which, Avoid Obstacle, is itself a sequence of a condition and an action](assets/images/behavior_tree_navigate.svg)
+![A behavior tree for the same light-following robot: a selector node tries four branches in order, Handle Stop, Handle Obstacle, and Handle Wall are each a sequence of a condition and an action, and Follow Light is the lowest-priority fallback leaf](assets/images/behavior_tree_navigate.svg)
 </p>
 
 Each leaf actually returns one of three results: success, failure, or **running**, if it isn't done yet. Instead of letting a slow leaf block everything else, the whole tree gets re-checked on a fixed interval called a **tick** — say, every 32 ms — picking back up from whichever leaf was still running last time. This is what makes behavior trees reactive in real time, and it's also what makes it possible to run several branches at once.
 
-A **parallel** node (`⇉`) does exactly that: instead of trying its children one at a time like a sequence or selector, it runs all of them at the same time, succeeding based on a policy set on the node — every child must succeed, only one has to, or at least $n$ of them do. In our light-following robot, one branch can keep sensing the environment while another branch, the `Navigate` tree from before, decides what to do with it.
+A **parallel** node (`⇉`) does exactly that: instead of trying its children one at a time like a sequence or selector, it runs all of them at the same time, succeeding based on a policy set on the node — every child must succeed, only one has to, or at least $n$ of them do. In our light-following robot, one branch can keep sensing the environment while another branch, the `Move to Light` tree from before, decides what to do with it.
 
 <p markdown="1" style="text-align:center;">
-![A parallel node running a sensing leaf and the Navigate tree at the same time, sharing data through a blackboard](assets/images/behavior_tree_parallel.svg)
+![A parallel node running a sensing leaf and the Move to Light tree at the same time, sharing data through a blackboard](assets/images/behavior_tree_parallel.svg)
 </p>
 
-Running side by side only works if the two branches can share what they find, so parallel nodes are usually paired with a **blackboard** — memory any branch can read or write. Here, `Sense Environment` writes the light level and obstacle distance it measures, and `Navigate` reads them back on its next tick.
+Running side by side only works if the two branches can share what they find, so parallel nodes are usually paired with a **blackboard** — memory any branch can read or write. Here, `Sense Environment` writes the light level and obstacle distance it measures, and `Move to Light` reads them back on its next tick.
 
 ## Examples in Practice
 
@@ -87,53 +87,79 @@ for event in events:
 
 ### Behavior Trees
 
-The `Navigate` tree from earlier maps onto [py_trees](https://py-trees.readthedocs.io/), a Python behavior tree library used widely in robotics. Conditions and actions are just behaviours that return `SUCCESS` or `FAILURE`, grouped under `Sequence` and `Selector` composites:
+The `Move to Light` tree translates into code with the help of [py_trees](https://py-trees.readthedocs.io/), a Python behavior tree library, which can also render the diagram below straight from the code via [Graphviz](https://graphviz.org/download/):
+
+<p markdown="1" style="text-align:center;">
+![The Move to Light tree, rendered directly from the code below by py_trees and Graphviz](assets/images/move_to_light.svg)
+</p>
 
 ```python
+import time
+
 import py_trees
 from py_trees.common import Status
 
-class Condition(py_trees.behaviour.Behaviour):
-    def __init__(self, name, check):
+world = {
+    "under_light": False,
+    "obstacle": False,
+    "light_decreasing": False,
+}
+
+class Leaf(py_trees.behaviour.Behaviour):
+    """Wraps one plain function as a leaf; fails only if it returns False."""
+    def __init__(self, name, func):
         super().__init__(name)
-        self.check = check
+        self.func = func
 
     def update(self):
-        return Status.SUCCESS if self.check() else Status.FAILURE
-
-class Action(py_trees.behaviour.Behaviour):
-    def __init__(self, name, act):
-        super().__init__(name)
-        self.act = act
-
-    def update(self):
-        self.act()
+        if self.func() is False:
+            return Status.FAILURE
         return Status.SUCCESS
 
+handle_stop = py_trees.composites.Sequence(name="Handle Stop", memory=False, children=[
+    Leaf("Under Light?", lambda: world["under_light"]),
+    Leaf("Stop", lambda: print("Stop")),
+])
+
 handle_obstacle = py_trees.composites.Sequence(name="Handle Obstacle", memory=False, children=[
-    Condition("Obstacle Detected?", obstacle_detected),
-    Action("Avoid Obstacle", avoid_obstacle),
+    Leaf("Obstacle Detected?", lambda: world["obstacle"]),
+    Leaf("Avoid Obstacle", lambda: print("Avoid Obstacle")),
 ])
 
 handle_wall = py_trees.composites.Sequence(name="Handle Wall", memory=False, children=[
-    Condition("Light Decreasing?", light_decreasing),
-    Action("Follow Wall", follow_wall),
+    Leaf("Light Decreasing?", lambda: world["light_decreasing"]),
+    Leaf("Follow Wall", lambda: print("Follow Wall")),
 ])
 
-navigate = py_trees.composites.Selector(name="Navigate", memory=False, children=[
+move_to_light = py_trees.composites.Selector(name="Move to Light", memory=False, children=[
+    handle_stop,
     handle_obstacle,
     handle_wall,
-    Action("Follow Light", follow_light),
+    Leaf("Follow Light", lambda: print("Follow Light")),
 ])
 
-tree = py_trees.trees.BehaviourTree(navigate)
+tree = py_trees.trees.BehaviourTree(move_to_light)
+py_trees.display.render_dot_tree(move_to_light)  # writes move_to_light.png/.svg/.dot next to this script
 
-while True:
-    tree.tick()  # re-evaluate the whole tree once per tick
+# One world change per tick, like the finite state machine's list of events.
+events = [
+    {},
+    {"obstacle": True},
+    {"obstacle": False, "light_decreasing": True},
+    {"light_decreasing": False},
+    {"under_light": True},
+]
+
+for event in events:
+    world.update(event)
+    tree.tick()
+    time.sleep(0.5)  # wait half a second before the next tick
+
+# Follow Light
+# Avoid Obstacle
+# Follow Wall
+# Follow Light
+# Stop
 ```
-
-`obstacle_detected`, `light_decreasing`, `avoid_obstacle`, `follow_wall`, and `follow_light` are the same sensing and control functions from earlier chapters — the tree just decides which of them to call, and when.
-
-
 
 
