@@ -50,10 +50,14 @@ Running side by side only works if the two branches can share what they find, so
 
 ### Finite State Machines
 
-The transition function $\delta$ from the light-following state machine maps directly onto a dictionary keyed by `(state, event)` pairs, exactly like the graphs from the previous chapter:
+Translating the light-following state machine into code is mostly a matter of naming its pieces: $S$, $\Sigma$, and $F$ become plain Python sets, while $\delta$ becomes a dictionary keyed by `(state, event)` pairs:
 
 ```python
-transitions = {
+S = {'Stop', 'Follow light', 'Avoid obstacle', 'Follow wall'}
+Sigma = {'Obstacle detected', 'Obstacle free', 'Light decreases', 'Light increases', 'Under light'}
+F = {'Stop'}
+
+delta = {
     ('Follow light', 'Obstacle detected'): 'Avoid obstacle',
     ('Avoid obstacle', 'Obstacle free'):   'Follow light',
     ('Avoid obstacle', 'Light decreases'): 'Follow wall',
@@ -62,21 +66,26 @@ transitions = {
 }
 
 def step(state, event):
-    return transitions.get((state, event), state)  # ignore unhandled events
+    key = (state, event)
+    if key in delta:
+        return delta[key]
+    return state  # no transition defined, stay in the same state
 
-state = 'Follow light'
+state = 'Follow light'  # s0
 events = ['Obstacle detected', 'Obstacle free', 'Under light']
 
 for event in events:
     state = step(state, event)
     print(state)
+    if state in F:
+        break
 
 # Avoid obstacle
 # Follow light
 # Stop
 ```
 
-### Behavior Trees with `py_trees`
+### Behavior Trees
 
 The `Navigate` tree from earlier maps onto [py_trees](https://py-trees.readthedocs.io/), a Python behavior tree library used widely in robotics. Conditions and actions are just behaviours that return `SUCCESS` or `FAILURE`, grouped under `Sequence` and `Selector` composites:
 
