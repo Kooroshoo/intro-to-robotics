@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="140 0 1030 400" width="1030" height="400">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <!-- Connectors: root to its two children -->
+  <line x1="710" y1="60" x2="345" y2="100" stroke="#334155" stroke-width="2"/>
+  <line x1="710" y1="60" x2="920" y2="100" stroke="#334155" stroke-width="2"/>
+
+  <!-- Connectors: "Pick Square Peg" to its two children -->
+  <line x1="345" y1="150" x2="225" y2="210" stroke="#334155" stroke-width="2"/>
+  <line x1="345" y1="150" x2="395" y2="210" stroke="#334155" stroke-width="2"/>
+
+  <!-- Connectors: "Insert Square Peg" to its three leaves -->
+  <line x1="920" y1="150" x2="845" y2="210" stroke="#334155" stroke-width="2"/>
+  <line x1="920" y1="150" x2="965" y2="210" stroke="#334155" stroke-width="2"/>
+  <line x1="920" y1="150" x2="1090" y2="210" stroke="#334155" stroke-width="2"/>
+
+  <!-- Connectors: "Get Peg" to its four leaves -->
+  <line x1="395" y1="255" x2="355" y2="320" stroke="#334155" stroke-width="2"/>
+  <line x1="395" y1="255" x2="455" y2="320" stroke="#334155" stroke-width="2"/>
+  <line x1="395" y1="255" x2="560" y2="320" stroke="#334155" stroke-width="2"/>
+  <line x1="395" y1="255" x2="665" y2="320" stroke="#334155" stroke-width="2"/>
+
+  <!-- Root: sequence node -->
+  <rect x="640" y="10" width="140" height="50" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="710" y="32" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#1e293b">Peg-in-hole</text>
+  <text x="710" y="53" font-family="sans-serif" font-size="18" text-anchor="middle" fill="#1e293b">&#8594;</text>
+
+  <!-- Level 1: selector and sequence -->
+  <rect x="290" y="100" width="110" height="50" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="345" y="120" font-family="sans-serif" font-size="13" text-anchor="middle" fill="#1e293b">Pick Square</text>
+  <text x="345" y="135" font-family="sans-serif" font-size="13" text-anchor="middle" fill="#1e293b">Peg</text>
+  <text x="345" y="148" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e293b">?</text>
+
+  <rect x="850" y="100" width="140" height="50" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="920" y="122" font-family="sans-serif" font-size="13" text-anchor="middle" fill="#1e293b">Insert Square Peg</text>
+  <text x="920" y="143" font-family="sans-serif" font-size="16" text-anchor="middle" fill="#1e293b">&#8594;</text>
+
+  <!-- Level 2: children of "Pick Square Peg" -->
+  <rect x="160" y="210" width="130" height="60" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="225" y="230" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">Sense if peg</text>
+  <text x="225" y="245" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">already in</text>
+  <text x="225" y="260" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">gripper</text>
+
+  <rect x="340" y="210" width="110" height="45" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="395" y="230" font-family="sans-serif" font-size="13" text-anchor="middle" fill="#1e293b">Get Peg</text>
+  <text x="395" y="248" font-family="sans-serif" font-size="16" text-anchor="middle" fill="#1e293b">&#8594;</text>
+
+  <!-- Level 2: children of "Insert Square Peg" -->
+  <rect x="790" y="210" width="110" height="60" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="845" y="235" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">Move peg</text>
+  <text x="845" y="250" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">over hole</text>
+
+  <rect x="910" y="210" width="110" height="60" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="965" y="235" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">Rotate Peg</text>
+  <text x="965" y="250" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">until aligned</text>
+
+  <rect x="1030" y="210" width="120" height="60" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="1090" y="228" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">Move Peg</text>
+  <text x="1090" y="243" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">down until</text>
+  <text x="1090" y="258" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">contact</text>
+
+  <!-- Level 3: children of "Get Peg" -->
+  <rect x="310" y="320" width="90" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="355" y="352" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">Locate Peg</text>
+
+  <rect x="410" y="320" width="90" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="455" y="352" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">Open Gripper</text>
+
+  <rect x="510" y="320" width="100" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="560" y="345" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">Move gripper</text>
+  <text x="560" y="360" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">to peg</text>
+
+  <rect x="620" y="320" width="90" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="665" y="352" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">Close gripper</text>
+</svg>

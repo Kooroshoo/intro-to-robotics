@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" width="400" height="260">
+  <defs>
+    <marker id="staArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#334155"/>
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <!-- Sense -->
+  <rect x="30" y="30" width="130" height="70" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="95" y="72" font-family="sans-serif" font-size="18" font-weight="bold" fill="#1e3a8a" text-anchor="middle">Sense</text>
+
+  <!-- Think -->
+  <rect x="240" y="30" width="130" height="70" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="305" y="72" font-family="sans-serif" font-size="18" font-weight="bold" fill="#92400e" text-anchor="middle">Think</text>
+
+  <!-- Act -->
+  <rect x="135" y="165" width="130" height="70" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="200" y="207" font-family="sans-serif" font-size="18" font-weight="bold" fill="#166534" text-anchor="middle">Act</text>
+
+  <!-- Sense -> Think -->
+  <line x1="160" y1="55" x2="238" y2="55" stroke="#334155" stroke-width="2" marker-end="url(#staArrow)"/>
+
+  <!-- Think -> Act -->
+  <line x1="295" y1="100" x2="235" y2="163" stroke="#334155" stroke-width="2" marker-end="url(#staArrow)"/>
+
+  <!-- Act -> Sense -->
+  <line x1="165" y1="163" x2="105" y2="100" stroke="#334155" stroke-width="2" marker-end="url(#staArrow)"/>
+</svg>

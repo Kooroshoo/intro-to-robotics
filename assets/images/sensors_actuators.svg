@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 220" width="480" height="220">
+  <defs>
+    <marker id="saArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#334155"/>
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <!-- Sensors box -->
+  <rect x="20" y="20" width="200" height="180" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="120" y="45" font-family="sans-serif" font-size="17" font-weight="bold" fill="#1e3a8a" text-anchor="middle">Sensors</text>
+
+  <!-- Camera icon -->
+  <rect x="59" y="100" width="32" height="20" rx="4" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <rect x="70" y="93" width="10" height="7" rx="2" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <circle cx="83" cy="110" r="7" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <circle cx="83" cy="110" r="3" fill="#334155"/>
+  <text x="75" y="150" font-family="sans-serif" font-size="12" fill="#334155" text-anchor="middle">Camera</text>
+
+  <!-- LiDAR icon -->
+  <circle cx="165" cy="110" r="13" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <circle cx="165" cy="110" r="3" fill="#334155"/>
+  <line x1="165" y1="110" x2="165" y2="88" stroke="#334155" stroke-width="1.5" stroke-dasharray="2,3"/>
+  <line x1="165" y1="110" x2="184" y2="98" stroke="#334155" stroke-width="1.5" stroke-dasharray="2,3"/>
+  <line x1="165" y1="110" x2="184" y2="122" stroke="#334155" stroke-width="1.5" stroke-dasharray="2,3"/>
+  <line x1="165" y1="110" x2="146" y2="98" stroke="#334155" stroke-width="1.5" stroke-dasharray="2,3"/>
+  <text x="165" y="150" font-family="sans-serif" font-size="12" fill="#334155" text-anchor="middle">LiDAR</text>
+
+  <text x="120" y="178" font-family="sans-serif" font-size="11" fill="#64748b" text-anchor="middle">+ encoders, IMU, force sensors</text>
+
+  <!-- Actuators box -->
+  <rect x="260" y="20" width="200" height="180" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="360" y="45" font-family="sans-serif" font-size="17" font-weight="bold" fill="#166534" text-anchor="middle">Actuators</text>
+
+  <!-- Motor icon: a disc with a rotation arrow -->
+  <circle cx="315" cy="110" r="13" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <circle cx="315" cy="110" r="3" fill="#334155"/>
+  <path d="M 331 110 A 16 16 0 0 1 322 125" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#saArrow)"/>
+  <text x="315" y="150" font-family="sans-serif" font-size="12" fill="#334155" text-anchor="middle">Motor</text>
+
+  <!-- Gripper icon -->
+  <path d="M 420 122 L 400 122 L 400 96 L 420 96" fill="none" stroke="#0d9488" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="400" cy="109" r="4" fill="#0d9488"/>
+  <text x="410" y="150" font-family="sans-serif" font-size="12" fill="#334155" text-anchor="middle">Gripper</text>
+
+  <text x="360" y="178" font-family="sans-serif" font-size="11" fill="#64748b" text-anchor="middle">+ servos, hydraulic &amp; pneumatic drives</text>
+
+  <!-- Sensors -> Actuators -->
+  <line x1="222" y1="110" x2="258" y2="110" stroke="#334155" stroke-width="2" marker-end="url(#saArrow)"/>
+</svg>

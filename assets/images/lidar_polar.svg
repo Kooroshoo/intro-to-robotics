@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 350" width="100%" height="100%">
+  <defs>
+    <marker id="lidarArrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#333"/>
+    </marker>
+    <marker id="lidarArrowRed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626"/>
+    </marker>
+    <marker id="lidarArrowBlue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+    </marker>
+    <marker id="lidarArrowTeal" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#0d9488"/>
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <!-- World Frame {W} -->
+  <g transform="translate(90, 310)">
+    <line x1="0" y1="0" x2="110" y2="0" stroke="#333" stroke-width="2" marker-end="url(#lidarArrow)"/>
+    <text x="120" y="5" font-family="sans-serif" font-size="14" font-weight="bold" fill="#333">X_W</text>
+
+    <line x1="0" y1="0" x2="0" y2="-110" stroke="#333" stroke-width="2" marker-end="url(#lidarArrow)"/>
+    <text x="-5" y="-120" font-family="sans-serif" font-size="14" font-weight="bold" fill="#333">Y_W</text>
+
+    <circle cx="0" cy="0" r="4" fill="#333"/>
+    <text x="-25" y="20" font-family="sans-serif" font-size="12" fill="#64748b">{W} World</text>
+  </g>
+
+  <!-- Translation Vector P from {W} to {R} -->
+  <line x1="90" y1="310" x2="320" y2="190" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#lidarArrow)"/>
+  <text x="190" y="235" font-family="sans-serif" font-size="13" font-weight="bold" fill="#64748b">P</text>
+
+  <g transform="translate(320, 190)">
+    <!-- Differential Drive Robot / LiDAR, top-down view -->
+    <rect x="-22" y="-28" width="44" height="8" rx="3" fill="#334155"/>
+    <rect x="-22" y="20" width="44" height="8" rx="3" fill="#334155"/>
+    <circle cx="0" cy="0" r="24" fill="#f8fafc" stroke="#334155" stroke-width="2.5"/>
+    <circle cx="0" cy="0" r="3" fill="#64748b"/>
+
+    <!-- Angle phi between X_R and the beam -->
+    <path d="M 35 0 A 35 35 0 0 0 22.5 -26.8" fill="none" stroke="#334155" stroke-width="1.5"/>
+    <text x="46" y="-20" font-family="sans-serif" font-size="13" font-weight="bold" fill="#334155">&#966;</text>
+
+    <!-- LiDAR beam of length r, hitting a wall -->
+    <line x1="0" y1="0" x2="83.6" y2="-99.6" stroke="#0d9488" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#lidarArrowTeal)"/>
+    <text x="30" y="-72" font-family="sans-serif" font-size="13" font-weight="bold" fill="#0d9488">r</text>
+
+    <!-- Projections giving the local Cartesian coordinates -->
+    <line x1="83.6" y1="-99.6" x2="83.6" y2="0" stroke="#0d9488" stroke-width="1" stroke-dasharray="3,3"/>
+    <text x="93" y="-45" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0d9488">r sin&#966;</text>
+
+    <line x1="0" y1="0" x2="83.6" y2="0" stroke="#0d9488" stroke-width="1" stroke-dasharray="3,3"/>
+    <text x="56.8" y="17" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0d9488" text-anchor="middle">r cos&#966;</text>
+
+    <!-- The wall hit by the beam -->
+    <rect x="88.6" y="-156.6" width="26" height="84" fill="#e2e8f0" stroke="#334155" stroke-width="2"/>
+    <text x="101.6" y="-170" font-family="sans-serif" font-size="13" font-weight="bold" fill="#334155" text-anchor="middle">Wall</text>
+  </g>
+</svg>

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 220" width="480" height="220">
+  <defs>
+    <marker id="hnArrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+    </marker>
+    <marker id="hnArrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626"/>
+    </marker>
+    <marker id="hnArrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <!-- Non-holonomic: a car-like/differential-drive robot -->
+  <text x="20" y="25" font-family="sans-serif" font-size="15" font-weight="bold" fill="#334155">Non-Holonomic</text>
+
+  <g transform="translate(120, 115)">
+    <rect x="-22" y="-28" width="44" height="8" rx="3" fill="#334155"/>
+    <rect x="-22" y="20" width="44" height="8" rx="3" fill="#334155"/>
+    <circle cx="0" cy="0" r="24" fill="#f8fafc" stroke="#334155" stroke-width="2.5"/>
+    <circle cx="0" cy="0" r="3" fill="#64748b"/>
+
+    <!-- Can't move this way -->
+    <line x1="0" y1="-32" x2="0" y2="-55" stroke="#dc2626" stroke-width="2.5" marker-end="url(#hnArrowRed)"/>
+    <line x1="-8" y1="-50" x2="8" y2="-38" stroke="#dc2626" stroke-width="2.5"/>
+    <line x1="0" y1="32" x2="0" y2="55" stroke="#dc2626" stroke-width="2.5" marker-end="url(#hnArrowRed)"/>
+    <line x1="-8" y1="50" x2="8" y2="38" stroke="#dc2626" stroke-width="2.5"/>
+
+    <!-- Can turn, either direction -->
+    <path d="M 40 -22 A 30 30 0 0 1 40 22" fill="none" stroke="#2563eb" stroke-width="2.5" marker-start="url(#hnArrowBlue)" marker-end="url(#hnArrowBlue)"/>
+
+    <!-- Can drive forward -->
+    <line x1="-32" y1="0" x2="-55" y2="0" stroke="#2563eb" stroke-width="2.5" marker-end="url(#hnArrowBlue)"/>
+  </g>
+
+  <text x="20" y="195" font-family="sans-serif" font-size="12" fill="#64748b">Can drive forward and turn,</text>
+  <text x="20" y="209" font-family="sans-serif" font-size="12" fill="#64748b">but can't slide sideways directly</text>
+
+  <!-- Holonomic: an omnidirectional robot -->
+  <text x="280" y="25" font-family="sans-serif" font-size="15" font-weight="bold" fill="#334155">Holonomic</text>
+
+  <g transform="translate(380, 115)">
+    <rect x="-28" y="-18" width="56" height="36" rx="4" fill="#f8fafc" stroke="#334155" stroke-width="2.5"/>
+    <circle cx="0" cy="0" r="3" fill="#64748b"/>
+
+    <!-- Four omni/mecanum wheels, one at each corner, with angled rollers -->
+    <circle cx="-31" cy="-22" r="7" fill="#334155"/>
+    <line x1="-35" y1="-18" x2="-27" y2="-26" stroke="#f8fafc" stroke-width="1.5"/>
+
+    <circle cx="31" cy="-22" r="7" fill="#334155"/>
+    <line x1="27" y1="-18" x2="35" y2="-26" stroke="#f8fafc" stroke-width="1.5"/>
+
+    <circle cx="-31" cy="22" r="7" fill="#334155"/>
+    <line x1="-35" y1="26" x2="-27" y2="18" stroke="#f8fafc" stroke-width="1.5"/>
+
+    <circle cx="31" cy="22" r="7" fill="#334155"/>
+    <line x1="27" y1="26" x2="35" y2="18" stroke="#f8fafc" stroke-width="1.5"/>
+
+    <!-- Free to move any direction at once -->
+    <line x1="0" y1="-22" x2="0" y2="-50" stroke="#2563eb" stroke-width="2.5" marker-end="url(#hnArrowBlue)"/>
+    <line x1="0" y1="22" x2="0" y2="50" stroke="#2563eb" stroke-width="2.5" marker-end="url(#hnArrowBlue)"/>
+    <line x1="-34" y1="0" x2="-58" y2="0" stroke="#2563eb" stroke-width="2.5" marker-end="url(#hnArrowBlue)"/>
+    <line x1="34" y1="0" x2="58" y2="0" stroke="#2563eb" stroke-width="2.5" marker-end="url(#hnArrowBlue)"/>
+  </g>
+
+  <text x="280" y="195" font-family="sans-serif" font-size="12" fill="#64748b">Can move in any direction</text>
+  <text x="280" y="209" font-family="sans-serif" font-size="12" fill="#64748b">at once, including sideways</text>
+</svg>

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 730 340" width="730" height="340">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <!-- Repeat decorator into the selector node -->
+  <polygon points="370,10 390,30 370,50 350,30" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="400" y="24" font-family="sans-serif" font-size="12" fill="#1e293b">Repeat</text>
+  <line x1="370" y1="50" x2="370" y2="78" stroke="#334155" stroke-width="2"/>
+
+  <!-- Connectors: root to its four children, tried left to right -->
+  <line x1="370" y1="135" x2="95" y2="170" stroke="#334155" stroke-width="2"/>
+  <line x1="370" y1="135" x2="275" y2="170" stroke="#334155" stroke-width="2"/>
+  <line x1="370" y1="135" x2="455" y2="170" stroke="#334155" stroke-width="2"/>
+  <line x1="370" y1="135" x2="635" y2="170" stroke="#334155" stroke-width="2"/>
+
+  <!-- Connectors: each sequence node to its two children -->
+  <line x1="95" y1="225" x2="57" y2="255" stroke="#334155" stroke-width="2"/>
+  <line x1="95" y1="225" x2="143" y2="255" stroke="#334155" stroke-width="2"/>
+  <line x1="275" y1="225" x2="237" y2="255" stroke="#334155" stroke-width="2"/>
+  <line x1="275" y1="225" x2="317" y2="255" stroke="#334155" stroke-width="2"/>
+  <line x1="455" y1="225" x2="417" y2="255" stroke="#334155" stroke-width="2"/>
+  <line x1="455" y1="225" x2="497" y2="255" stroke="#334155" stroke-width="2"/>
+
+  <!-- Root: selector node -->
+  <rect x="290" y="80" width="160" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="370" y="105" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#1e293b">Move to Light</text>
+  <text x="370" y="125" font-family="sans-serif" font-size="16" text-anchor="middle" fill="#1e293b">?</text>
+
+  <!-- "Handle Stop": tried first, highest priority -->
+  <rect x="20" y="170" width="150" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="95" y="192" font-family="sans-serif" font-size="13" text-anchor="middle" fill="#1e293b">Handle Stop</text>
+  <text x="95" y="212" font-family="sans-serif" font-size="15" text-anchor="middle" fill="#1e293b">→</text>
+
+  <!-- "Handle Obstacle" -->
+  <rect x="200" y="170" width="150" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="275" y="192" font-family="sans-serif" font-size="13" text-anchor="middle" fill="#1e293b">Handle Obstacle</text>
+  <text x="275" y="212" font-family="sans-serif" font-size="15" text-anchor="middle" fill="#1e293b">→</text>
+
+  <!-- "Handle Wall" -->
+  <rect x="380" y="170" width="150" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="455" y="192" font-family="sans-serif" font-size="13" text-anchor="middle" fill="#1e293b">Handle Wall</text>
+  <text x="455" y="212" font-family="sans-serif" font-size="15" text-anchor="middle" fill="#1e293b">→</text>
+
+  <!-- "Follow Light": leaf, lowest priority fallback -->
+  <rect x="560" y="170" width="150" height="60" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="635" y="205" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#1e293b">Follow Light</text>
+
+  <!-- Children of "Handle Stop" -->
+  <rect x="20" y="255" width="75" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="57" y="278" font-family="sans-serif" font-size="11" text-anchor="middle" fill="#1e293b">Under</text>
+  <text x="57" y="293" font-family="sans-serif" font-size="11" text-anchor="middle" fill="#1e293b">Light?</text>
+
+  <rect x="105" y="255" width="75" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="143" y="287" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#1e293b">Stop</text>
+
+  <!-- Children of "Handle Obstacle" -->
+  <rect x="200" y="255" width="75" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="237" y="278" font-family="sans-serif" font-size="11" text-anchor="middle" fill="#1e293b">Obstacle</text>
+  <text x="237" y="293" font-family="sans-serif" font-size="11" text-anchor="middle" fill="#1e293b">Detected?</text>
+
+  <rect x="280" y="255" width="75" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="317" y="278" font-family="sans-serif" font-size="11" text-anchor="middle" fill="#1e293b">Avoid</text>
+  <text x="317" y="293" font-family="sans-serif" font-size="11" text-anchor="middle" fill="#1e293b">Obstacle</text>
+
+  <!-- Children of "Handle Wall" -->
+  <rect x="380" y="255" width="75" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="417" y="278" font-family="sans-serif" font-size="11" text-anchor="middle" fill="#1e293b">Light</text>
+  <text x="417" y="293" font-family="sans-serif" font-size="11" text-anchor="middle" fill="#1e293b">Decreasing?</text>
+
+  <rect x="460" y="255" width="75" height="55" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="497" y="278" font-family="sans-serif" font-size="11" text-anchor="middle" fill="#1e293b">Follow</text>
+  <text x="497" y="293" font-family="sans-serif" font-size="11" text-anchor="middle" fill="#1e293b">Wall</text>
+</svg>
+
