@@ -12,6 +12,8 @@ We covered the essentials: representing pose, computing the commands that drive 
 
 - **Manipulation and Grasping** — arm control stopped at reaching a pose, never touching anything. Grasp planning and force control let an arm make and hold contact instead.
 
+- **Simulation** — every equation here ran in the abstract, never against a physics engine. Simulators like Isaac Sim, MuJoCo, or Gazebo are where controllers and policies actually get trained and tested before touching real hardware.
+
 - **Reinforcement Learning** — every controller here was model-based, derived from explicit equations. Reinforcement learning learns a policy from trial and error instead.
 
 - **Robotics System Design** — every algorithm here was studied in isolation, never wired into a running robot. This is where perception, planning, and control connect into one system, through middleware like ROS.
